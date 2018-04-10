@@ -146,5 +146,5 @@
       ['weapon_combatmg_mk2'] = 'MG de Combate Mk II',  
       ['weapon_heavysniper_mk2'] = 'Sniper pesada Mk II',  
       ['weapon_pistol_mk2'] = 'Pistola Mk II',  
-      ['weapon_smg_mk2'] = 'SMG Mk II', 
+      ['weapon_smg_mk2'] = 'SMG Mk II.', 
 }
