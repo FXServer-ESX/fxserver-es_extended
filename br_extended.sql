@@ -35,7 +35,7 @@ CREATE TABLE `job_grades` (
   PRIMARY KEY (`id`)
 );
 
-INSERT INTO `job_grades` VALUES (1,'unemployed',0,'rsa','RSA',200,'{}','{}');
+INSERT INTO `job_grades` VALUES (1,'unemployed',0,'rsa','Desempregado',200,'{}','{}');
 
 CREATE TABLE `jobs` (
 
@@ -46,7 +46,7 @@ CREATE TABLE `jobs` (
   PRIMARY KEY (`id`)
 );
 
-INSERT INTO `jobs` VALUES (1,'unemployed','Chômeur');
+INSERT INTO `jobs` VALUES (1,'unemployed','Desempregado');
 
 CREATE TABLE `user_accounts` (
 
