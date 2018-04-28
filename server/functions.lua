@@ -26,6 +26,15 @@ ESX.GetRandomString = function(length)
 
 end
 
+ESX.TableContainValue(table, value)
+  for k, v in pairs(table) do
+    if v == value then
+      return true
+    end
+  end
+  return false
+end)
+
 ESX.SetTimeout = function(msec, cb)
 
   local id = ESX.TimeoutCount + 1
