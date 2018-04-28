@@ -26,7 +26,7 @@ ESX.GetRandomString = function(length)
 
 end
 
-ESX.TableContainValue(table, value)
+ESX.TableContainValue = function(table, value)
   for k, v in pairs(table) do
     if v == value then
       return true
