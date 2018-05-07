@@ -1077,7 +1077,7 @@ ESX.ShowInventory = function()
 
   if ESX.PlayerData.money > 0 then
     table.insert(elements, {
-      label     = '[Cash] $' .. ESX.PlayerData.money,
+      label     = _U('[Cash] $') .. ESX.PlayerData.money,
       count     = ESX.PlayerData.money,
       type      = 'item_money',
       value     = 'money',
