@@ -28,7 +28,7 @@ Locales['zh_cn'] = {
   ['state_paid'] = 'You received a state check',
   ['act_imp'] = '无法执行此动作',
   ['in_vehicle'] = '您不能对车内人员给与东西', 
-  ['[Cash] $'] = '现金',
+  ['[Cash] $'] = '[现金] $',
   -- Commands
   ['setjob'] = '对用户指派一个任务',
   ['id_param'] = '玩家的ID',
