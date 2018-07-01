@@ -35,6 +35,15 @@ ESX.GetRandomString = function(length)
 
 end
 
+ESX.TableContainValue = function(table, value)
+  for k, v in pairs(table) do
+    if v == value then
+      return true
+    end
+  end
+  return false
+end)
+
 ESX.SetTimeout = function(msec, cb)
   table.insert(ESX.TimeoutCallbacks, {
     time = GetGameTimer() + msec,
