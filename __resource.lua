@@ -15,6 +15,7 @@ server_scripts {
 	'locales/en.lua',
 	'locales/fi.lua',
 	'locales/sv.lua',
+	'locales/pl.lua',
 
 	'config.lua',
 	'config.weapons.lua',
@@ -37,6 +38,7 @@ client_scripts {
 	'locales/en.lua',
 	'locales/fi.lua',
 	'locales/sv.lua',
+	'locales/pl.lua',
 
 	'config.lua',
 	'config.weapons.lua',
@@ -46,6 +48,9 @@ client_scripts {
 	'client/functions.lua',
 	'client/wrapper.lua',
 	'client/main.lua',
+
+	'client/modules/scaleform.lua',
+	'client/modules/streaming.lua',
 
 	'shared/functions.lua'
 }

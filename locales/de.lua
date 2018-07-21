@@ -1,11 +1,12 @@
 Locales['de'] = {
   -- Inventory
-  ['cash'] = 'Bargeld $%s',
-  ['inventory'] = 'Inventar',
-  ['use'] = 'Benutzen',
-  ['give'] = 'Geben',
-  ['remove'] = 'Entfernen',
-  ['return'] = 'Zurück',
+  ['cash'] = 'bargeld $%s',
+  ['inventory'] = 'inventar',
+  ['use'] = 'benutzen',
+  ['give'] = 'geben',
+  ['remove'] = 'entfernen',
+  ['return'] = 'zurück',
+  ['give_to'] = 'give to',
   ['amount'] = 'Betrag',
   ['giveammo'] = 'Munition geben',
   ['amountammo'] = 'Munitionsmenge',

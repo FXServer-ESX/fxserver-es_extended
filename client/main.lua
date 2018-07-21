@@ -75,7 +75,7 @@ AddEventHandler('playerSpawned', function()
 end)
 
 AddEventHandler('baseevents:onPlayerDied', function(killerType, deathCoords)
-	local playerPed = GetPlayerPed(-1)
+	local playerPed = PlayerPedId()
 
 	local data = {
 		killed      = false,
@@ -88,43 +88,33 @@ AddEventHandler('baseevents:onPlayerDied', function(killerType, deathCoords)
 	TriggerServerEvent('esx:onPlayerDeath', data)
 end)
 
-AddEventHandler('baseevents:onPlayerKilled', function(killerPed, data)
-	local playerPed = GetPlayerPed(-1)
+AddEventHandler('baseevents:onPlayerKilled', function(killerId, data)
+	local playerPed = PlayerPedId()
 
-	-- corrected table childs
+	-- snake text; killerpos actually is the victim
 	local victimCoords = data.killerpos
 	local weaponHash   = data.weaponhash
 
 	data.killerpos  = nil
 	data.weaponhash = nil
 
+	local killerPed    = GetPlayerPed(GetPlayerFromServerId(killerId))
+	local killerCoords = GetEntityCoords(killerPed)
+	local distance     = GetDistanceBetweenCoords(victimCoords[1], victimCoords[2], victimCoords[3], killerCoords, false)
+
 	table.insert(data, {
 		victimCoords = victimCoords,
 		weaponHash   = weaponHash,
-		deathCause   = GetPedCauseOfDeath(playerPed)
+		deathCause   = GetPedCauseOfDeath(playerPed),
+		killed       = true,
+		killerId     = killerId,
+		killerCoords = { table.unpack(killerCoords) },
+		distance     = ESX.Round(distance)
 	})
-
-	if killerPed ~= -1 then -- if the killer isn't AI
-		local killerCoords = GetEntityCoords(killerPed)
-		local distance     = GetDistanceBetweenCoords(table.unpack(killerCoords), table.unpack(data.victimCoords), false)
-
-		table.insert(data, {
-			killed       = true,
-			killerPed    = killerPed,
-			killerCoords = killerCoords,
-			distance     = ESX.Round(distance)
-		})
-
-	else -- player died by AI, we cannot provide as much info because of baseevents setting 'killerPed' to '-1'
-
-		table.insert(data, {
-			killed = false
-		})
-
-	end
 
 	TriggerEvent('esx:onPlayerDeath', data)
 	TriggerServerEvent('esx:onPlayerDeath', data)
+
 end)
 
 AddEventHandler('esx:onPlayerDeath', function()
@@ -242,6 +232,7 @@ end)
 -- Commands
 RegisterNetEvent('esx:teleport')
 AddEventHandler('esx:teleport', function(pos)
+-- heading?!
   pos.x = pos.x + 0.0
   pos.y = pos.y + 0.0
   pos.z = pos.z + 0.0
@@ -416,7 +407,7 @@ AddEventHandler('esx:spawnPed', function(model)
       Citizen.Wait(1)
     end
 
-    CreatePed(5,  model,  x,  y,  z,  0.0,  true,  false)
+    CreatePed(5, model, x, y, z, 0.0, true, false)
 
   end)
 
@@ -520,7 +511,7 @@ Citizen.CreateThread(function()
 
     Citizen.Wait(10)
 
-    if IsControlJustReleased(0, Keys["F2"]) and GetLastInputMethod(2) and not isDead and not ESX.UI.Menu.IsOpen('default', 'es_extended', 'inventory') then
+    if IsControlJustReleased(0, Keys['F2']) and GetLastInputMethod(2) and not isDead and not ESX.UI.Menu.IsOpen('default', 'es_extended', 'inventory') then
       ESX.ShowInventory()
     end
 
@@ -571,35 +562,40 @@ end
 
 -- Pickups
 Citizen.CreateThread(function()
-  while true do
+	while true do
 
-    Citizen.Wait(0)
+		Citizen.Wait(0)
 
-    local playerPed = GetPlayerPed(-1)
-    local coords    = GetEntityCoords(playerPed)
+		local playerPed = GetPlayerPed(-1)
+		local coords    = GetEntityCoords(playerPed)
+		
+		-- if there's no nearby pickups we can wait a bit to save performance
+		if next(Pickups) == nil then
+			Citizen.Wait(500)
+		end
 
-    for k,v in pairs(Pickups) do
+		for k,v in pairs(Pickups) do
 
-      local distance = GetDistanceBetweenCoords(coords.x,  coords.y,  coords.z,  v.coords.x,  v.coords.y,  v.coords.z,  true)
+			local distance = GetDistanceBetweenCoords(coords.x,  coords.y,  coords.z,  v.coords.x,  v.coords.y,  v.coords.z,  true)
+			local closestPlayer, closestDistance = ESX.Game.GetClosestPlayer()
 
-      if distance <= 5.0 then
+			if distance <= 5.0 then
+				ESX.Game.Utils.DrawText3D({
+					x = v.coords.x,
+					y = v.coords.y,
+					z = v.coords.z + 0.25
+				}, v.label)
+			end
 
-        ESX.Game.Utils.DrawText3D({
-          x = v.coords.x,
-          y = v.coords.y,
-          z = v.coords.z + 0.25
-        }, v.label)
+			if (closestDistance == -1 or closestDistance > 3) and distance <= 1.0 and not v.inRange and not IsPedSittingInAnyVehicle(playerPed) then
+				TriggerServerEvent('esx:onPickup', v.id)
+				PlaySoundFrontend(-1, "PICK_UP", "HUD_FRONTEND_DEFAULT_SOUNDSET", 1)
+				v.inRange = true
+			end
 
-      end
+		end
 
-      if distance <= 1.0 and not v.inRange and not IsPedSittingInAnyVehicle(playerPed) then
-        TriggerServerEvent('esx:onPickup', v.id)
-        v.inRange = true
-      end
-
-    end
-
-  end
+	end
 end)
 
 -- Last position
