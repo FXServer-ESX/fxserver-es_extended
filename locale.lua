@@ -16,6 +16,6 @@ function _(str, ...)  -- Translate string
 
 end
 
-function _U(str, ...) -- Translate string first char uppercase
-  return tostring(_(str, ...):gsub("^%l", string.upper))
+function _U(str) -- Translate string first char uppercase
+  if type(str) == "string" then return string.gsub(str, ".", string.upper, 1) end
 end
