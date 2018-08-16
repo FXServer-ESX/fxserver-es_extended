@@ -98,9 +98,9 @@ AddEventHandler('baseevents:onPlayerKilled', function(killerId, data)
 	data.killerpos  = nil
 	data.weaponhash = nil
 
-	local killerPed    = GetPlayerPed(GetPlayerFromServerId(killerId))
-	local killerCoords = GetEntityCoords(killerPed)
-	local distance     = GetDistanceBetweenCoords(victimCoords[1], victimCoords[2], victimCoords[3], killerCoords, false)
+	local killerPed    = NetworkIsPlayerActive(GetPlayerFromServerId(killerId)) and GetPlayerPed(GetPlayerFromServerId(killerId)) or 0
+	local killerCoords = killerPed ~= 0 and GetEntityCoords(killerPed) or 0
+	local distance     = killerCoords ~= 0 and GetDistanceBetweenCoords(victimCoords[1], victimCoords[2], victimCoords[3], killerCoords, false) or 0
 
 	table.insert(data, {
 		victimCoords = victimCoords,
@@ -108,10 +108,10 @@ AddEventHandler('baseevents:onPlayerKilled', function(killerId, data)
 		deathCause   = GetPedCauseOfDeath(playerPed),
 		killed       = true,
 		killerId     = killerId,
-		killerCoords = { table.unpack(killerCoords) },
+		killerCoords = killerCoords ~= 0 and { table.unpack(killerCoords) } or 0,
 		distance     = ESX.Round(distance)
 	})
-
+	
 	TriggerEvent('esx:onPlayerDeath', data)
 	TriggerServerEvent('esx:onPlayerDeath', data)
 
