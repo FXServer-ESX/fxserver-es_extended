@@ -40,6 +40,16 @@ function CreateExtendedPlayer(player, accounts, inventory, job, loadout, name, l
 		return self.player.get('coords')
 	end
 
+	self.getWeapon = function(name)
+
+    for i=1, #self.loadout, 1 do
+      if self.loadout[i].name == name then
+        return self.loadout[i]
+      end
+    end
+	return nil
+  end
+
 	self.setCoords = function(x, y, z)
 		self.player.coords = {x = x, y = y, z = z}
 	end
