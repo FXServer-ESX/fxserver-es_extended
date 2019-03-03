@@ -351,13 +351,13 @@ function CreateExtendedPlayer(player, accounts, inventory, job, loadout, name, l
 		local lastJob = json.decode(json.encode(self.job))
 
 		if ESX.DoesJobExist(job, grade) then
-			local jobObject, gradeObject = ESX.Jobs[job], ESX.Jobs[job].grades[grade]
+			local jobObject, gradeObject = ESX.Jobs[job], ESX.Jobs[job].grades[tostring(grade)]
 
 			self.job['id']    = jobObject.id
 			self.job['name']  = jobObject.name
 			self.job['label'] = jobObject.label
 
-			self.job['grade']        = grade
+			self.job['grade']        = tostring(grade)
 			self.job['grade_name']   = gradeObject.name
 			self.job['grade_label']  = gradeObject.label
 			self.job['grade_salary'] = gradeObject.salary

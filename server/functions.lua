@@ -186,7 +186,7 @@ end
 
 ESX.DoesJobExist = function(job, grade)
 	if job and grade then
-		if ESX.Jobs[job] and ESX.Jobs[job].grades[grade] then
+		if ESX.Jobs[job] and ESX.Jobs[job].grades[tostring(grade)] then
 			return true
 		end
 	end
