@@ -1327,6 +1327,20 @@ ESX.ShowInventory = function()
 	end)
 end
 
+ESX.HasItem = function(item)
+    local inventory = ESX.GetPlayerData().inventory
+    local ItemAmount = nil
+    for i=1, #inventory, 1 do
+        if inventory[i].name == item then
+            ItemAmount = inventory[i].count
+        end
+    end
+    if ItemAmount > 0 then
+        return true
+    end
+    return false
+end
+
 RegisterNetEvent('esx:serverCallback')
 AddEventHandler('esx:serverCallback', function(requestId, ...)
 	ESX.ServerCallbacks[requestId](...)
