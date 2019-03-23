@@ -32,7 +32,7 @@ Locales['es'] = {
   ['imp_invalid_amount'] = 'acción imposible, cantidad no válida',
   ['threw_standard'] = 'has tirado ~y~%sx~s~ ~b~%s~s~',
   ['threw_money'] = 'has tirado ~r~$%s~s~ ~b~cash~s~',
-  ['threw_account'] = 'yhas tirado ~r~$%s~s~ ~b~%s~s~',
+  ['threw_account'] = 'has tirado ~r~$%s~s~ ~b~%s~s~',
   ['threw_weapon'] = 'has tirado ~y~1x~s~ ~b~%s~s~',
   ['threw_weapon_ammo'] = 'has tirado ~y~1x~s~ ~b~%s~s~ con ~o~%sx~s~ balas',
   -- Salary related
