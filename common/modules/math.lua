@@ -1,7 +1,11 @@
 ESX.Math = {}
 
 ESX.Math.Round = function(value, numDecimalPlaces)
-	return tonumber(string.format("%." .. (numDecimalPlaces or 0) .. "f", value))
+	if (numDecimalPlaces) then
+		return math.floor((value * 10^numDecimalPlaces) + 0.5) / (10^numDecimalPlaces)
+	else
+		return math.floor(value+0.5)
+	end
 end
 
 -- credit http://richard.warburton.it
