@@ -91,7 +91,7 @@ end, function(source, args, user)
 	TriggerClientEvent('chat:addMessage', source, { args = { '^1SYSTEM', 'Insufficient Permissions.' } })
 end, {help = _U('spawn_object'), params = {{name = "name"}}})
 
-TriggerEvent('es:addGroupCommand', 'setmoney', 'admin', function(source, args, user)
+TriggerEvent('es:addGroupCommand', 'setusermoney', 'admin', function(source, args, user)
 	local _source = source
 	local target = tonumber(args[1])
 	local money_type = args[2]
