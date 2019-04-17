@@ -8,6 +8,7 @@ Config.EnableSocietyPayouts = false -- pay from the society account that the pla
 Config.ShowDotAbovePlayer   = false
 Config.DisableWantedLevel   = true
 Config.EnableHud            = true -- enable the default hud? Display current job and accounts (black, bank & cash)
+Config.EnableInventoryMenu  = true
 
 Config.PaycheckInterval     = 7 * 60000
 Config.MaxPlayers           = GetConvarInt('sv_maxclients', 32)
