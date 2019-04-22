@@ -19,12 +19,14 @@ ESX.GetConfig = function()
 end
 
 ESX.GetWeapon = function(weaponName)
-	weaponName = string.upper(weaponName)
-	local weapons = ESX.GetWeaponList()
+	if weaponName ~= nil then
+		weaponName = string.upper(weaponName)
+		local weapons = ESX.GetWeaponList()
 
-	for i=1, #weapons, 1 do
-		if weapons[i].name == weaponName then
-			return i, weapons[i]
+		for i=1, #weapons, 1 do
+			if weapons[i].name == weaponName then
+				return i, weapons[i]
+			end
 		end
 	end
 end
@@ -34,25 +36,29 @@ ESX.GetWeaponList = function()
 end
 
 ESX.GetWeaponLabel = function(weaponName)
-	weaponName = string.upper(weaponName)
-	local weapons = ESX.GetWeaponList()
+	if weaponName ~= nil then
+		weaponName = string.upper(weaponName)
+		local weapons = ESX.GetWeaponList()
 
-	for i=1, #weapons, 1 do
-		if weapons[i].name == weaponName then
-			return weapons[i].label
+		for i=1, #weapons, 1 do
+			if weapons[i].name == weaponName then
+				return weapons[i].label
+			end
 		end
 	end
 end
 
 ESX.GetWeaponComponent = function(weaponName, weaponComponent)
-	weaponName = string.upper(weaponName)
-	local weapons = ESX.GetWeaponList()
+	if weaponName ~= nil then
+		weaponName = string.upper(weaponName)
+		local weapons = ESX.GetWeaponList()
 
-	for i=1, #weapons, 1 do
-		if weapons[i].name == weaponName then
-			for j=1, #weapons[i].components, 1 do
-				if weapons[i].components[j].name == weaponComponent then
-					return weapons[i].components[j]
+		for i=1, #weapons, 1 do
+			if weapons[i].name == weaponName then
+				for j=1, #weapons[i].components, 1 do
+					if weapons[i].components[j].name == weaponComponent then
+						return weapons[i].components[j]
+					end
 				end
 			end
 		end
