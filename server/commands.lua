@@ -130,7 +130,7 @@ TriggerEvent('es:addGroupCommand', 'giveaccountmoney', 'admin', function(source,
 	local account = args[2]
 	local amount  = tonumber(args[3])
 
-	if amount ~= nil then
+	if amount ~= nil and xPlayer ~= nil then
 		if xPlayer.getAccount(account) ~= nil then
 			xPlayer.addAccountMoney(account, amount)
 		else
@@ -149,7 +149,7 @@ TriggerEvent('es:addGroupCommand', 'giveitem', 'admin', function(source, args, u
 	local item    = args[2]
 	local count   = (args[3] == nil and 1 or tonumber(args[3]))
 
-	if count ~= nil then
+	if count ~= nil and xPlayer ~= nil then
 		if xPlayer.getInventoryItem(item) ~= nil then
 			xPlayer.addInventoryItem(item, count)
 		else
@@ -165,8 +165,9 @@ end, {help = _U('giveitem'), params = {{name = "id", help = _U('id_param')}, {na
 TriggerEvent('es:addGroupCommand', 'giveweapon', 'admin', function(source, args, user)
 	local xPlayer    = ESX.GetPlayerFromId(args[1])
 	local weaponName = string.upper(args[2])
-
-	xPlayer.addWeapon(weaponName, tonumber(args[3]))
+	if weaponName ~= nil and xPlayer ~= nil then
+		xPlayer.addWeapon(weaponName, tonumber(args[3]))
+	end
 end, function(source, args, user)
 	TriggerClientEvent('chat:addMessage', source, { args = { '^1SYSTEM', 'Insufficient Permissions.' } })
 end, {help = _U('giveweapon'), params = {{name = "id", help = _U('id_param')}, {name = "weapon", help = _U('weapon')}, {name = "ammo", help = _U('amountammo')}}})
