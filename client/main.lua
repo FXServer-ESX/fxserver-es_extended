@@ -166,9 +166,23 @@ RegisterNetEvent('esx:addWeapon')
 AddEventHandler('esx:addWeapon', function(weaponName, ammo)
 	local playerPed  = PlayerPedId()
 	local weaponHash = GetHashKey(weaponName)
-
-	GiveWeaponToPed(playerPed, weaponHash, ammo, false, false)
-	--AddAmmoToPed(playerPed, weaponHash, ammo) possibly not needed
+	local hasWeapon = HasPedGotWeapon(playerPed, weaponHash, false)
+	if ammo == nil and 
+		if not hasWeapon then
+			GiveWeaponToPed(playerPed, weaponHash, 0, false, false)
+		end
+	else
+		local pedAmmo = GetAmmoInPedWeapon(playerPed, weaponHash)
+		ammo = math.floor(pedAmmo + ammo)
+		if ammo > 250 then
+			ammo = 250
+		end
+		if hasWeapon then
+			AddAmmoToPed(playerPed, weaponHash, ammo)	
+		else
+			GiveWeaponToPed(playerPed, weaponHash, ammo, false, false)	
+		end
+	end
 end)
 
 RegisterNetEvent('esx:addWeaponComponent')
