@@ -127,9 +127,12 @@ end, {help = _U('setmoney'), params = {{name = "id", help = _U('id_param')}, {na
 TriggerEvent('es:addGroupCommand', 'giveaccountmoney', 'admin', function(source, args, user)
 	local _source = source
 	local xPlayer = ESX.GetPlayerFromId(args[1])
-		
-	if not xPlayer then print("[ES_Extended : Error] Invalid xPlayer for giveaccountmoney command (wrong ID)."); return; end
-		
+
+	if not xPlayer then
+		TriggerClientEvent('chat:addMessage', source, { args = { '^1SYSTEM', 'Player not online.' } })
+		return
+	end
+
 	local account = args[2]
 	local amount  = tonumber(args[3])
 
@@ -149,17 +152,19 @@ end, {help = _U('giveaccountmoney'), params = {{name = "id", help = _U('id_param
 TriggerEvent('es:addGroupCommand', 'giveitem', 'admin', function(source, args, user)
 	local _source = source
 	local xPlayer = ESX.GetPlayerFromId(args[1])
-		
-	if not xPlayer then print("[ES_Extended : Error] Invalid xPlayer for giveitem command (wrong ID)."); return; end
-		
 	local item    = args[2]
 	local count   = (args[3] == nil and 1 or tonumber(args[3]))
 
-	if count ~= nil then
-		if xPlayer.getInventoryItem(item) ~= nil then
-			xPlayer.addInventoryItem(item, count)
+	if count ~= nil then	
+		if not xPlayer then
+			TriggerClientEvent('chat:addMessage', source, { args = { '^1SYSTEM', 'Player not online.' } })
+			return
 		else
-			TriggerClientEvent('esx:showNotification', _source, _U('invalid_item'))
+			if xPlayer.getInventoryItem(item) ~= nil then
+				xPlayer.addInventoryItem(item, count)
+			else
+				TriggerClientEvent('esx:showNotification', _source, _U('invalid_item'))
+			end
 		end
 	else
 		TriggerClientEvent('esx:showNotification', _source, _U('invalid_amount'))
@@ -171,9 +176,12 @@ end, {help = _U('giveitem'), params = {{name = "id", help = _U('id_param')}, {na
 TriggerEvent('es:addGroupCommand', 'giveweapon', 'admin', function(source, args, user)
 	local xPlayer    = ESX.GetPlayerFromId(args[1])
 	local weaponName = string.upper(args[2])
-		
-	if not xPlayer then print("[ES_Extended : Error] Invalid xPlayer for giveweapon command (wrong ID)."); return; end
 
+	if not xPlayer then
+		TriggerClientEvent('chat:addMessage', source, { args = { '^1SYSTEM', 'Player not online.' } })
+		return
+	end
+	
 	xPlayer.addWeapon(weaponName, tonumber(args[3]))
 end, function(source, args, user)
 	TriggerClientEvent('chat:addMessage', source, { args = { '^1SYSTEM', 'Insufficient Permissions.' } })
