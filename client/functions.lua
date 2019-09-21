@@ -566,11 +566,11 @@ ESX.Game.GetVehiclesInArea = function(coords, area)
 end
 
 ESX.Game.GetVehicleInDirection = function()
-	local playerPed    = PlayerPedId()
-	local playerCoords = GetEntityCoords(playerPed)
-	local inDirection  = GetOffsetFromEntityInWorldCoords(playerPed, 0.0, 5.0, 0.0)
-	local rayHandle    = StartShapeTestRay(playerCoords, inDirection, 10, playerPed, 0)
-	local numRayHandle, hit, endCoords, surfaceNormal, entityHit = GetShapeTestResult(rayHandle)
+	local playerPed      = PlayerPedId()
+	local playerCoords   = GetEntityCoords(playerPed)
+	local inDirection    = GetOffsetFromEntityInWorldCoords(playerPed, 0.0, 5.0, 0.0)
+	local rayHandle      = StartShapeTestRay(playerCoords, inDirection, 10, playerPed, 0)
+	local hit, entityHit = GetShapeTestResult(rayHandle)
 
 	if hit == 1 and GetEntityType(entityHit) == 2 then
 		return entityHit
@@ -993,9 +993,9 @@ ESX.Game.Utils.DrawText3D = function(coords, text, size)
 		size = 1
 	end
 
-	local scale = (size / dist) * 2
+	local Scale = (size / dist) * 2
 	local fov   = (1 / GetGameplayCamFov()) * 100
-	local scale = scale * fov
+	local scale = Scale * fov
 
 	if onScreen then
 		SetTextScale(0.0 * scale, 0.55 * scale)
