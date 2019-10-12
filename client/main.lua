@@ -41,8 +41,8 @@ AddEventHandler('esx:playerLoaded', function(xPlayer)
 end)
 
 RegisterNetEvent('esx:createMissingPickups')
-AddEventHandler('esx:createMissingPickups', function(missingPickups)
-	for pickupId,v in pairs(missingPickups) do
+AddEventHandler('esx:createMissingPickups', function(pickups)
+	for pickupId,v in pairs(pickups) do
 		ESX.Game.SpawnLocalObject('prop_money_bag_01', v.coords, function(obj)
 			SetEntityAsMissionEntity(obj, true, false)
 			PlaceObjectOnGroundProperly(obj)
