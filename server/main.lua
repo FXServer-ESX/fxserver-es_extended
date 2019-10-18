@@ -276,8 +276,7 @@ AddEventHandler('esx:giveInventoryItem', function(target, type, itemName, itemCo
 
 	if type == 'item_standard' then
 		local sourceItem = sourceXPlayer.getInventoryItem(itemName)
-		local targetItem = targetXPlayer.getInventoryItem(itemName)
-
+			
 		if itemCount > 0 and sourceItem.count >= itemCount then
 			if targetXPlayer.canCarryItem(itemName, itemCount) then
 				sourceXPlayer.removeInventoryItem(itemName, itemCount)
@@ -331,7 +330,7 @@ AddEventHandler('esx:giveInventoryItem', function(target, type, itemName, itemCo
 	elseif type == 'item_ammo' then
 		if sourceXPlayer.hasWeapon(itemName) then
 			if targetXPlayer.hasWeapon(itemName) then
-				local weaponNum, weapon = sourceXPlayer.getWeapon(itemName)
+				local weapon = sourceXPlayer.getWeapon(itemName)
 
 				if weapon.ammo >= itemCount then
 					sourceXPlayer.removeWeaponAmmo(itemName, itemCount)
@@ -400,7 +399,7 @@ AddEventHandler('esx:removeInventoryItem', function(type, itemName, itemCount)
 		end
 	elseif type == 'item_weapon' then
 		if xPlayer.hasWeapon(itemName) then
-			local weaponNum, weapon = xPlayer.getWeapon(itemName)
+			local weapon = xPlayer.getWeapon(itemName)
 			local weaponPickup = 'PICKUP_' .. string.upper(itemName)
 			xPlayer.removeWeapon(itemName)
 
