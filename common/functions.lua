@@ -29,6 +29,16 @@ ESX.GetWeapon = function(weaponName)
 	end
 end
 
+ESX.GetWeaponFromHash = function(weaponHash)
+	local weapons = ESX.GetWeaponList()
+
+	for i in pairs(weapons) do
+		if GetHashKey(weapons[i].name) == weaponHash then
+			return weapons[i]
+		end
+	end
+end
+
 ESX.GetWeaponList = function()
 	return Config.Weapons
 end
@@ -53,6 +63,20 @@ ESX.GetWeaponComponent = function(weaponName, weaponComponent)
 			for j=1, #weapons[i].components, 1 do
 				if weapons[i].components[j].name == weaponComponent then
 					return weapons[i].components[j]
+				end
+			end
+		end
+	end
+end
+
+ESX.GetWeaponComponentLabel = function(weaponName, weaponComponentName)
+	local weapons = ESX.GetWeaponList()
+
+	for i=1, #weapons, 1 do
+		if weapons[i].name == weaponName then
+			for j=1, #weapons[i].components, 1 do
+				if weapons[i].components[j].name == weaponComponentName then
+					return weapons[i].components[j].label
 				end
 			end
 		end
