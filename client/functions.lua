@@ -44,9 +44,10 @@ ESX.SetPlayerData = function(key, val)
 	ESX.PlayerData[key] = val
 end
 
-ESX.ShowNotification = function(msg)
+ESX.ShowNotification = function(msg, backgroundColor)
 	AddTextEntry('esxNotification', msg)
 	SetNotificationTextEntry('esxNotification')
+    SetNotificationBackgroundColor(backgroundColor)
 	DrawNotification(false, true)
 end
 
