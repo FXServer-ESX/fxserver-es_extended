@@ -47,7 +47,9 @@ end
 ESX.ShowNotification = function(msg, backgroundColor)
 	AddTextEntry('esxNotification', msg)
 	SetNotificationTextEntry('esxNotification')
+	if backgroundColor then
     SetNotificationBackgroundColor(backgroundColor)
+	end	
 	DrawNotification(false, true)
 end
 
