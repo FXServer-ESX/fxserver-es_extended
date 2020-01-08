@@ -6,7 +6,7 @@ Locales['br'] = {
   ['give'] = 'dar',
   ['remove'] = 'remover',
   ['return'] = 'voltar',
-  ['give_to'] = 'give to',
+  ['give_to'] = 'dar para',
   ['amount'] = 'quantidade',
   ['giveammo'] = 'Dar muniçao',
   ['amountammo'] = 'quantidade de muniçao',
@@ -159,14 +159,14 @@ Locales['br'] = {
   ['weapon_doubleaction'] = 'double-Action Revolver',
 
   -- Weapon Components
-  ['component_clip_default'] = 'Aderência padrão',
-  ['component_clip_extended'] = 'Aderência prolongada',
+  ['component_clip_default'] = 'aderência padrão',
+  ['component_clip_extended'] = 'aderência prolongada',
   ['component_clip_drum'] = 'drum Magazine',
   ['component_clip_box'] = 'box Magazine',
   ['component_flashlight'] = 'lanterna',
-  ['component_scope'] = 'Mira',
-  ['component_scope_advanced'] = 'Mira avançada',
+  ['component_scope'] = 'mira',
+  ['component_scope_advanced'] = 'mira avançada',
   ['component_suppressor'] = 'supressor',
   ['component_grip'] = 'grip',
-  ['component_luxary_finish'] = 'Acabamento de arma de luxo',
+  ['component_luxary_finish'] = 'acabamento de arma de luxo',
 }
