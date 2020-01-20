@@ -20,7 +20,7 @@ end, {help = 'Teleport to coordinates', params = {
 	{name = 'z', help = 'Z coords'}
 }})
 
-TriggerEvent('es:addGroupCommand', 'setjob', 'jobmaster', function(source, args, user)
+TriggerEvent('es:addGroupCommand', 'setjob', 'admin', function(source, args, user)
 	if tonumber(args[1]) and args[2] and tonumber(args[3]) then
 		local xPlayer = ESX.GetPlayerFromId(args[1])
 
@@ -74,7 +74,9 @@ TriggerEvent('es:addGroupCommand', 'giveaccountmoney', 'admin', function(source,
 		local amount = tonumber(args[3])
 
 		if amount then
-			if xPlayer.getAccount(account) then
+			if account == 'cash' then
+				xPlayer.addMoney(amount)
+			else if xPlayer.getAccount(account) then
 				xPlayer.addAccountMoney(account, amount)
 			else
 				TriggerClientEvent('esx:showNotification', source, _U('invalid_account'))

@@ -27,6 +27,7 @@ Locales['br'] = {
   ['received_money'] = 'voce recebeu ~g~$%s~s~ de ~b~%s~s~',
   ['gave_account_money'] = 'voce deu ~g~$%s~s~ (%s) para ~y~%s~s~',
   ['received_account_money'] = 'voce recebeu ~g~$%s~s~ (%s) de ~b~%s~s~',
+
   ['amount_invalid'] = 'quantidade inválida',
   ['players_nearby'] = 'nenhum cidadão por perto',
   ['ex_inv_lim'] = 'ação não e possivel, excedendo o limite de estoque para ~y~%s~s~',
@@ -40,6 +41,10 @@ Locales['br'] = {
   ['threw_weapon_already'] = 'você já esta com essa arma',
   ['threw_cannot_pickup'] = 'você não pode pegar porque seu inventário está cheio!',
   ['threw_pickup_prompt'] = 'pressione ~y~E~s~ para pegar',
+
+  -- Key mapping
+  ['keymap_showinventory'] = 'show Inventory',
+
   -- Salary related
   ['received_salary'] = 'voce recebeu seu salário: ~g~$%s~s~ ',
   ['received_help'] = 'voce recebeu seu cheque de bem-estar: ~g~$%s~s~ ',
@@ -67,12 +72,14 @@ Locales['br'] = {
   ['giveitem'] = 'dar item',
   ['weapon'] = 'arma',
   ['giveweapon'] = 'dar arma',
+
   ['disconnect'] = 'desconectar do servidor',
   ['chat_clear'] = 'limpar o chat',
   ['chat_clear_all'] = 'limpar o chat para todos',
   ['command_clearinventory'] = 'remover todos os itens do inventário',
   ['command_clearloadout'] = 'remova todas as armas do carregamento',
   ['command_playerid_param'] = 'especifique playerId ou deixe em branco para si mesmo',
+
   -- Locale settings
   ['locale_digit_grouping_symbol'] = ' ',
   ['locale_currency'] = '$%s',
