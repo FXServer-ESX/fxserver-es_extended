@@ -379,12 +379,13 @@ AddEventHandler('esx:removeInventoryItem', function(type, itemName, itemCount)
 			local weaponNum, weapon = xPlayer.getWeapon(itemName)
 			xPlayer.removeWeapon(itemName)
 
-			local pickupLabel = ('~y~%s~s~ [~g~%s~s~ ammo]'):format(weapon.label, weapon.ammo)
-			ESX.CreatePickup('item_weapon', itemName, weapon.ammo, pickupLabel, playerId, weapon.components)
-
-			if weapon.ammo > 0 then
+			if weapon.ammo ~= nil and weapon.ammo > 0 then
+				local pickupLabel = ('~y~%s~s~ [~g~%s~s~ ammo]'):format(weapon.label, weapon.ammo)
+				ESX.CreatePickup('item_weapon', itemName, weapon.ammo, pickupLabel, playerId, weapon.components)
 				xPlayer.showNotification(_U('threw_weapon_ammo', weapon.label, weapon.ammo))
 			else
+				local pickupLabel = ('~y~%s~s~ [~o~1~s~]'):format(weapon.label)
+				ESX.CreatePickup('item_weapon', itemName, nil, pickupLabel, playerId, weapon.components)
 				xPlayer.showNotification(_U('threw_weapon', weapon.label))
 			end
 		end
