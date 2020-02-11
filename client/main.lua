@@ -243,8 +243,8 @@ AddEventHandler('esx:spawnVehicle', function(vehicle)
 	local model = (type(vehicle) == 'number' and vehicle or GetHashKey(vehicle))
 
 	if IsModelInCdimage(model) then
-		local playerPed 	= PlayerPedId()
-		local coords    	= GetEntityCoords(playerPed)
+		local playerPed  = PlayerPedId()
+		local coords = GetEntityCoords(playerPed)
 		local playerHeading = GetEntityHeading(playerPed)
 
 		ESX.Game.SpawnVehicle(model, coords, playerHeading, function(vehicle)
