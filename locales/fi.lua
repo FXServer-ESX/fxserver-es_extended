@@ -71,7 +71,6 @@ Locales['fi'] = {
   ['giveitem'] = 'anna itemi',
   ['weapon'] = 'ase',
   ['giveweapon'] = 'anna ase',
-  ['disconnect'] = 'poistu serveriltä',
   ['chat_clear'] = 'tyhjennä chatti',
   ['chat_clear_all'] = 'tyhjennä chatti kaikilta',
   ['command_clearinventory'] = 'clear all items from inventory',
@@ -189,4 +188,14 @@ Locales['fi'] = {
   ['ammo_snowball'] = 'snowball(s)',
   ['ammo_flare'] = 'flare(s)',
   ['ammo_flaregun'] = 'flare(s)',
+
+  -- Weapon Tints
+  ['tint_default'] = 'default skin',
+  ['tint_green'] = 'green skin',
+  ['tint_gold'] = 'gold skin',
+  ['tint_pink'] = 'pink skin',
+  ['tint_army'] = 'army skin',
+  ['tint_lspd'] = 'blue skin',
+  ['tint_orange'] = 'orange skin',
+  ['tint_platinum'] = 'platinum skin',
 }

@@ -71,7 +71,6 @@ Locales['sv'] = {
   ['giveitem'] = 'ge föremål',
   ['weapon'] = 'vapen',
   ['giveweapon'] = 'ge vapen',
-  ['disconnect'] = 'koppla från servern',
   ['chat_clear'] = 'töm chatten',
   ['chat_clear_all'] = 'töm chatten för alla',
   ['command_clearinventory'] = 'clear all items from inventory',
@@ -152,7 +151,7 @@ Locales['sv'] = {
   ['weapon_minismg'] = 'mini smg',
   ['weapon_pipebomb'] = 'pipe bomb',
   ['weapon_poolcue'] = 'biljardkö',
-  ['weapon_wrench'] = 'rörtång',
+  ['weapon_wrench'] = 'skiftnyckel',
   ['weapon_flashlight'] = 'ficklampa',
   ['gadget_parachute'] = 'fallskärm',
   ['weapon_flare'] = 'signalpistol',
@@ -189,4 +188,14 @@ Locales['sv'] = {
   ['ammo_snowball'] = 'snöboll(ar)',
   ['ammo_flare'] = 'lysraket(er)',
   ['ammo_flaregun'] = 'lysraket(er)',
+
+  -- Weapon Tints
+  ['tint_default'] = 'standardutseende',
+  ['tint_green'] = 'grönskinn',
+  ['tint_gold'] = 'guldskinn',
+  ['tint_pink'] = 'råsaskinn',
+  ['tint_army'] = 'arméskinn',
+  ['tint_lspd'] = 'blåskinn',
+  ['tint_orange'] = 'orangeskinn',
+  ['tint_platinum'] = 'platinaskinn',
 }

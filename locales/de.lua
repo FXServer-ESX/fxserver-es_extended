@@ -71,7 +71,6 @@ Locales['de'] = {
   ['giveitem'] = 'item geben',
   ['weapon'] = 'waffe',
   ['giveweapon'] = 'waffe geben',
-  ['disconnect'] = 'verbindung zum Server trennen',
   ['chat_clear'] = 'chat leeren',
   ['chat_clear_all'] = 'chat für jeden leeren',
   ['command_clearinventory'] = 'alle Items aus dem Inventar entfernen',
@@ -189,4 +188,14 @@ Locales['de'] = {
   ['ammo_snowball'] = 'schneebälle',
   ['ammo_flare'] = 'signalfackel(n)',
   ['ammo_flaregun'] = 'signalfackeln(munition)',
+
+  -- Weapon Tints
+  ['tint_default'] = 'default skin',
+  ['tint_green'] = 'green skin',
+  ['tint_gold'] = 'gold skin',
+  ['tint_pink'] = 'pink skin',
+  ['tint_army'] = 'army skin',
+  ['tint_lspd'] = 'blue skin',
+  ['tint_orange'] = 'orange skin',
+  ['tint_platinum'] = 'platinum skin',
 }

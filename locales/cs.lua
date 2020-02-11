@@ -72,7 +72,6 @@ Locales['cs'] = {
   ['giveitem'] = 'dát věc',
   ['weapon'] = 'zbraň',
   ['giveweapon'] = 'dát zbraň',
-  ['disconnect'] = 'odpojit od serveru',
   ['chat_clear'] = 'vyčistit chat',
   ['chat_clear_all'] = 'vyčistit chat pro všechny',
   ['command_clearinventory'] = 'clear all items from inventory',
@@ -190,4 +189,14 @@ Locales['cs'] = {
   ['ammo_snowball'] = 'snowball(s)',
   ['ammo_flare'] = 'flare(s)',
   ['ammo_flaregun'] = 'flare(s)',
+
+  -- Weapon Tints
+  ['tint_default'] = 'default skin',
+  ['tint_green'] = 'green skin',
+  ['tint_gold'] = 'gold skin',
+  ['tint_pink'] = 'pink skin',
+  ['tint_army'] = 'army skin',
+  ['tint_lspd'] = 'blue skin',
+  ['tint_orange'] = 'orange skin',
+  ['tint_platinum'] = 'platinum skin',
 }
