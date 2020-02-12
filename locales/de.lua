@@ -194,8 +194,8 @@ Locales['de'] = {
   ['tint_green'] = 'grün',
   ['tint_gold'] = 'gold',
   ['tint_pink'] = 'pink',
-  ['tint_army'] = 'camo',
-  ['tint_lspd'] = 'balu',
+  ['tint_army'] = 'camouflage',
+  ['tint_lspd'] = 'blau',
   ['tint_orange'] = 'orange',
   ['tint_platinum'] = 'platin',
 }
