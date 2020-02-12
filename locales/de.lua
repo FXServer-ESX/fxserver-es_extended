@@ -190,7 +190,7 @@ Locales['de'] = {
   ['ammo_flaregun'] = 'signalfackeln(munition)',
 
   -- Weapon Tints
-  ['tint_default'] = 'standart',
+  ['tint_default'] = 'standard',
   ['tint_green'] = 'grün',
   ['tint_gold'] = 'gold',
   ['tint_pink'] = 'pink',
