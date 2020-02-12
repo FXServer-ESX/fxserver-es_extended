@@ -190,12 +190,12 @@ Locales['de'] = {
   ['ammo_flaregun'] = 'signalfackeln(munition)',
 
   -- Weapon Tints
-  ['tint_default'] = 'default skin',
-  ['tint_green'] = 'green skin',
-  ['tint_gold'] = 'gold skin',
-  ['tint_pink'] = 'pink skin',
-  ['tint_army'] = 'army skin',
-  ['tint_lspd'] = 'blue skin',
-  ['tint_orange'] = 'orange skin',
-  ['tint_platinum'] = 'platinum skin',
+  ['tint_default'] = 'standart',
+  ['tint_green'] = 'grün',
+  ['tint_gold'] = 'gold',
+  ['tint_pink'] = 'pink',
+  ['tint_army'] = 'camo',
+  ['tint_lspd'] = 'balu',
+  ['tint_orange'] = 'orange',
+  ['tint_platinum'] = 'platin',
 }
