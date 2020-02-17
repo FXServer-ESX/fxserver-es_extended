@@ -1,6 +1,5 @@
 Locales['de'] = {
   -- Inventory
-  ['cash'] = 'bargeld',
   ['inventory'] = 'inventar %s / %s',
   ['use'] = 'benutzen',
   ['give'] = 'geben',
@@ -23,8 +22,6 @@ Locales['de'] = {
   ['received_weapon_withammo'] = 'du erhälst ~b~%s~s~ mit ~o~%sx %s~s~ von ~b~%s~s~',
   ['received_weapon_hasalready'] = '~b~%s~s~ hat versucht dir eine(n) ~y~%s~s~ zu geben, aber du hast bereits eine(n)',
   ['received_weapon_noweapon'] = '~b~%s~s~ ahat versucht dir Munition für eine(n) ~y~%s~s~, aber du besitzt diese Waffe nicht',
-  ['gave_money'] = 'du gibst ~g~$%s~s~ an ~y~%s~s~',
-  ['received_money'] = 'du erhälst ~g~$%s~s~ von ~b~%s~s~',
   ['gave_account_money'] = 'du gibst ~g~$%s~s~ (%s) an ~y~%s~s~',
   ['received_account_money'] = 'du empfängst ~g~$%s~s~ (%s) von ~b~%s~s~',
   ['amount_invalid'] = 'ungültiger Betrag',
@@ -33,7 +30,6 @@ Locales['de'] = {
   ['imp_invalid_quantity'] = 'aktion nicht möglich, ungültige Anzahl',
   ['imp_invalid_amount'] = 'aktion nicht möglich, ungültiger Betrag',
   ['threw_standard'] = 'you threw ~y~%sx~s~ ~b~%s~s~',
-  ['threw_money'] = 'du wirfst ~g~$%s~s~ ~b~Dollar~s~ weg',
   ['threw_account'] = 'du wirfst ~g~$%s~s~ ~b~%s~s~ weg',
   ['threw_weapon'] = 'du wirfst ~b~%s~s~ weg',
   ['threw_weapon_ammo'] = 'du wirfst ~b~%s~s~ mit ~o~%sx %s~s~ weg',
@@ -50,7 +46,9 @@ Locales['de'] = {
   ['company_nomoney'] = 'die Firma in der du angestellt bist, ist zu arm um dein Gehalt zu zahlen',
   ['received_paycheck'] = 'erhaltener Gehaltsscheck',
   ['bank'] = 'bank',
-  ['black_money'] = 'schwarzgeld',
+  ['account_bank'] = 'bank',
+  ['account_black_money'] = 'dirty Money',
+  ['account_money'] = 'cash',
 
   ['act_imp'] = 'Aktion nicht möglich',
   ['in_vehicle'] = 'du kannst keine Items in einem Fahrzeug weitergeben',
@@ -75,7 +73,6 @@ Locales['de'] = {
   ['chat_clear_all'] = 'chat für jeden leeren',
   ['command_clearinventory'] = 'alle Items aus dem Inventar entfernen',
   ['command_clearloadout'] = 'alle Waffen aus dem Loadout entfernen',
-  ['command_playerid_param'] = 'spielerid angeben oder es leer lassen für dich selbst',
 
   -- Locale settings
   ['locale_digit_grouping_symbol'] = ' ',
