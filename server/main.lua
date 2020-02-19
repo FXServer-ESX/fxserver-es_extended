@@ -181,7 +181,6 @@ function loadESXPlayer(identifier, playerId)
 				inventory = xPlayer.getInventory(),
 				job = xPlayer.getJob(),
 				loadout = xPlayer.getLoadout(),
-				money = xPlayer.getMoney(),
 				maxWeight = xPlayer.maxWeight
 			})
 
