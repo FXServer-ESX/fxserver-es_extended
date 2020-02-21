@@ -1,12 +1,12 @@
 Locales['br'] = {
   -- Inventory
-  ['inventory'] = 'inventário %s / %s',
+  ['inventory'] = 'Inventário %s / %s',
   ['use'] = 'usar',
   ['give'] = 'dar',
   ['remove'] = 'remover',
   ['return'] = 'voltar',
   ['give_to'] = 'dar para',
-  ['amount'] = 'quantidade',
+  ['amount'] = 'Quantidade',
   ['giveammo'] = 'dar munição',
   ['amountammo'] = 'quantidade de munição',
   ['noammo'] = 'voce não tem todas essas munições!',
@@ -38,7 +38,7 @@ Locales['br'] = {
   ['threw_pickup_prompt'] = 'pressione ~y~E~s~ para pegar',
 
   -- Key mapping
-  ['keymap_showinventory'] = 'show Inventory',
+  ['keymap_showinventory'] = 'Exibir Inventario',
 
   -- Salary related
   ['received_salary'] = 'voce recebeu seu salário: ~g~$%s~s~ ',
@@ -46,9 +46,9 @@ Locales['br'] = {
   ['company_nomoney'] = 'a empresa em que voce esta empregado esta muito pobre para pagar seu salário',
   ['received_paycheck'] = 'recebeu dinheiro',
   ['bank'] = 'banco',
-  ['account_bank'] = 'bank',
-  ['account_black_money'] = 'dirty Money',
-  ['account_money'] = 'cash',
+  ['account_bank'] = 'Banco',
+  ['account_black_money'] = 'Dinheiro Sujo',
+  ['account_money'] = 'Dinheiro',
 
   ['act_imp'] = 'ação impossível',
   ['in_vehicle'] = 'voce não pode dar nada para alguem no veículo',
@@ -76,7 +76,7 @@ Locales['br'] = {
 
   -- Locale settings
   ['locale_digit_grouping_symbol'] = ' ',
-  ['locale_currency'] = '$%s',
+  ['locale_currency'] = 'R$%s',
 
   -- Weapons
   ['weapon_knife'] = 'faca',
