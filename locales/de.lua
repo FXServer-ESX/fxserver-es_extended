@@ -1,11 +1,11 @@
-  Locales['de'] = {
+Locales['de'] = {
   -- Inventory
   ['inventory'] = 'Inventar %s / %s',
-  ['use'] = 'Benutzen',
-  ['give'] = 'Geben',
-  ['remove'] = 'Entfernen',
-  ['return'] = 'Zurück',
-  ['give_to'] = 'Geben an',
+  ['use'] = 'benutzen',
+  ['give'] = 'geben',
+  ['remove'] = 'entfernen',
+  ['return'] = 'zurück',
+  ['give_to'] = 'geben an',
   ['amount'] = 'Betrag',
   ['giveammo'] = 'Munition geben',
   ['amountammo'] = 'Anzahl der Munition',
@@ -38,7 +38,7 @@
   ['threw_pickup_prompt'] = 'Drücke ~y~E~s~, um das aufzuheben',
 
   -- Key mapping
-  ['keymap_showinventory'] = 'Inventar Anzeigen',
+  ['keymap_showinventory'] = 'Inventar anzeigen',
 
   -- Salary related
   ['received_salary'] = 'Du hast dein Gehalt erhalten: ~g~$%s~s~',
