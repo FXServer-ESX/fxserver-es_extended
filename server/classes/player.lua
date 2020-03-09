@@ -264,7 +264,7 @@ function CreateExtendedPlayer(playerId, identifier, group, accounts, inventory, 
 
 		return inventoryWeight
 	end
-	
+
 	self.getMaxWeight = function()
 		return self.maxWeight
 	end
