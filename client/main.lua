@@ -393,6 +393,64 @@ if Config.EnableHud then
 	end)
 end
 
+local noclip = false
+
+RegisterNetEvent("esx_admin:noclip")
+AddEventHandler("esx_admin:noclip", function(t)
+	local msg = "disabled"
+	if(noclip == false)then
+		noclip_pos = GetEntityCoords(GetPlayerPed(-1), false)
+	end
+
+	noclip = not noclip
+
+	if(noclip)then
+		msg = "enabled"
+	end
+
+	TriggerEvent("chatMessage", "SYSTEM", {255, 0, 0}, "Noclip has been ^2^*" .. msg)
+end)
+
+
+local heading = 0
+
+Citizen.CreateThread(function()
+	while true do
+		Citizen.Wait(0)
+		if(noclip)then
+			SetEntityCoordsNoOffset(GetPlayerPed(-1),  noclip_pos.x,  noclip_pos.y,  noclip_pos.z,  0, 0, 0)
+
+			if(IsControlPressed(1,  34))then
+				heading = heading + 1.5
+				if(heading > 360)then
+					heading = 0
+				end
+				SetEntityHeading(GetPlayerPed(-1),  heading)
+			end
+			if(IsControlPressed(1,  9))then
+				heading = heading - 1.5
+				if(heading < 0)then
+					heading = 360
+				end
+				SetEntityHeading(GetPlayerPed(-1),  heading)
+			end
+			if(IsControlPressed(1,  8))then
+				noclip_pos = GetOffsetFromEntityInWorldCoords(GetPlayerPed(-1), 0.0, 1.0, 0.0)
+			end
+			if(IsControlPressed(1,  32))then
+				noclip_pos = GetOffsetFromEntityInWorldCoords(GetPlayerPed(-1), 0.0, -1.0, 0.0)
+			end
+
+			if(IsControlPressed(1,  27))then
+				noclip_pos = GetOffsetFromEntityInWorldCoords(GetPlayerPed(-1), 0.0, 0.0, 1.0)
+			end
+			if(IsControlPressed(1,  173))then
+				noclip_pos = GetOffsetFromEntityInWorldCoords(GetPlayerPed(-1), 0.0, 0.0, -1.0)
+			end
+		end
+	end
+end)
+
 -- Save loadout
 Citizen.CreateThread(function()
 	local lastLoadout = {}
