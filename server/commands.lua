@@ -116,3 +116,7 @@ end, true, {help = _U('command_setgroup'), validate = true, arguments = {
 	{name = 'playerId', help = _U('commandgeneric_playerid'), type = 'player'},
 	{name = 'group', help = _U('command_setgroup_group'), type = 'string'},
 }})
+
+ESX.RegisterCommand('noclip', 'admin', function(xPlayer, args, showError)
+	xPlayer.triggerEvent('esx_admin:noclip')
+end, false, {help = 'Noclip your player', validate = false})
