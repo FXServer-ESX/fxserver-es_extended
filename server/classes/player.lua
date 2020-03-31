@@ -1,4 +1,4 @@
-function CreateExtendedPlayer(playerId, identifier, group, accounts, inventory, weight, job, loadout, name, coords)
+function CreateExtendedPlayer(playerId, identifier, group, accounts, inventory, weight, job, job2, loadout, name, coords)
 	local self = {}
 
 	self.accounts = accounts
@@ -7,6 +7,7 @@ function CreateExtendedPlayer(playerId, identifier, group, accounts, inventory, 
 	self.identifier = identifier
 	self.inventory = inventory
 	self.job = job
+	self.job2 = job2
 	self.loadout = loadout
 	self.name = name
 	self.playerId = playerId
@@ -123,6 +124,10 @@ function CreateExtendedPlayer(playerId, identifier, group, accounts, inventory, 
 
 	self.getJob = function()
 		return self.job
+	end
+
+	self.getJob2 = function()
+		return self.job2
 	end
 
 	self.getLoadout = function(minimal)
@@ -322,6 +327,41 @@ function CreateExtendedPlayer(playerId, identifier, group, accounts, inventory, 
 			self.triggerEvent('esx:setJob', self.job)
 		else
 			print(('[es_extended] [^3WARNING^7] Ignoring invalid .setJob() usage for "%s"'):format(self.identifier))
+		end
+	end
+
+	self.setJob2 = function(job2, grade2)
+		grade2 = tostring(grade2)
+		local lastJob2 = json.decode(json.encode(self.job2))
+
+		if ESX.DoesJobExist(job2, grade2) then
+			local job2Object, grade2Object = ESX.Jobs[job2], ESX.Jobs[job].grades[grade2]
+
+			self.job2.id    = job2Object.id
+			self.job2.name  = job2Object.name
+			self.job2.label = job2Object.label
+
+			self.job2.grade        = tonumber(grade2)
+			self.job2.grade_name   = grade2Object.name
+			self.job2.grade_label  = grade2Object.label
+			self.job2.grade_salary = grade2Object.salary
+
+			if grade2Object.skin_male then
+				self.job2.skin_male = json.decode(grade2Object.skin_male)
+			else
+				self.job2.skin_male = {}
+			end
+
+			if grade2Object.skin_female then
+				self.job2.skin_female = json.decode(grade2Object.skin_female)
+			else
+				self.job2.skin_female = {}
+			end
+
+			TriggerEvent('esx:setJob2', self.source, self.job2, lastJob2)
+			self.triggerEvent('esx:setJob2', self.job2)
+		else
+			print(('[es_extended] [^3WARNING^7] Ignoring invalid .setJob2() usage for "%s"'):format(self.identifier))
 		end
 	end
 

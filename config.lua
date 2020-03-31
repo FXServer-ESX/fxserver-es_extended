@@ -10,6 +10,7 @@ Config.Accounts = {
 Config.StartingAccountMoney = {bank = 50000}
 
 Config.EnableSocietyPayouts = false -- pay from the society account that the player is employed at? Requirement: esx_society
+Config.EnableJob2Payouts 	= false -- players also get money from their second job if enabled
 Config.DisableWantedLevel   = true
 Config.EnableHud            = true -- enable the default hud? Display current job and accounts (black, bank & cash)
 Config.EnablePvP            = true -- enable pvp?

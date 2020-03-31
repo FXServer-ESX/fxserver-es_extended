@@ -48,14 +48,24 @@ AddEventHandler('esx:playerLoaded', function(playerData)
 		end
 
 		local jobTpl = '<div>{{job_label}} - {{grade_label}}</div>'
+		local job2Tpl = '<div>{{job_label}} - {{grade_label}}</div>'
 
 		if playerData.job.grade_label == '' or playerData.job.grade_label == playerData.job.label then
 			jobTpl = '<div>{{job_label}}</div>'
 		end
 
+		if playerData.job2.grade_label == '' or playerData.job2.grade_label == playerData.job2.label then
+			job2Tpl = '<div>{{job_label}}</div>'
+		end
+
 		ESX.UI.HUD.RegisterElement('job', #playerData.accounts, 0, jobTpl, {
 			job_label = playerData.job.label,
 			grade_label = playerData.job.grade_label
+		})
+
+		ESX.UI.HUD.RegisterElement('job2', #playerData.accounts, 0, job2Tpl, {
+			job_label = playerData.job2.label,
+			grade_label = playerData.job2.grade_label
 		})
 	end
 
@@ -178,6 +188,25 @@ end)
 RegisterNetEvent('esx:setJob')
 AddEventHandler('esx:setJob', function(job)
 	ESX.PlayerData.job = job
+
+	if Config.EnableHud then
+		ESX.UI.HUD.UpdateElement('job', {
+			job_label   = job.label,
+			grade_label = job.grade_label
+		})
+	end
+end)
+
+RegisterNetEvent('esx:setJob2')
+AddEventHandler('esx:setJob2', function(job2)
+	ESX.PlayerData.job2 = job2
+
+	if Config.EnableHud then
+		ESX.UI.HUD.UpdateElement('job2', {
+			job_label   = job2.label,
+			grade_label = job2.grade_label
+		})
+	end
 end)
 
 RegisterNetEvent('esx:addWeapon')
@@ -241,16 +270,6 @@ AddEventHandler('esx:teleport', function(coords)
 	coords.z = coords.z + 0.0
 
 	ESX.Game.Teleport(playerPed, coords)
-end)
-
-RegisterNetEvent('esx:setJob')
-AddEventHandler('esx:setJob', function(job)
-	if Config.EnableHud then
-		ESX.UI.HUD.UpdateElement('job', {
-			job_label   = job.label,
-			grade_label = job.grade_label
-		})
-	end
 end)
 
 RegisterNetEvent('esx:spawnVehicle')
