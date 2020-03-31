@@ -356,7 +356,7 @@ end)
 
 RegisterNetEvent('esx:removePickup')
 AddEventHandler('esx:removePickup', function(id)
-	if pickups[id].obj then
+	if pickups[id] and pickups[id].obj then
 		ESX.Game.DeleteObject(pickups[id].obj)
 		pickups[id] = nil
 	end
