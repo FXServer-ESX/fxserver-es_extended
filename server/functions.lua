@@ -139,8 +139,8 @@ ESX.RegisterCommand = function(name, group, cb, allowConsole, suggestion)
 	end, true)
 
 	if type(group) == 'table' then
-		for _, groupName in ipairs(group) do
-			ExecuteCommand(('add_ace group.%s command.%s allow'):format(groupName, name))
+		for k,v in ipairs(group) do
+			ExecuteCommand(('add_ace group.%s command.%s allow'):format(v, name))
 		end
 	else
 		ExecuteCommand(('add_ace group.%s command.%s allow'):format(group, name))
