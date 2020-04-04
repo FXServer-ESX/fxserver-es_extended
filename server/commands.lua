@@ -131,7 +131,7 @@ end, true, {help = _U('command_setgroup'), validate = true, arguments = {
 
 ESX.RegisterCommand('save', 'admin', function(xPlayer, args, showError)
 	ESX.SavePlayer(args.playerId)
-end, true, {help = _U('command_save'), validate = true, arguments = {
+end, true, {help = _U('command_saveplayer'), validate = true, arguments = {
 	{name = 'playerId', help = _U('commandgeneric_playerid'), type = 'player'}
 }})
 
