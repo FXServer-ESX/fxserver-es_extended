@@ -81,6 +81,8 @@ RegisterNetEvent('esx:setMaxWeight')
 AddEventHandler('esx:setMaxWeight', function(newMaxWeight) ESX.PlayerData.maxWeight = newMaxWeight end)
 
 AddEventHandler('esx:onPlayerDeath', function() isDead = true end)
+RegisterNetEvent('esx_ambulancejob:revive')
+AddEventHandler('esx_ambulancejob:revive', function() isDead = false end)
 AddEventHandler('skinchanger:loadDefaultModel', function() isLoadoutLoaded = false end)
 
 AddEventHandler('skinchanger:modelLoaded', function()
