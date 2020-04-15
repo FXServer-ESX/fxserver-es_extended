@@ -73,14 +73,12 @@ ESX.ShowHelpNotification = function(msg, thisFrame, beep, duration)
 	end
 end
 
-ESX.ShowFloatingHelpNotification = function(msg, pos, beep, duration)
+ESX.ShowFloatingHelpNotification = function(msg, coords)
 	AddTextEntry('esxFloatingHelpNotification', msg)
-
-	if beep == nil then beep = true end
-    SetFloatingHelpTextWorldPosition(1, pos)
-    SetFloatingHelpTextStyle(1, 1, 2, -1, 3, 0)
+	SetFloatingHelpTextWorldPosition(1, coords)
+	SetFloatingHelpTextStyle(1, 1, 2, -1, 3, 0)
 	BeginTextCommandDisplayHelp('esxFloatingHelpNotification')
-	EndTextCommandDisplayHelp(2, false, beep, duration or -1)
+	EndTextCommandDisplayHelp(2, false, false, -1)
 end
 
 ESX.TriggerServerCallback = function(name, cb, ...)
