@@ -72,7 +72,9 @@ AddEventHandler('esx:playerLoaded', function(playerData)
 		TriggerEvent('esx:onPlayerSpawn')
 		TriggerEvent('playerSpawned') -- compatibility with old scripts, will be removed soon
 		TriggerEvent('esx:restoreLoadout')
-
+		FreezeEntityPosition(playerPed, false)
+		SetPlayerInvincible(playerPed, false)
+		SetEntityCollision(playerPed, true)
 		Citizen.Wait(3000)
 		ShutdownLoadingScreen()
 		DoScreenFadeIn(10000)
