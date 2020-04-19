@@ -10,9 +10,9 @@ Locales['pl'] = {
   ['giveammo'] = 'daj amunicje',
   ['amountammo'] = 'ilość amunicji',
   ['noammo'] = 'nie posiadasz wystarczającej ilości amunicji!',
-  ['gave_item'] = 'dajesz ~y~%sx~s~ ~b~%s~s~ dla ~y~%s~s~',
-  ['received_item'] = 'otrzymujesz ~y~%sx~s~ ~b~%s~s~ od ~b~%s~s~',
-  ['gave_weapon'] = 'dajesz ~b~%s~s~ dla ~y~%s~s~',
+  ['gave_item'] = 'dałeś/aś ~y~%sx~s~ ~b~%s~s~ dla ~y~%s~s~',
+  ['received_item'] = 'otrzymałeś/aś ~y~%sx~s~ ~b~%s~s~ od ~b~%s~s~',
+  ['gave_weapon'] = 'dałeś/aś ~b~%s~s~ dla ~y~%s~s~',
   ['gave_weapon_ammo'] = 'dałeś/aś ~o~%sx %s~s~ do ~b~%s~s~ dla ~y~%s~s~',
   ['gave_weapon_withammo'] = 'dałeś/aś ~b~%s~s~ z ~o~%sx %s~s~ dla ~y~%s~s~',
   ['gave_weapon_hasalready'] = '~y~%s~s~ już posiada ~y~%s~s~',
@@ -34,7 +34,7 @@ Locales['pl'] = {
   ['threw_weapon'] = 'wyrzuciłeś/aś ~b~%s~s~',
   ['threw_weapon_ammo'] = 'wyrzuciłeś/aś ~b~%s~s~ z ~o~%sx %s~s~',
   ['threw_weapon_already'] = 'już posiadasz taką samą broń',
-  ['threw_cannot_pickup'] = 'nie możesz tego podnieść gdyż masz pełny ekwipunek!',
+  ['threw_cannot_pickup'] = 'nie możesz tego podnieść, gdyż masz pełny ekwipunek!',
   ['threw_pickup_prompt'] = 'naciśnij ~y~E~s~ aby podnieść',
 
   -- Key mapping
@@ -101,7 +101,7 @@ Locales['pl'] = {
   ['commandgeneric_playerid'] = 'id gracza',
 
   -- Locale settings
-  ['locale_digit_grouping_symbol'] = ' ',
+  ['locale_digit_grouping_symbol'] = ',',
   ['locale_currency'] = '$%s',
 
   -- Weapons
