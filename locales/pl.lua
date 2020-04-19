@@ -34,7 +34,7 @@ Locales['pl'] = {
   ['threw_weapon'] = 'wyrzuciłeś/aś ~b~%s~s~',
   ['threw_weapon_ammo'] = 'wyrzuciłeś/aś ~b~%s~s~ z ~o~%sx %s~s~',
   ['threw_weapon_already'] = 'już posiadasz taką samą broń',
-  ['threw_cannot_pickup'] = 'niemożesz tego podnieść gdyż masz pełny ekwipunek!',
+  ['threw_cannot_pickup'] = 'nie możesz tego podnieść gdyż masz pełny ekwipunek!',
   ['threw_pickup_prompt'] = 'naciśnij ~y~E~s~ aby podnieść',
 
   -- Key mapping
