@@ -1,14 +1,14 @@
 # es_extended
 
-es_extended is a roleplay framework for FiveM. ESX is short for EssentialMode Extended. The to-go framework for creating an economy based roleplay server on FiveM and most popular on the platform, too!
+es_extended is a roleplay framework for FiveM. ESX is short for EssentialMode Extended. The go-to framework for creating an economy based roleplay server on FiveM and is also the most popular on the platform!
 
-Featuring many extra resources to fit roleplaying servers, here's a taste of what's available:
+Featuring many extra resources to fit roleplay'ing servers, here's a taste of what's available:
 
-- esx_ambulancejob: play as a medic to revive players who are bleeding out. Complete with garages and respawn & bleedout system
-- esx_policejob: patrol the city and arrest players commiting crime, with armory, outfit room and garages
-- esx_vehicleshop: roleplay working in an vehicle dealership where you sell cars to players
+- esx_ambulancejob: play as a medic to revive players who are bleeding out. Complete with garages, respawn and bleedout system.
+- esx_policejob: patrol the city and arrest players commiting crime, with armory, outfit room and garages.
+- esx_vehicleshop: roleplay working in a vehicle dealership where you sell cars to other players.
 
-ESX was initially developed by Gizz back in 2017 for his friend as the were creating an FiveM server and there wasn't any economy roleplaying frameworks available. The original code was written within a week or two and later open sourced, it has ever since been improved and parts been rewritten to further improve on it.
+ESX was initially developed by Gizz back in 2017 for his friend as they were creating a FiveM server and there wasn't any economy roleplaying framework available. The original code was written within a week or two and later made open source. It has been improved since and parts been rewritten to further improve it.
 
 ## Links & Read more
 
@@ -19,7 +19,7 @@ ESX was initially developed by Gizz back in 2017 for his friend as the were crea
 ## Features
 
 - Weight based inventory system
-- Weapons support, including support for attachments and tints
+- Weapons support, including support for attachments and colour tints
 - Supports different money accounts (defaulted with cash, bank and black money)
 - Many official resources available in our GitHub
 - Job system, with grades and clothes support
