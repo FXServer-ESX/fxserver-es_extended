@@ -15,30 +15,12 @@ RegisterNetEvent('esx:playerLoaded')
 AddEventHandler('esx:playerLoaded', function(playerData)
 	ESX.PlayerLoaded = true
 	ESX.PlayerData = playerData
-
-	-- check if player is coming from loading screen
-	if GetEntityModel(PlayerPedId()) == GetHashKey('PLAYER_ZERO') then
-		local defaultModel = GetHashKey('a_m_y_stbla_02')
-		RequestModel(defaultModel)
-
-		while not HasModelLoaded(defaultModel) do
-			Citizen.Wait(10)
-		end
-
-		SetPlayerModel(PlayerId(), defaultModel)
-		SetPedDefaultComponentVariation(PlayerPedId())
-		SetPedRandomComponentVariation(PlayerPedId(), true)
-		SetModelAsNoLongerNeeded(defaultModel)
-	end
-
-	-- freeze the player
-	FreezeEntityPosition(PlayerPedId(), true)
-
-	-- enable PVP
+	
+	-- Enable PVP
 	SetCanAttackFriendly(PlayerPedId(), true, false)
 	NetworkSetFriendlyFireOption(true)
 
-	-- disable wanted level
+	-- Disable wanted level
 	ClearPlayerWantedLevel(PlayerId())
 	SetMaxWantedLevel(0)
 
@@ -60,22 +42,19 @@ AddEventHandler('esx:playerLoaded', function(playerData)
 		})
 	end
 
-	ESX.Game.Teleport(PlayerPedId(), {
+	-- Bringing back spawnmanager
+	exports.spawnmanager:spawnPlayer({
 		x = playerData.coords.x,
 		y = playerData.coords.y,
-		z = playerData.coords.z + 0.25,
-		heading = playerData.coords.heading
+		z = playerData.coords.z,
+		heading = playerData.coords.heading,
+		model = Config.DefaultPlayerModel,
+		skipFade = false
 	}, function()
+		isLoadoutLoaded = true
 		TriggerServerEvent('esx:onPlayerSpawn')
 		TriggerEvent('esx:onPlayerSpawn')
-		TriggerEvent('playerSpawned') -- compatibility with old scripts, will be removed soon
 		TriggerEvent('esx:restoreLoadout')
-
-		Citizen.Wait(3000)
-		ShutdownLoadingScreen()
-		FreezeEntityPosition(PlayerPedId(), false)
-		DoScreenFadeIn(10000)
-		StartServerSyncLoops()
 	end)
 end)
 
