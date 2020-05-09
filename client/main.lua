@@ -51,10 +51,10 @@ AddEventHandler('esx:playerLoaded', function(playerData)
 		model = Config.DefaultPlayerModel,
 		skipFade = false
 	}, function()
-		isLoadoutLoaded = true
 		TriggerServerEvent('esx:onPlayerSpawn')
 		TriggerEvent('esx:onPlayerSpawn')
 		TriggerEvent('esx:restoreLoadout')
+		StartServerSyncLoops()
 	end)
 end)
 
