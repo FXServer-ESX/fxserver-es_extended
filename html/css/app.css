@@ -15,13 +15,17 @@ html {
 #hud {
 	position: absolute;
 	font-family: 'Pricedown';
-	font-size: 35px;
+	font-size: 3.76vh;
 	color: white;
-	padding: 4px;
+	padding: 0.43vh;
 	text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
 	text-align: right;
-	top: 80;
-	right: 40;
+	top: 8.60vh;
+	right: 4.30vh;
+}
+
+img {
+    height: 2vh;
 }
 
 #inventory_notifications {
