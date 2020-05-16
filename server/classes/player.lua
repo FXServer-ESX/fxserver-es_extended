@@ -220,7 +220,6 @@ function CreateExtendedPlayer(playerId, identifier, group, accounts, inventory, 
 			item.count = item.count + count
 			self.weight = self.weight + (item.weight * count)
 
-			TriggerEvent('esx:onAddInventoryItem', self.source, item.name, item.count)
 			self.triggerEvent('esx:addInventoryItem', item.name, item.count)
 		end
 	end
@@ -236,7 +235,6 @@ function CreateExtendedPlayer(playerId, identifier, group, accounts, inventory, 
 				item.count = newCount
 				self.weight = self.weight - (item.weight * count)
 
-				TriggerEvent('esx:onRemoveInventoryItem', self.source, item.name, item.count)
 				self.triggerEvent('esx:removeInventoryItem', item.name, item.count)
 			end
 		end
