@@ -95,7 +95,7 @@ Translations = {
   ['search_database_error_invalid'] = '~r~no~s~ es un número de reigstro ~y~válido~s~',
   -- Traffic interaction
   ['traffic_interaction'] = 'control de tráfico',
-  ['cone'] = ' ono',
+['cone'] = ' cono',
   ['barrier'] = 'barrera',
   ['spikestrips'] = 'grada',
   ['box'] = 'caja',
