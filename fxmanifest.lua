@@ -8,7 +8,8 @@ version '2.0.0'
 
 server_scripts {
 	'@async/async.lua',
-	'@mysql-async/lib/MySQL.lua',
+  '@mysql-async/lib/MySQL.lua',
+  'common/class.lua',
 	'locale.lua',
 	'locales/*.lua',
 	'config.lua',
@@ -26,6 +27,7 @@ server_scripts {
 }
 
 client_scripts {
+  'common/class.lua',
 	'locale.lua',
 	'locales/*.lua',
 	'config.lua',
@@ -86,6 +88,9 @@ esxmodule = function(name)
 	server_script('modules/' .. name .. '/server/main.lua')
 	server_script('modules/' .. name .. '/server/events.lua')
 end
+
+-- DB
+esxmodule 'db' -- Database manbagement
 
 -- Misc
 esxmodule 'input' -- Evented input manager

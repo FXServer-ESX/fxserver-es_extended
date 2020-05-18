@@ -70,7 +70,8 @@ AddEventHandler('esx:playerLoaded', function(playerId, xPlayer)
 
 end)
 
-MySQL.ready(function()
+AddEventHandler('esx:migrations:done', function()
+
 	local result = MySQL.Sync.fetchAll('SELECT * FROM datastore')
 
 	for i=1, #result, 1 do

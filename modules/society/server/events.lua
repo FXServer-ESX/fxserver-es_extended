@@ -309,7 +309,7 @@ ESX.RegisterServerCallback('esx_society:isBoss', function(source, cb, job)
 	cb(self.isPlayerBoss(source, job))
 end)
 
-MySQL.ready(function()
+AddEventHandler('esx:migrations:done', function()
 	local result = MySQL.Sync.fetchAll('SELECT * FROM jobs', {})
 
 	for i=1, #result, 1 do

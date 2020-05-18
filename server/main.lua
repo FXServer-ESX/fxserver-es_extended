@@ -1,4 +1,4 @@
-MySQL.ready(function()
+AddEventHandler('esx:db:ready', function(ensureTable)
 
   print('[esx] ensuring migrations')
 
@@ -22,6 +22,8 @@ MySQL.ready(function()
     end
 
   until not start
+
+  TriggerEvent('esx:migrations:done')
 
 end)
 
