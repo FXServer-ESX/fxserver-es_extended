@@ -94,7 +94,7 @@ Translations = {
   ['search_database_title'] = 'información del vehículo - buscar por número de matrícula',
   ['search_database_error_invalid'] = '~r~no~s~ es un número de reigstro ~y~válido~s~',
   -- Traffic interaction
-  ['traffic_interaction'] = 'rutas de interacción',
+  ['traffic_interaction'] = 'control de tráfico',
   ['cone'] = ' ono',
   ['barrier'] = 'barrera',
   ['spikestrips'] = 'grada',
