@@ -63,7 +63,7 @@ Translations = {
   ['service_out_announce'] = 'el operador ~y~%s~s~ ya no está en servicio.',
   -- Action Menu
   ['citizen_interaction'] = 'interacción con ciudadanos',
-  ['vehicle_interaction'] = 'interacción vehícular',
+  ['vehicle_interaction'] = 'interacción con vehículos',
   ['object_spawner'] = 'colocar objetos',
 
   ['id_card'] = 'documento de identidad',
