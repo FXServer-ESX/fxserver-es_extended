@@ -97,7 +97,7 @@ Translations = {
   ['traffic_interaction'] = 'control de tráfico',
 ['cone'] = ' cono',
   ['barrier'] = 'barrera',
-  ['spikestrips'] = 'grada',
+  ['spikestrips'] = 'pinchos',
   ['box'] = 'caja',
   ['cash'] = 'dinero',
   -- ID Card Menu
