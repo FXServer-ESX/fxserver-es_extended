@@ -67,7 +67,7 @@ Translations = {
   ['object_spawner'] = 'colocar objetos',
 
   ['id_card'] = 'documento de identidad',
-  ['search'] = 'buscar',
+  ['search'] = 'cachear',
   ['handcuff'] = 'poner/quitar Esposas',
   ['drag'] = 'escoltar',
   ['put_in_vehicle'] = 'meter en el vehículo',
