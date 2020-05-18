@@ -1,5 +1,5 @@
-AddEventHandler('esx:db:ready', function(ensureTable)
-
+RegisterNetEvent('esx:db:ready')
+AddEventHandler('esx:db:ready', function()
   print('[esx] ensuring migrations')
 
   local index   = 0

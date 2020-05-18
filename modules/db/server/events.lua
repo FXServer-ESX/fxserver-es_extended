@@ -62,4 +62,6 @@ AddEventHandler('esx:db:internal:ready', function(initTable)
     v:ensure()
   end
 
+  -- database ready for migrations
+  TriggerEvent('esx:db:ready')
 end)
