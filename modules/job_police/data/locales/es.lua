@@ -62,7 +62,7 @@ Translations = {
   ['service_out'] = 'saliste de servicio.',
   ['service_out_announce'] = 'el operador ~y~%s~s~ ya no está en servicio.',
   -- Action Menu
-  ['citizen_interaction'] = 'cuidado ciudadano',
+  ['citizen_interaction'] = 'interacción con ciudadanos',
   ['vehicle_interaction'] = 'interacción vehícular',
   ['object_spawner'] = 'colocar objetos',
 
