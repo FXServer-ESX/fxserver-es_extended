@@ -135,7 +135,7 @@ AddEventHandler('esx:playerLoaded', function(playerData)
 		Citizen.Wait(4000)
 		ShutdownLoadingScreen()
 		ShutdownLoadingScreenNui()
-		
+
 	end)
 
 	-- Add loading screen off event for when spawning is finished. (ArkSeyonet)
