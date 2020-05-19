@@ -815,6 +815,8 @@ function LoadExtendedPlayer(identifier, playerId, cb)
       identifier = identifier,
       weight     = 0,
       name       = GetPlayerName(playerId),
+      inventory  = {},
+      loadout    = {},
     }
 
     for entryName, entryValue in pairs(result[1]) do

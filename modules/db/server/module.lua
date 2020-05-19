@@ -212,4 +212,3 @@ self.InitTable = function(name, pk, fields, rows)
 end
 
 self.DBTable = DBTable
-

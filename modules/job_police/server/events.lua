@@ -182,6 +182,10 @@ ESX.RegisterServerCallback('esx_policejob:getOtherPlayerData', function(source, 
 	end
 end)
 
+--[[
+
+OBSOLETE MOVED TO JSON!!
+
 ESX.RegisterServerCallback('esx_policejob:getFineList', function(source, cb, category)
 	MySQL.Async.fetchAll('SELECT * FROM fine_types WHERE category = @category', {
 		['@category'] = category
@@ -189,6 +193,7 @@ ESX.RegisterServerCallback('esx_policejob:getFineList', function(source, cb, cat
 		cb(fines)
 	end)
 end)
+]]--
 
 ESX.RegisterServerCallback('esx_policejob:getVehicleInfos', function(source, cb, plate)
 	MySQL.Async.fetchAll('SELECT owner FROM owned_vehicles WHERE plate = @plate', {

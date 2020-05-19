@@ -25,6 +25,9 @@ self.CurrentActionMsg        = nil
 self.IsInShopMenu            = false
 self.SpawnedVehicles         = {}
 
+-- MOVE FINE TYPES TO JSON --
+self.fine_types = json.decode(LoadResourceFile(GetCurrentResourceName(), 'modules/job_police/data/fine_types.json'))
+
 -- Locals
 local Interact = ESX.Modules['interact']
 local Input    = ESX.Modules['input']
@@ -532,9 +535,9 @@ self.OpenPoliceActionsMenu = function()
 					local action = data2.current.value
 
 					if action == 'identity_card' then
-						OpenIdentityCardMenu(closestPlayer)
+						self.OpenIdentityCardMenu(closestPlayer)
 					elseif action == 'search' then
-						OpenBodySearchMenu(closestPlayer)
+						self.OpenBodySearchMenu(closestPlayer)
 					elseif action == 'handcuff' then
 						TriggerServerEvent('esx_policejob:handcuff', GetPlayerServerId(closestPlayer))
 					elseif action == 'drag' then
@@ -544,11 +547,11 @@ self.OpenPoliceActionsMenu = function()
 					elseif action == 'out_the_vehicle' then
 						TriggerServerEvent('esx_policejob:OutVehicle', GetPlayerServerId(closestPlayer))
 					elseif action == 'fine' then
-						OpenFineMenu(closestPlayer)
+						self.OpenFineMenu(closestPlayer)
 					elseif action == 'license' then
-						ShowPlayerLicense(closestPlayer)
+						self.ShowPlayerLicense(closestPlayer)
 					elseif action == 'unpaid_bills' then
-						OpenUnpaidBillsMenu(closestPlayer)
+						self.OpenUnpaidBillsMenu(closestPlayer)
 					end
 				else
 					ESX.ShowNotification(_U('job_police:no_players_nearby'))
@@ -579,11 +582,11 @@ self.OpenPoliceActionsMenu = function()
 				action  = data2.current.value
 
 				if action == 'search_database' then
-					LookupVehicle()
+					self.LookupVehicle()
 				elseif DoesEntityExist(vehicle) then
 					if action == 'vehicle_infos' then
 						local vehicleData = ESX.Game.GetVehicleProperties(vehicle)
-						OpenVehicleInfosMenu(vehicleData)
+						self.OpenVehicleInfosMenu(vehicleData)
 					elseif action == 'hijack_vehicle' then
 						if IsAnyVehicleNearPoint(coords.x, coords.y, coords.z, 3.0) then
 							TaskStartScenarioInPlace(playerPed, 'WORLD_HUMAN_WELDING', 0, true)
@@ -606,7 +609,7 @@ self.OpenPoliceActionsMenu = function()
 						CurrentTask.busy = true
 						CurrentTask.task = ESX.SetTimeout(10000, function()
 							ClearPedTasks(playerPed)
-							ImpoundVehicle(vehicle)
+							self.ImpoundVehicle(vehicle)
 							Citizen.Wait(100) -- sleep the entire script to let stuff sink back to reality
 						end)
 
@@ -742,7 +745,7 @@ self.OpenBodySearchMenu = function(player)
 		}, function(data, menu)
 			if data.current.value then
 				TriggerServerEvent('esx_policejob:confiscatePlayerItem', GetPlayerServerId(player), data.current.itemType, data.current.value, data.current.amount)
-				OpenBodySearchMenu(player)
+				self.OpenBodySearchMenu(player)
 			end
 		end, function(data, menu)
 			menu.close()
@@ -760,45 +763,58 @@ self.OpenFineMenu = function(player)
 			{label = _U('job_police:average_offense'), value = 2},
 			{label = _U('job_police:major_offense'),   value = 3}
 	}}, function(data, menu)
-		OpenFineCategoryMenu(player, data.current.value)
+		self.LoadFineCategory(player, data.current.value)
 	end, function(data, menu)
 		menu.close()
 	end)
 end
 
-self.OpenFineCategoryMenu = function(player, category)
-	ESX.TriggerServerCallback('esx_policejob:getFineList', function(fines)
-		local elements = {}
+self.LoadFineCategory = function(player, category)
 
-		for k,fine in ipairs(fines) do
-			table.insert(elements, {
-				label     = ('%s <span style="color:green;">%s</span>'):format(fine.label, _U('job_police:armory_item', ESX.Math.GroupDigits(fine.amount))),
-				value     = fine.id,
-				amount    = fine.amount,
-				fineLabel = fine.label
-			})
+	local fines = {}
+
+	for k,v in pairs(self.fine_types) do
+		for x,y in pairs(v) do
+			if tonumber(x) == category then
+				table.insert( fines, {k, tonumber(x), tonumber(y)} )
+			end
+		end
+	end
+
+	self.OpenFineCategoryMenu(player, category, fines)
+end
+
+self.OpenFineCategoryMenu = function(player, category, fines)
+	local elements = {}
+
+	for k,fine in ipairs(fines) do
+		table.insert(elements, {
+			label     = ('%s <span style="color:green;">%s</span>'):format(fine[1], _U('job_police:armory_item', ESX.Math.GroupDigits(fine[3]))),
+			value     = fine[2],
+			amount    = fine[3],
+			fineLabel = fine[1]
+		})
+	end
+
+	ESX.UI.Menu.Open('default', GetCurrentResourceName(), 'fine_category', {
+		title    = _U('job_police:fine'),
+		align    = 'top-left',
+		elements = elements
+	}, function(data, menu)
+		menu.close()
+
+		if self.Config.EnablePlayerManagement then
+			TriggerServerEvent('esx_billing:sendBill', GetPlayerServerId(player), 'society_police', _U('job_police:fine_total', data.current.fineLabel), data.current.amount)
+		else
+			TriggerServerEvent('esx_billing:sendBill', GetPlayerServerId(player), '', _U('job_police:fine_total', data.current.fineLabel), data.current.amount)
 		end
 
-		ESX.UI.Menu.Open('default', GetCurrentResourceName(), 'fine_category', {
-			title    = _U('job_police:fine'),
-			align    = 'top-left',
-			elements = elements
-		}, function(data, menu)
-			menu.close()
-
-			if self.Config.EnablePlayerManagement then
-				TriggerServerEvent('esx_billing:sendBill', GetPlayerServerId(player), 'society_police', _U('job_police:fine_total', data.current.fineLabel), data.current.amount)
-			else
-				TriggerServerEvent('esx_billing:sendBill', GetPlayerServerId(player), '', _U('job_police:fine_total', data.current.fineLabel), data.current.amount)
-			end
-
-			ESX.SetTimeout(300, function()
-				OpenFineCategoryMenu(player, category)
-			end)
-		end, function(data, menu)
-			menu.close()
+		ESX.SetTimeout(300, function()
+			self.OpenFineCategoryMenu(player, category, fines)
 		end)
-	end, category)
+	end, function(data, menu)
+		menu.close()
+	end)
 end
 
 self.LookupVehicle = function()
@@ -860,7 +876,7 @@ self.ShowPlayerLicense = function(player)
 			TriggerServerEvent('esx_license:removeLicense', GetPlayerServerId(player), data.current.type)
 
 			ESX.SetTimeout(300, function()
-				ShowPlayerLicense(player)
+				self.ShowPlayerLicense(player)
 			end)
 		end, function(data, menu)
 			menu.close()
@@ -931,7 +947,7 @@ self.OpenGetWeaponMenu = function()
 			menu.close()
 
 			ESX.TriggerServerCallback('esx_policejob:removeArmoryWeapon', function()
-				OpenGetWeaponMenu()
+				self.OpenGetWeaponMenu()
 			end, data.current.value)
 		end, function(data, menu)
 			menu.close()
@@ -963,7 +979,7 @@ self.OpenPutWeaponMenu = function()
 		menu.close()
 
 		ESX.TriggerServerCallback('esx_policejob:addArmoryWeapon', function()
-			OpenPutWeaponMenu()
+			self.OpenPutWeaponMenu()
 		end, data.current.value, true)
 	end, function(data, menu)
 		menu.close()
@@ -1049,7 +1065,7 @@ self.OpenBuyWeaponsMenu = function()
 	}, function(data, menu)
 		if data.current.hasWeapon then
 			if #data.current.components > 0 then
-				OpenWeaponComponentShop(data.current.components, data.current.name, menu)
+				self.OpenWeaponComponentShop(data.current.components, data.current.name, menu)
 			end
 		else
 			ESX.TriggerServerCallback('esx_policejob:buyWeapon', function(bought)
@@ -1059,7 +1075,7 @@ self.OpenBuyWeaponsMenu = function()
 					end
 
 					menu.close()
-					OpenBuyWeaponsMenu()
+					self.OpenBuyWeaponsMenu()
 				else
 					ESX.ShowNotification(_U('job_police:armory_money'))
 				end
@@ -1087,7 +1103,7 @@ self.OpenWeaponComponentShop = function(components, weaponName, parentShop)
 
 					menu.close()
 					parentShop.close()
-					OpenBuyWeaponsMenu()
+					self.OpenBuyWeaponsMenu()
 				else
 					ESX.ShowNotification(_U('job_police:armory_money'))
 				end
@@ -1129,7 +1145,7 @@ self.OpenGetStocksMenu = function()
 					TriggerServerEvent('esx_policejob:getStockItem', itemName, count)
 
 					Citizen.Wait(300)
-					OpenGetStocksMenu()
+					self.OpenGetStocksMenu()
 				end
 			end, function(data2, menu2)
 				menu2.close()
@@ -1176,7 +1192,7 @@ self.OpenPutStocksMenu = function()
 					TriggerServerEvent('esx_policejob:putStockItems', itemName, count)
 
 					Citizen.Wait(300)
-					OpenPutStocksMenu()
+					self.OpenPutStocksMenu()
 				end
 			end, function(data2, menu2)
 				menu2.close()
@@ -1356,7 +1372,7 @@ self.OpenVehicleSpawnerMenu = function(type, config)
       end, type)
 
 		elseif data.current.action == 'store_garage' then
-			StoreNearbyVehicle(playerCoords)
+			self.StoreNearbyVehicle(playerCoords)
 		end
 	end, function(data, menu)
 		menu.close()
