@@ -123,7 +123,6 @@ function DBTable:sql()
 end
 
 function DBTable:ensure()
-
   local exists = not not MySQL.Sync.fetchAll('SHOW TABLES LIKE \'' .. self.name .. '\'')[1]
 
   local sql = self:sql()
@@ -184,7 +183,7 @@ function DBTable:ensure()
 
     end
 
-    MySQL.Sync.execute(sql);
+    MySQL.Sync.execute(sql)
 
   end
 

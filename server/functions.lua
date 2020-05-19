@@ -1,362 +1,377 @@
 ESX.EnsureMigrations = function(module)
 
-  print('[esx] ensure migrations => ' .. module)
+    print('[esx] ensure migrations => ' .. module)
 
-  local dir
+    local dir
 
-  if module == 'base' then
-    dir = 'migrations'
-  else
-    dir = 'modules/' .. module .. '/migrations'
-  end
-
-  local result      = MySQL.Sync.fetchAll('SELECT * FROM `migrations` WHERE `module` = @module', {['@module'] = module})
-  local initial     = true
-  local i           = 0
-  local hasmigrated = false
-
-  if #result > 0 then
-    i           = result[1].last + 1
-    initial     = false
-  end
-
-  local sql = nil
-
-  repeat
-
-    sql = LoadResourceFile(GetCurrentResourceName(), dir .. '/' .. i .. '.sql')
-
-    if sql ~= nil then
-
-      print('[esx] [' .. module .. '] => running migration #' .. i)
-
-      MySQL.Sync.execute(sql)
-
-      if initial then
-        MySQL.Sync.execute('INSERT INTO `migrations` (module, last) VALUES (@module, @last)', {['@module'] = module, ['@last'] = 0})
-      else
-        MySQL.Sync.execute('UPDATE `migrations` SET `last` = @last WHERE `module` = @module', {['@module'] = module, ['@last'] = i})
-      end
-
-      hasmigrated = true
-
+    if module == 'base' then
+        dir = 'migrations'
+    else
+        dir = 'modules/' .. module .. '/migrations'
     end
 
-    i = i + 1
+    local result = MySQL.Sync.fetchAll(
+                       'SELECT * FROM `migrations` WHERE `module` = @module',
+                       {['@module'] = module})
+    local initial = true
+    local i = 0
+    local hasmigrated = false
 
-  until sql == nil
+    if #result > 0 then
+        i = result[1].last + 1
+        initial = false
+    end
 
-  if not hasmigrated then
-    -- print('[esx] [' .. module .. '] => no pending migration')
-  end
+    local sql = nil
 
+    repeat
+
+        sql = LoadResourceFile(GetCurrentResourceName(),
+                               dir .. '/' .. i .. '.sql')
+
+        if sql ~= nil then
+
+            print('[esx] [' .. module .. '] => running migration #' .. i)
+
+            MySQL.Sync.execute(sql)
+
+            if initial then
+                MySQL.Sync.execute(
+                    'INSERT INTO `migrations` (module, last) VALUES (@module, @last)',
+                    {['@module'] = module, ['@last'] = 0})
+            else
+                MySQL.Sync.execute(
+                    'UPDATE `migrations` SET `last` = @last WHERE `module` = @module',
+                    {['@module'] = module, ['@last'] = i})
+            end
+
+            hasmigrated = true
+
+        end
+
+        i = i + 1
+
+    until sql == nil
+
+    if not hasmigrated then
+        -- print('[esx] [' .. module .. '] => no pending migration')
+	end
+
+	return initial
 end
 
 ESX.FileExists = function(name)
 
-  local f=io.open(name, 'r')
+    local f = io.open(name, 'r')
 
-  if f~=nil then
-    io.close(f)
-    return true
-  else
-    return false
-  end
+    if f ~= nil then
+        io.close(f)
+        return true
+    else
+        return false
+    end
 
 end
 
 ESX.Trace = function(msg)
-	if Config.EnableDebug then
-		print(('[es_extended] [^2TRACE^7] %s^7'):format(msg))
-	end
+    if Config.EnableDebug then
+        print(('[es_extended] [^2TRACE^7] %s^7'):format(msg))
+    end
 end
 
 ESX.SetTimeout = function(msec, cb)
-	local id = ESX.TimeoutCount + 1
+    local id = ESX.TimeoutCount + 1
 
-	SetTimeout(msec, function()
-		if ESX.CancelledTimeouts[id] then
-			ESX.CancelledTimeouts[id] = nil
-		else
-			cb()
-		end
-	end)
+    SetTimeout(msec, function()
+        if ESX.CancelledTimeouts[id] then
+            ESX.CancelledTimeouts[id] = nil
+        else
+            cb()
+        end
+    end)
 
-	ESX.TimeoutCount = id
+    ESX.TimeoutCount = id
 
-	return id
+    return id
 end
 
 ESX.RegisterCommand = function(name, group, cb, allowConsole, suggestion)
-	if type(name) == 'table' then
-		for k,v in ipairs(name) do
-			ESX.RegisterCommand(v, group, cb, allowConsole, suggestion)
-		end
+    if type(name) == 'table' then
+        for k, v in ipairs(name) do
+            ESX.RegisterCommand(v, group, cb, allowConsole, suggestion)
+        end
 
-		return
-	end
+        return
+    end
 
-	if ESX.RegisteredCommands[name] then
-		print(('[es_extended] [^3WARNING^7] An command "%s" is already registered, overriding command'):format(name))
+    if ESX.RegisteredCommands[name] then
+        print(
+            ('[es_extended] [^3WARNING^7] An command "%s" is already registered, overriding command'):format(
+                name))
 
-		if ESX.RegisteredCommands[name].suggestion then
-			TriggerClientEvent('chat:removeSuggestion', -1, ('/%s'):format(name))
-		end
-	end
+        if ESX.RegisteredCommands[name].suggestion then
+            TriggerClientEvent('chat:removeSuggestion', -1, ('/%s'):format(name))
+        end
+    end
 
-	if suggestion then
-		if not suggestion.arguments then suggestion.arguments = {} end
-		if not suggestion.help then suggestion.help = '' end
+    if suggestion then
+        if not suggestion.arguments then suggestion.arguments = {} end
+        if not suggestion.help then suggestion.help = '' end
 
-		TriggerClientEvent('chat:addSuggestion', -1, ('/%s'):format(name), suggestion.help, suggestion.arguments)
-	end
+        TriggerClientEvent('chat:addSuggestion', -1, ('/%s'):format(name),
+                           suggestion.help, suggestion.arguments)
+    end
 
-	ESX.RegisteredCommands[name] = {group = group, cb = cb, allowConsole = allowConsole, suggestion = suggestion}
+    ESX.RegisteredCommands[name] = {
+        group = group,
+        cb = cb,
+        allowConsole = allowConsole,
+        suggestion = suggestion
+    }
 
-	RegisterCommand(name, function(playerId, args, rawCommand)
-		local command = ESX.RegisteredCommands[name]
+    RegisterCommand(name, function(playerId, args, rawCommand)
+        local command = ESX.RegisteredCommands[name]
 
-		if not command.allowConsole and playerId == 0 then
-			print(('[es_extended] [^3WARNING^7] %s'):format(_U('commanderror_console')))
-		else
-			local xPlayer, error = ESX.GetPlayerFromId(playerId), nil
+        if not command.allowConsole and playerId == 0 then
+            print(('[es_extended] [^3WARNING^7] %s'):format(
+                      _U('commanderror_console')))
+        else
+            local xPlayer, error = ESX.GetPlayerFromId(playerId), nil
 
-			if command.suggestion then
-				if command.suggestion.validate then
-					if #args ~= #command.suggestion.arguments then
-						error = _U('commanderror_argumentmismatch', #args, #command.suggestion.arguments)
-					end
-				end
+            if command.suggestion then
+                if command.suggestion.validate then
+                    if #args ~= #command.suggestion.arguments then
+                        error = _U('commanderror_argumentmismatch', #args,
+                                   #command.suggestion.arguments)
+                    end
+                end
 
-				if not error and command.suggestion.arguments then
-					local newArgs = {}
+                if not error and command.suggestion.arguments then
+                    local newArgs = {}
 
-					for k,v in ipairs(command.suggestion.arguments) do
-						if v.type then
-							if v.type == 'number' then
-								local newArg = tonumber(args[k])
+                    for k, v in ipairs(command.suggestion.arguments) do
+                        if v.type then
+                            if v.type == 'number' then
+                                local newArg = tonumber(args[k])
 
-								if newArg then
-									newArgs[v.name] = newArg
-								else
-									error = _U('commanderror_argumentmismatch_number', k)
-								end
-							elseif v.type == 'player' or v.type == 'playerId' then
-								local targetPlayer = tonumber(args[k])
+                                if newArg then
+                                    newArgs[v.name] = newArg
+                                else
+                                    error =
+                                        _U(
+                                            'commanderror_argumentmismatch_number',
+                                            k)
+                                end
+                            elseif v.type == 'player' or v.type == 'playerId' then
+                                local targetPlayer = tonumber(args[k])
 
-								if args[k] == 'me' then targetPlayer = playerId end
+                                if args[k] == 'me' then
+                                    targetPlayer = playerId
+                                end
 
-								if targetPlayer then
-									local xTargetPlayer = ESX.GetPlayerFromId(targetPlayer)
+                                if targetPlayer then
+                                    local xTargetPlayer =
+                                        ESX.GetPlayerFromId(targetPlayer)
 
-									if xTargetPlayer then
-										if v.type == 'player' then
-											newArgs[v.name] = xTargetPlayer
-										else
-											newArgs[v.name] = targetPlayer
-										end
-									else
-										error = _U('commanderror_invalidplayerid')
-									end
-								else
-									error = _U('commanderror_argumentmismatch_number', k)
-								end
-							elseif v.type == 'string' then
-								newArgs[v.name] = args[k]
-							elseif v.type == 'item' then
-								if ESX.Items[args[k]] then
-									newArgs[v.name] = args[k]
-								else
-									error = _U('commanderror_invaliditem')
-								end
-							elseif v.type == 'weapon' then
-								if ESX.GetWeapon(args[k]) then
-									newArgs[v.name] = string.upper(args[k])
-								else
-									error = _U('commanderror_invalidweapon')
-								end
-							elseif v.type == 'any' then
-								newArgs[v.name] = args[k]
-							end
-						end
+                                    if xTargetPlayer then
+                                        if v.type == 'player' then
+                                            newArgs[v.name] = xTargetPlayer
+                                        else
+                                            newArgs[v.name] = targetPlayer
+                                        end
+                                    else
+                                        error =
+                                            _U('commanderror_invalidplayerid')
+                                    end
+                                else
+                                    error =
+                                        _U(
+                                            'commanderror_argumentmismatch_number',
+                                            k)
+                                end
+                            elseif v.type == 'string' then
+                                newArgs[v.name] = args[k]
+                            elseif v.type == 'item' then
+                                if ESX.Items[args[k]] then
+                                    newArgs[v.name] = args[k]
+                                else
+                                    error = _U('commanderror_invaliditem')
+                                end
+                            elseif v.type == 'weapon' then
+                                if ESX.GetWeapon(args[k]) then
+                                    newArgs[v.name] = string.upper(args[k])
+                                else
+                                    error = _U('commanderror_invalidweapon')
+                                end
+                            elseif v.type == 'any' then
+                                newArgs[v.name] = args[k]
+                            end
+                        end
 
-						if error then break end
-					end
+                        if error then break end
+                    end
 
-					args = newArgs
-				end
-			end
+                    args = newArgs
+                end
+            end
 
-			if error then
-				if playerId == 0 then
-					print(('[es_extended] [^3WARNING^7] %s^7'):format(error))
-				else
-					xPlayer.triggerEvent('chat:addMessage', {args = {'^1SYSTEM', error}})
-				end
-			else
-				cb(xPlayer or false, args, function(msg)
-					if playerId == 0 then
-						print(('[es_extended] [^3WARNING^7] %s^7'):format(msg))
-					else
-						xPlayer.triggerEvent('chat:addMessage', {args = {'^1SYSTEM', msg}})
-					end
-				end)
-			end
-		end
-	end, true)
+            if error then
+                if playerId == 0 then
+                    print(('[es_extended] [^3WARNING^7] %s^7'):format(error))
+                else
+                    xPlayer.triggerEvent('chat:addMessage',
+                                         {args = {'^1SYSTEM', error}})
+                end
+            else
+                cb(xPlayer or false, args, function(msg)
+                    if playerId == 0 then
+                        print(('[es_extended] [^3WARNING^7] %s^7'):format(msg))
+                    else
+                        xPlayer.triggerEvent('chat:addMessage',
+                                             {args = {'^1SYSTEM', msg}})
+                    end
+                end)
+            end
+        end
+    end, true)
 
-	if type(group) == 'table' then
-		for k,v in ipairs(group) do
-			ExecuteCommand(('add_ace group.%s command.%s allow'):format(v, name))
-		end
-	else
-		ExecuteCommand(('add_ace group.%s command.%s allow'):format(group, name))
-	end
+    if type(group) == 'table' then
+        for k, v in ipairs(group) do
+            ExecuteCommand(('add_ace group.%s command.%s allow'):format(v, name))
+        end
+    else
+        ExecuteCommand(('add_ace group.%s command.%s allow'):format(group, name))
+    end
 end
 
-ESX.ClearTimeout = function(id)
-	ESX.CancelledTimeouts[id] = true
-end
+ESX.ClearTimeout = function(id) ESX.CancelledTimeouts[id] = true end
 
-ESX.RegisterServerCallback = function(name, cb)
-	ESX.ServerCallbacks[name] = cb
-end
+ESX.RegisterServerCallback =
+    function(name, cb) ESX.ServerCallbacks[name] = cb end
 
 ESX.TriggerServerCallback = function(name, requestId, source, cb, ...)
-	if ESX.ServerCallbacks[name] then
-		ESX.ServerCallbacks[name](source, cb, ...)
-	else
-		print(('[es_extended] [^3WARNING^7] Server callback "%s" does not exist. Make sure that the server sided file really is loading, an error in that file might cause it to not load.'):format(name))
-	end
+    if ESX.ServerCallbacks[name] then
+        ESX.ServerCallbacks[name](source, cb, ...)
+    else
+        print(
+            ('[es_extended] [^3WARNING^7] Server callback "%s" does not exist. Make sure that the server sided file really is loading, an error in that file might cause it to not load.'):format(
+                name))
+    end
 end
 
 ESX.SavePlayer = function(xPlayer, cb)
 
-  local data       = xPlayer.serializeDB()
-  local statement  = 'UPDATE users SET'
-  local fields     = {}
+    local data = xPlayer.serializeDB()
+    local statement = 'UPDATE users SET'
+    local fields = {}
 
-  local first = true
+    local first = true
 
-  for k,v in pairs(data) do
+    for k, v in pairs(data) do
 
-    if first then
-      statement = statement .. ' `' .. k .. '` = ' .. '@' .. k
-      first = false
-    else
-      statement = statement .. ', `' .. k .. '` = ' .. '@' .. k
+        if first then
+            statement = statement .. ' `' .. k .. '` = ' .. '@' .. k
+            first = false
+        else
+            statement = statement .. ', `' .. k .. '` = ' .. '@' .. k
+        end
+
+        fields['@' .. k] = v
+
     end
 
-    fields['@' .. k] = v
+    statement = statement .. ' WHERE `identifier` = @identifier'
 
-  end
+    MySQL.Async.execute(statement, fields, function(rowsChanged)
 
-  statement = statement .. ' WHERE `identifier` = @identifier'
+        print(('[es_extended] [^2INFO^7] Saved player "%s^7"'):format(
+                  xPlayer.getName()))
 
-  MySQL.Async.execute(statement, fields, function(rowsChanged)
+        if cb then cb() end
 
-		print(('[es_extended] [^2INFO^7] Saved player "%s^7"'):format(xPlayer.getName()))
-
-    if cb then
-			cb()
-    end
-
-  end)
+    end)
 
 end
 
 ESX.SavePlayers = function(cb)
-	local xPlayers, asyncTasks = ESX.GetPlayers(), {}
+    local xPlayers, asyncTasks = ESX.GetPlayers(), {}
 
-	for i=1, #xPlayers, 1 do
-		table.insert(asyncTasks, function(cb2)
-			local xPlayer = ESX.GetPlayerFromId(xPlayers[i])
-			ESX.SavePlayer(xPlayer, cb2)
-		end)
-	end
+    for i = 1, #xPlayers, 1 do
+        table.insert(asyncTasks, function(cb2)
+            local xPlayer = ESX.GetPlayerFromId(xPlayers[i])
+            ESX.SavePlayer(xPlayer, cb2)
+        end)
+    end
 
-	Async.parallelLimit(asyncTasks, 8, function(results)
-		print(('[es_extended] [^2INFO^7] Saved %s player(s)'):format(#xPlayers))
-		if cb then
-			cb()
-		end
-	end)
+    Async.parallelLimit(asyncTasks, 8, function(results)
+        print(('[es_extended] [^2INFO^7] Saved %s player(s)'):format(#xPlayers))
+        if cb then cb() end
+    end)
 end
 
 ESX.StartDBSync = function()
-	function saveData()
-		ESX.SavePlayers()
-		SetTimeout(10 * 60 * 1000, saveData)
-	end
+    function saveData()
+        ESX.SavePlayers()
+        SetTimeout(10 * 60 * 1000, saveData)
+    end
 
-	SetTimeout(10 * 60 * 1000, saveData)
+    SetTimeout(10 * 60 * 1000, saveData)
 end
 
 ESX.GetPlayers = function()
-	local sources = {}
+    local sources = {}
 
-	for k,v in pairs(ESX.Players) do
-		table.insert(sources, k)
-	end
+    for k, v in pairs(ESX.Players) do table.insert(sources, k) end
 
-	return sources
+    return sources
 end
 
-ESX.GetPlayerFromId = function(source)
-	return ESX.Players[tonumber(source)]
-end
+ESX.GetPlayerFromId = function(source) return ESX.Players[tonumber(source)] end
 
 ESX.GetPlayerFromIdentifier = function(identifier)
-	for k,v in pairs(ESX.Players) do
-		if v.identifier == identifier then
-			return v
-		end
-	end
+    for k, v in pairs(ESX.Players) do
+        if v.identifier == identifier then return v end
+    end
 end
 
-ESX.RegisterUsableItem = function(item, cb)
-	ESX.UsableItemsCallbacks[item] = cb
-end
+ESX.RegisterUsableItem =
+    function(item, cb) ESX.UsableItemsCallbacks[item] = cb end
 
-ESX.UseItem = function(source, item)
-	ESX.UsableItemsCallbacks[item](source)
-end
+ESX.UseItem = function(source, item) ESX.UsableItemsCallbacks[item](source) end
 
 ESX.GetItemLabel = function(item)
-	if ESX.Items[item] then
-		return ESX.Items[item].label
-	end
+    if ESX.Items[item] then return ESX.Items[item].label end
 end
 
-ESX.CreatePickup = function(type, name, count, label, playerId, components, tintIndex)
-	local pickupId = (ESX.PickupId == 65635 and 0 or ESX.PickupId + 1)
-	local xPlayer = ESX.GetPlayerFromId(playerId)
+ESX.CreatePickup = function(type, name, count, label, playerId, components,
+                            tintIndex)
+    local pickupId = (ESX.PickupId == 65635 and 0 or ESX.PickupId + 1)
+    local xPlayer = ESX.GetPlayerFromId(playerId)
 
-	ESX.Pickups[pickupId] = {
-		type  = type,
-		name  = name,
-		count = count,
-		label = label,
-		coords = xPlayer.getCoords(),
-	}
+    ESX.Pickups[pickupId] = {
+        type = type,
+        name = name,
+        count = count,
+        label = label,
+        coords = xPlayer.getCoords()
+    }
 
-	if type == 'item_weapon' then
-		ESX.Pickups[pickupId].components = components
-		ESX.Pickups[pickupId].tintIndex = tintIndex
-	end
+    if type == 'item_weapon' then
+        ESX.Pickups[pickupId].components = components
+        ESX.Pickups[pickupId].tintIndex = tintIndex
+    end
 
-	TriggerClientEvent('esx:createPickup', -1, pickupId, label, playerId, type, name, components, tintIndex)
-	ESX.PickupId = pickupId
+    TriggerClientEvent('esx:createPickup', -1, pickupId, label, playerId, type,
+                       name, components, tintIndex)
+    ESX.PickupId = pickupId
 end
 
 ESX.DoesJobExist = function(job, grade)
-	grade = tostring(grade)
+    grade = tostring(grade)
 
-	if job and grade then
-		if ESX.Jobs[job] and ESX.Jobs[job].grades[grade] then
-			return true
-		end
-	end
+    if job and grade then
+        if ESX.Jobs[job] and ESX.Jobs[job].grades[grade] then return true end
+    end
 
-	return false
+    return false
 end
