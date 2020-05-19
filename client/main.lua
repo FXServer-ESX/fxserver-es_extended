@@ -125,14 +125,22 @@ AddEventHandler('esx:playerLoaded', function(playerData)
 		heading  = playerData.coords.heading,
 		model    = 'mp_m_freemode_01',
 		skipFade = false
-  }, function()
+	}, function()
 
 		TriggerServerEvent('esx:onPlayerSpawn')
 		TriggerEvent('esx:onPlayerSpawn')
-    TriggerEvent('esx:restoreLoadout')
+		TriggerEvent('esx:restoreLoadout')
 
-  end)
+		-- Bring back loading screen shutdown support, and wait for faster clients to not load too early. (ArkSeyonet)
+		Citizen.Wait(4000)
+		ShutdownLoadingScreen()
+		ShutdownLoadingScreenNui()
+		DoScreenFadeIn(5000)
 
+	end)
+
+	-- Add loading screen off event for when spawning is finished. (ArkSeyonet)
+	TriggerEvent('esx:loadingScreenOff')
 end)
 
 RegisterNetEvent('esx:setMaxWeight')
