@@ -125,13 +125,22 @@ AddEventHandler('esx:playerLoaded', function(playerData)
 		heading  = playerData.coords.heading,
 		model    = 'mp_m_freemode_01',
 		skipFade = false
-  }, function()
+	}, function()
 
 		TriggerServerEvent('esx:onPlayerSpawn')
 		TriggerEvent('esx:onPlayerSpawn')
-    TriggerEvent('esx:restoreLoadout')
+		TriggerEvent('esx:restoreLoadout')
 
-  end)
+		-- Re add wait so that player is loaded before loading screen shuts down, and support for custom loading screens
+		Citizen.Wait(4000)
+		ShutdownLoadingScreen()
+		ShutdownLoadingScreenNui()
+		
+	end)
+
+	-- Add loading screen off event for when spawning is finished. (ArkSeyonet)
+	Citizen.Wait(5000)
+	TriggerEvent('esx:loadingScreenOff')
 
 end)
 
@@ -499,6 +508,25 @@ end)
 
 -- Pause menu disables HUD display
 if Config.EnableHud then
+
+	-- Temp Fix For GTA Cash and Bank showing behind ESX HUD until more permanent solution is made? (ArkSeyonet)
+	Citizen.CreateThread(function()
+		while true do
+			Citizen.Wait(1)
+
+			-- Hide GTA Cash
+			HideHudComponentThisFrame(3)
+			-- Hide GTA Bank
+			HideHudComponentThisFrame(4)
+		
+		end
+	end)
+
+	-- Set ESX HUD display to 1.0 once loading screen is off (ArkSeyonet)
+	AddEventHandler('esx:loadingScreenOff', function()
+		ESX.UI.HUD.SetDisplay(1.0)
+	end)
+
 	Citizen.CreateThread(function()
 		while true do
 			Citizen.Wait(300)

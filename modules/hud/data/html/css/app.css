@@ -17,6 +17,7 @@ img {
 }
 
 #hud {
+  opacity: 0.0;
   position: absolute;
   font-family: 'Pricedown';
   font-size: 3.57vh;
