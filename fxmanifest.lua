@@ -97,6 +97,7 @@ esxmodule 'addoninventory' -- Addon inventory
 esxmodule 'datastore' -- Arbitrary data store
 esxmodule 'container' -- Wrapper around addonaccount / addoninventory / datastore stuff
 esxmodule 'society' -- Society management
+esxmodule 'license' -- License management
 
 -- UI
 esxmodule 'hud' -- Money / society etc... HUD
