@@ -3,6 +3,7 @@ USE `es_extended`;
 
 CREATE TABLE `users` (
 	`identifier` VARCHAR(40) NOT NULL,
+	`name` VARCHAR(40) NOT NULL,
 	`accounts` LONGTEXT NULL DEFAULT NULL,
 	`group` VARCHAR(50) NULL DEFAULT 'user',
 	`inventory` LONGTEXT NULL DEFAULT NULL,
