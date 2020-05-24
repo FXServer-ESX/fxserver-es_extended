@@ -11,6 +11,7 @@ AddEventHandler('esx:onPlayerJoined', function()
 end)
 
 function onPlayerJoined(playerId)
+	local name = GetPlayerName(playerId)
 	local identifier
 
 	for k,v in ipairs(GetPlayerIdentifiers(playerId)) do
@@ -36,9 +37,10 @@ function onPlayerJoined(playerId)
 						accounts[account] = money
 					end
 
-					MySQL.Async.execute('INSERT INTO users (accounts, identifier) VALUES (@accounts, @identifier)', {
+					MySQL.Async.execute('INSERT INTO users (accounts, identifier, name) VALUES (@accounts, @identifier, @name)', {
 						['@accounts'] = json.encode(accounts),
-						['@identifier'] = identifier
+						['@identifier'] = identifier,
+						['@name'] = name,
 					}, function(rowsChanged)
 						loadESXPlayer(identifier, playerId)
 					end)
