@@ -54,7 +54,7 @@ Locales['es'] = {
   ['in_vehicle'] = 'no puedes darle nada a alguien que está dentro de un vehículo',
 
   -- Commands
-  ['command_car'] = 'Engendrar un vehículo',
+  ['command_car'] = 'Generar un vehículo',
   ['command_car_car'] = 'Nombre o hash del vehículo',
   ['command_cardel'] = 'Borrar vehículos cercanos',
   ['command_cardel_radius'] = 'opcional, borrar los vehículos dentro de un radio',
@@ -214,12 +214,12 @@ Locales['es'] = {
    ['ammo_flaregun'] = 'bengala(s)',
  
    -- Weapon Tints
-   ['tint_default'] = 'skin standar',
-   ['tint_green'] = 'skin verde',
-   ['tint_gold'] = 'skin dorada',
-   ['tint_pink'] = 'skin rosa',
-   ['tint_army'] = 'skin militar',
-   ['tint_lspd'] = 'skin azul',
-   ['tint_orange'] = 'skin naranja',
-   ['tint_platinum'] = 'skin platino',
+   ['tint_default'] = 'apariencia predeterminada',
+   ['tint_green'] = 'apariencia verde',
+   ['tint_gold'] = 'apariencia dorada',
+   ['tint_pink'] = 'apariencia rosa',
+   ['tint_army'] = 'apariencia militar',
+   ['tint_lspd'] = 'apariencia azul',
+   ['tint_orange'] = 'apariencia naranja',
+   ['tint_platinum'] = 'apariencia platino',
 }
