@@ -10,6 +10,9 @@
 --   If you redistribute this software, you must link to ORIGINAL repository at https://github.com/ESX-Org/es_extended
 --   This copyright should appear in every part of the project code
 
+M('class')
+
+-- Gobal events
 self.handlers         = {}
 self.callbacks        = {}
 self.requestCallbacks = {}
@@ -48,6 +51,17 @@ on = function(name, cb)
   self.handlers[name][id] = cb
 
   return id
+
+end
+
+once = function(name, cb)
+
+  local id
+
+  id = on(name, function(...)
+    off(id)
+    cb(...)
+  end)
 
 end
 
@@ -120,4 +134,50 @@ end
 
 onRequest = function(name, cb)
   self.requestCallbacks[name] = cb
+end
+
+-- EventEmitter
+EventEmitter = Extends(nil)
+
+function EventEmitter:constructor()
+  self.handlers = {}
+end
+
+function EventEmitter:on(name, cb)
+
+  local id = getEventId()
+
+  self.handlers[name]     = self.handlers[name] or {}
+  self.handlers[name][id] = cb
+
+  return id
+
+end
+
+function EventEmitter:off(name, id)
+
+  self.handlers[name]     = self.handlers[name] or {}
+  self.handlers[name][id] = nil
+
+end
+
+function EventEmitter:emit(name, ...)
+
+  self.handlers[name] = self.handlers[name] or {}
+
+  for k,v in pairs(self.handlers[name]) do
+    v(...)
+  end
+
+end
+
+function EventEmitter:once(name, cb)
+
+  local id
+
+  id = self:on(name, function(...)
+    off(id)
+    cb(...)
+  end)
+
 end

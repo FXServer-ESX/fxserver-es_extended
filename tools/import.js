@@ -1,6 +1,17 @@
+// Copyright (c) Jérémie N'gadi
+//
+// All rights reserved.
+//
+// Even if 'All rights reserved' is very clear :
+//
+//   You shall not use any piece of this software in a commercial product / service
+//   You shall not resell this software
+//   You shall not provide any facility to install this particular software in a commercial product / service
+//   If you redistribute this software, you must link to ORIGINAL repository at https://github.com/ESX-Org/es_extended
+//   This copyright should appear in every part of the project code
+
 const fs       = require('fs');
 const parseXML = require('xml2js').parseString;
-
 
 function copyFile(src, dest) {
   fs.createReadStream(src).pipe(fs.createWriteStream(dest));
@@ -37,7 +48,7 @@ function joaat(key){
 }
 
 if(process.argv[2] === 'meta') {
-  
+
   const metas              = fs.readdirSync(__dirname + '/data/meta');
   const seen               = [];
   const ammoData           = [];
@@ -75,11 +86,11 @@ if(process.argv[2] === 'meta') {
             entities.push(nameHash.toLowerCase());
 
             if(seen.indexOf(nameHash) === -1) {
-              
+
               seen.push(nameHash);
 
               if(weaponInfos[j].$.type.match('CAmmo')) {
-                
+
                 const max = parseInt(weaponInfos[j].AmmoMax[0].$.value, 10);
 
                 const entry = {nameHash, hash, max};
@@ -119,7 +130,7 @@ if(process.argv[2] === 'meta') {
                         }));
 
                         components = components.concat(componentEntries);
-                        
+
                       }
                     }
 
@@ -146,7 +157,7 @@ if(process.argv[2] === 'meta') {
 
         for(let j=0; j<meta.CWeaponComponentInfoBlob.Infos[0].Item.length; j++)
           componentInfos = componentInfos.concat(meta.CWeaponComponentInfoBlob.Infos[0].Item[j]);
-        
+
         for(let j=0; j<componentInfos.length; j++) {
 
           const nameHash = componentInfos[j].Name[0];
@@ -155,7 +166,7 @@ if(process.argv[2] === 'meta') {
           entities.push(nameHash.toLowerCase());
 
           if(seen.indexOf(nameHash) === -1) {
-              
+
             seen.push(nameHash);
 
             const type           = componentInfos[j].$.type;
@@ -175,7 +186,7 @@ if(process.argv[2] === 'meta') {
 
       if(typeof meta.CHandlingDataMgr !== 'undefined') {
 
-        
+
         for(let i=0; i<meta.CHandlingDataMgr.HandlingData.length; i++) {
 
           let item = meta.CHandlingDataMgr.HandlingData[i].Item;
@@ -195,10 +206,10 @@ if(process.argv[2] === 'meta') {
                 const sub = subHandlingData[k];
 
                 for(let l=0; l<sub.Item.length; l++) {
-                  
+
                   if(sub.Item[l].$.type === 'CVehicleWeaponHandlingData') {
 
-                    
+
                     const entry = {
                       nameHash: vehicleName,
                       hash: joaat(vehicleName),
@@ -211,7 +222,7 @@ if(process.argv[2] === 'meta') {
                     }
 
                     weaponizedVehicles.push(entry);
-                    
+
                   }
 
                 }

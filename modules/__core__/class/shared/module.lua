@@ -26,16 +26,36 @@ Extends = function(baseClass)
 
     setmetatable(newInst, classMt)
 
+    local override
+
     if type(newClass.constructor) == 'function' then
-      newInst:constructor(...)
+      override = newInst:constructor(...)
     end
 
-    return newInst
+    if override ~= nil then
+      return override
+    else
+      return newInst
+    end
 
   end
 
   if baseClass ~= nil then
-    setmetatable( newClass, { __index = baseClass } )
+
+    setmetatable(newClass, {
+
+      __index = function(t, k)
+
+        if k == 'super' then
+          return baseClass
+        else
+          return baseClass[k]
+        end
+
+      end
+
+    })
+
   end
 
   -- Implementation of additional OO properties starts here --
@@ -45,27 +65,27 @@ Extends = function(baseClass)
     return newClass
   end
 
-  -- Return the super class object of the instance
-  function newClass:super()
+  -- Return the prototype the instance
+  function newClass:prototype()
     return baseClass
   end
 
   -- Return true if the caller is an instance of theClass
   function newClass:instanceOf(theClass)
 
-    local b_isa = false
+    local isInstanceOf = false
 
     local curClass = newClass
 
-    while (nil ~= curClass) and (false == b_isa) do
+    while (curClass ~= nil) and (not isInstanceOf) do
       if curClass == theClass then
-        b_isa = true
+        isInstanceOf = true
       else
-        curClass = curClass:superClass()
+        curClass = curClass:prototype()
       end
     end
 
-    return b_isa
+    return isInstanceOf
 
   end
 

@@ -10,6 +10,8 @@
 --   If you redistribute this software, you must link to ORIGINAL repository at https://github.com/ESX-Org/es_extended
 --   This copyright should appear in every part of the project code
 
+M('string')
+
 table.sizeOf = function(t)
 
   local count = 0
@@ -216,5 +218,51 @@ table.by = function(t, k)
   end
 
   return t2
+
+end
+
+table.get = function(t, path)
+
+  local split = string.split(path, '.')
+  local obj   = t
+
+  for i=1, #split, 1 do
+
+    local key    = split[i]
+    local keyNum = tonumber(key)
+
+    if keyNum ~= nil then
+      key = keyNum
+    end
+
+    obj = obj[key]
+
+  end
+
+  return obj
+
+end
+
+table.set = function(t, path, v)
+
+  local split = string.split(path, '.')
+  local obj   = t
+
+  for i=1, #split, 1 do
+
+    local key    = split[i]
+    local keyNum = tonumber(key)
+
+    if keyNum ~= nil then
+      key = keyNum
+    end
+
+    if i == #split then
+      obj[key] = v
+    else
+      obj = obj[key]
+    end
+
+  end
 
 end
