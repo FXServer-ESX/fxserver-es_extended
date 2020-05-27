@@ -10,3 +10,14 @@
 --   If you redistribute this software, you must link to ORIGINAL repository at https://github.com/ESX-Org/es_extended
 --   This copyright should appear in every part of the project code
 
+M('events')
+
+on('esx:db:init', function(initTable, extendTable)
+
+  initTable('datastore', 'name', {
+    {name = 'name',  type = 'VARCHAR',  length = 255, default = nil,    extra = 'NOT NULL'},
+    {name = 'owner', type = 'VARCHAR',  length = 64,  default = 'NULL', extra = nil},
+    {name = 'data',  type = 'LONGTEXT', length = nil, default = nil,    extra = nil},
+  })
+
+end)
