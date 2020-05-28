@@ -60,7 +60,7 @@ end
 
 function DataStore:ensure(cb)
 
-  MySQL.Async.fetchAll('SELECT * FROM datastore WHERE name = @name',{['@name'] = self.name}, function(rows)
+  MySQL.Async.fetchAll('SELECT * FROM datastores WHERE name = @name',{['@name'] = self.name}, function(rows)
 
     if rows[1] then
 
@@ -90,7 +90,7 @@ function DataStore:ensure(cb)
         encoded = '{}'
       end
 
-      MySQL.Async.execute('INSERT INTO `datastore` (name, owner, data) VALUES (@name, @owner, @data)', {
+      MySQL.Async.execute('INSERT INTO `datastores` (name, owner, data) VALUES (@name, @owner, @data)', {
         ['@name']   = self.name,
         ['@owner']  = owner,
         ['@data']   = encoded
@@ -124,7 +124,7 @@ function DataStore:save(cb)
       encoded = '{}'
     end
 
-    MySQL.Async.execute('UPDATE `datastore` SET data = @data WHERE name = @name', {
+    MySQL.Async.execute('UPDATE `datastores` SET data = @data WHERE name = @name', {
       ['@name'] = self.name,
       ['@data'] = encoded
     }, function()
@@ -166,18 +166,22 @@ function DataStore:set(path, val)
 end
 
 --[[
-local ds = DataStore:create('test')
+on('esx:db:ready', function()
 
-ds:on('save', function()
-  print(ds.name .. ' saved => ' .. json.encode(ds:get()))
-end)
+  local ds = DataStore:create('test')
 
-ds:on('ready', function()
+  ds:on('save', function()
+    print(ds.name .. ' saved => ' .. json.encode(ds:get()))
+  end)
 
-  ds:set('foo', 'bar')
+  ds:on('ready', function()
 
-  ds:save(function()
-    print('callbacks also')
+    ds:set('foo', 'bar')
+
+    ds:save(function()
+      print('callbacks also')
+    end)
+
   end)
 
 end)

@@ -234,4 +234,9 @@ Locales['pl'] = {
   ['tint_lspd'] = 'blue skin',
   ['tint_orange'] = 'orange skin',
   ['tint_platinum'] = 'platinum skin',
+
+  -- Identity
+  ['identity_register'] = 'Zarejestruj swoją postać.',
+  ['identity_welcome'] = 'Witamy, ~b~%s %s',
+  ['identity_fill_in'] = 'Przed przesłaniem wypełnij wszystkie pola!',
 }

@@ -104,7 +104,7 @@ end
 
 function DBField:sqlAlterCompat(tableName)
 
-  local sql = 'call ADD_COLUMN_IN_NOT_EXISTS(DATABASE(), \'' .. tableName .. '\', \'' .. self.name .. '\', \''
+  local sql = 'call ADD_COLUMN_IF_NOT_EXISTS(DATABASE(), \'' .. tableName .. '\', \'' .. self.name .. '\', \''
   sql = sql .. self.type
 
   if self.length == nil then
@@ -122,7 +122,7 @@ function DBField:sqlAlterCompat(tableName)
       if self.default == 'NULL' then
         sql = sql .. 'NULL'
       else
-        sql = sql .. '`' .. self.default .. '`'
+        sql = sql .. '\\\'' .. self.default .. '\\\''
       end
 
     else

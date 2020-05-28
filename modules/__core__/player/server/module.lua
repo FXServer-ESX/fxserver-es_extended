@@ -76,6 +76,14 @@ xPlayer = Extends(nil)
 
   end
 
+  xPlayer.hasAccessor = function(name)
+    return xPlayer.accessors[name] ~= nil
+  end
+
+  xPlayer.hasDBAccessor = function(name)
+    return (xPlayer.accessors[name] ~= nil) and (xPlayer.accessors[name].db == true)
+  end
+
   --- @function xPlayer.fromId
   --- Get xPlayer from id
   --- @param id number Player id

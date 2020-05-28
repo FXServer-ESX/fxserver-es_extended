@@ -104,7 +104,7 @@ end)
 -- TODO more checks on weight and such
 onRequest('esx:container:put', function(source, cb, name, itemType, itemName, itemCount)
 
-  local xPlayer   = ESX.GetPlayerFromId(source)
+  local xPlayer   = xPlayer.fromId(source)
   local container = self.Get(name)
 
   local count = 0

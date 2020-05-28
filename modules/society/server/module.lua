@@ -35,7 +35,7 @@ self.GetSociety = function(name)
 end
 
 self.isPlayerBoss = function(playerId, job)
-	local xPlayer = ESX.GetPlayerFromId(playerId)
+	local xPlayer = xPlayer.fromId(playerId)
 
 	if xPlayer.job.name == job and xPlayer.job.grade_name == 'boss' then
 		return true
@@ -49,7 +49,7 @@ self.WashMoneyCRON = function(d, h, m)
 	MySQL.Async.fetchAll('SELECT * FROM society_moneywash', {}, function(result)
 		for i=1, #result, 1 do
 			local society = self.GetSociety(result[i].society)
-			local xPlayer = ESX.GetPlayerFromIdentifier(result[i].identifier)
+			local xPlayer = xPlayer.fromIdentifier(result[i].identifier)
 
 			-- add society money
 			TriggerEvent('esx_addonaccount:getSharedAccount', society.account, function(account)

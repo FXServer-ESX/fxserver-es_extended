@@ -58,7 +58,7 @@ self.Register = function(name, group, cb, allowConsole, suggestion)
       print(('[^3WARNING^7] %s'):format( _U('commanderror_console')))
     else
 
-      local xPlayer, error = ESX.GetPlayerFromId(playerId), nil
+      local xPlayer, error = xPlayer.fromId(playerId), nil
 
       if command.suggestion then
 
@@ -96,7 +96,7 @@ self.Register = function(name, group, cb, allowConsole, suggestion)
 
                 if targetPlayer then
 
-                  local xTargetPlayer = ESX.GetPlayerFromId(targetPlayer)
+                  local xTargetPlayer = xPlayer.fromId(targetPlayer)
 
                     if xTargetPlayer then
 

@@ -234,4 +234,9 @@ Locales['fi'] = {
   ['tint_lspd'] = 'blue skin',
   ['tint_orange'] = 'orange skin',
   ['tint_platinum'] = 'platinum skin',
+
+  -- Identity
+  ['identity_register'] = 'Ole hyvä ja rekisteröi hahmosi.',
+  ['identity_welcome'] = 'Tervetuloa, ~b~%s %s',
+  ['identity_fill_in'] = 'Täytä kaikki kentät ennen lähettämistä!',
 }

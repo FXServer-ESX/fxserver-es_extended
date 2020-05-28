@@ -1,14 +1,16 @@
-// Copyright (c) Jérémie N'gadi
-//
-// All rights reserved.
-//
-// Even if 'All rights reserved' is very clear :
-//
-//   You shall not use any piece of this software in a commercial product / service
-//   You shall not resell this software
-//   You shall not provide any facility to install this particular software in a commercial product / service
-//   If you redistribute this software, you must link to ORIGINAL repository at https://github.com/ESX-Org/es_extended
-//   This copyright should appear in every part of the project code
+<!--
+ Copyright (c) Jérémie N'gadi
+
+ All rights reserved.
+
+ Even if 'All rights reserved' is very clear :
+
+   You shall not use any piece of this software in a commercial product / service
+   You shall not resell this software
+   You shall not provide any facility to install this particular software in a commercial product / service
+   If you redistribute this software, you must link to ORIGINAL repository at https://github.com/ESX-Org/es_extended
+   This copyright should appear in every part of the project code
+-->
 
 <script>
 
@@ -49,11 +51,7 @@
 
 	});
 
-	onMount(() => {
-		window.parent.postMessage({action: 'ready'}, '*');
-	});
-
-	beforeUpdate(() => {
+  const proxifyItems = () => {
 
 		_items.length = 0;
 
@@ -89,7 +87,13 @@
 
 		_items = [..._items];
 
+  }
+
+	onMount(() => {
+		window.parent.postMessage({action: 'ready'}, '*');
 	});
+
+	beforeUpdate(proxifyItems);
 
 	const onItemClick = (e, item, index) => {
 		window.parent.postMessage({action: 'item.click', index}, '*');
@@ -156,8 +160,28 @@
 		user-select: none;
 		flex-direction: column;
 		border-radius: 10px;
-		min-width: 280px;
+    min-width: 280px;
+    max-width: calc(100vh - 50px);
+    max-height: calc(100vh - 50px);
+    overflow-y: auto;
+  }
+
+	main > main-wrap::-webkit-scrollbar-track {
+		box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+		border-radius: 10px;
+		background-color: rgba(0,0,0,.1);
 	}
+
+	main > main-wrap::-webkit-scrollbar {
+		width: 10px;
+		background-color: transparent;
+	}
+
+	main > main-wrap::-webkit-scrollbar-thumb {
+		border-radius: 10px;
+		background-color: rgba(255, 255, 255, 0.75);
+	}
+
 
 	main.float-left > main-wrap {
 		left: 10px;

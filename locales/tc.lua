@@ -234,4 +234,9 @@ Locales['tc'] = {
   ['tint_lspd'] = '洛聖都警察局色調',
   ['tint_orange'] = '橘色調',
   ['tint_platinum'] = '柏金色調',
+
+  -- Identity
+  ['identity_register'] = 'Please register your character.',
+  ['identity_welcome'] = 'Welcome, ~b~%s %s',
+  ['identity_fill_in'] = 'Please fill in all fields before submitting!',
 }

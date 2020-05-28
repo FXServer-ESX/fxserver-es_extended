@@ -49,7 +49,7 @@ on('esx_society:getSociety', function(name, cb)
 end)
 
 onClient('esx_society:withdrawMoney', function(societyName, amount)
-	local xPlayer = ESX.GetPlayerFromId(source)
+	local xPlayer = xPlayer.fromId(source)
 	local society = self.GetSociety(societyName)
 	amount = ESX.Math.Round(tonumber(amount))
 
@@ -69,7 +69,7 @@ onClient('esx_society:withdrawMoney', function(societyName, amount)
 end)
 
 onClient('esx_society:depositMoney', function(societyName, amount)
-	local xPlayer = ESX.GetPlayerFromId(source)
+	local xPlayer = xPlayer.fromId(source)
 	local society = self.GetSociety(societyName)
 	amount = ESX.Math.Round(tonumber(amount))
 
@@ -89,7 +89,7 @@ onClient('esx_society:depositMoney', function(societyName, amount)
 end)
 
 onClient('esx_society:washMoney', function(society, amount)
-	local xPlayer = ESX.GetPlayerFromId(source)
+	local xPlayer = xPlayer.fromId(source)
 	local account = xPlayer.getAccount('black_money')
 	amount = ESX.Math.Round(tonumber(amount))
 
@@ -219,11 +219,11 @@ onRequest('esx_society:getJob', function(source, cb, society)
 end)
 
 onRequest('esx_society:setJob', function(source, cb, identifier, job, grade, type)
-	local xPlayer = ESX.GetPlayerFromId(source)
+	local xPlayer = xPlayer.fromId(source)
 	local isBoss = xPlayer.job.grade_name == 'boss'
 
 	if isBoss then
-		local xTarget = ESX.GetPlayerFromIdentifier(identifier)
+		local xTarget = xPlayer.fromIdentifier(identifier)
 
 		if xTarget then
 			xTarget.setJob(job, grade)
@@ -253,7 +253,7 @@ onRequest('esx_society:setJob', function(source, cb, identifier, job, grade, typ
 end)
 
 onRequest('esx_society:setJobSalary', function(source, cb, job, grade, salary)
-	local xPlayer = ESX.GetPlayerFromId(source)
+	local xPlayer = xPlayer.fromId(source)
 
 	if xPlayer.job.name == job and xPlayer.job.grade_name == 'boss' then
 		if salary <= self.Config.MaxSalary then
@@ -266,7 +266,7 @@ onRequest('esx_society:setJobSalary', function(source, cb, job, grade, salary)
 				local xPlayers = ESX.GetPlayers()
 
 				for i=1, #xPlayers, 1 do
-					local xTarget = ESX.GetPlayerFromId(xPlayers[i])
+					local xTarget = xPlayer.fromId(xPlayers[i])
 
 					if xTarget.job.name == job and xTarget.job.grade == grade then
 						xTarget.setJob(job, grade)
@@ -290,7 +290,7 @@ onRequest('esx_society:getOnlinePlayers', function(source, cb)
 	local players = {}
 
 	for i=1, #xPlayers, 1 do
-		local xPlayer = ESX.GetPlayerFromId(xPlayers[i])
+		local xPlayer = xPlayer.fromId(xPlayers[i])
 		table.insert(players, {
 			source = xPlayer.source,
 			identifier = xPlayer.identifier,

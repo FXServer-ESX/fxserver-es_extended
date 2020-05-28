@@ -30,9 +30,9 @@ local ADD_COLUMN_IN_NOT_EXISTS_PROCEDURE =
 -- Copyright (c) 2009 www.cryer.co.uk
 -- Script is free to use provided this copyright header is included.
 
-DROP PROCEDURE IF EXISTS ADD_COLUMN_IN_NOT_EXISTS;
+DROP PROCEDURE IF EXISTS ADD_COLUMN_IF_NOT_EXISTS;
 
-CREATE PROCEDURE ADD_COLUMN_IN_NOT_EXISTS(
+CREATE PROCEDURE ADD_COLUMN_IF_NOT_EXISTS(
   IN dbName    tinytext,
   IN tableName tinytext,
   IN fieldName tinytext,

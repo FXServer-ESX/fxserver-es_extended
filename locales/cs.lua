@@ -234,4 +234,9 @@ Locales['cs'] = {
   ['tint_lspd'] = 'modry skin',
   ['tint_orange'] = 'oranzovy skin',
   ['tint_platinum'] = 'platinovy skin',
+
+  -- Identity
+  ['identity_register'] = 'Zaregistrujte svou postavu.',
+  ['identity_welcome'] = 'Vítejte, ~b~%s %s',
+  ['identity_fill_in'] = 'Před odesláním vyplňte všechna pole!',
 }

@@ -23,3 +23,4 @@ end)
 on('esx_society:openBossMenu', function(society, close, options)
 	self.OpenBossMenu(society, close, options)
 end)
+

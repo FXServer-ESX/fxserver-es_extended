@@ -234,4 +234,9 @@ Locales['de'] = {
   ['tint_lspd'] = 'blau',
   ['tint_orange'] = 'orange',
   ['tint_platinum'] = 'platin',
+
+  -- Identity
+  ['identity_register'] = 'Bitte registriere deinen Charakter.',
+  ['identity_welcome'] = 'Willkommen, ~b~%s %s',
+  ['identity_fill_in'] = 'Bitte füllen Sie vor dem Absenden alle Felder aus!',
 }

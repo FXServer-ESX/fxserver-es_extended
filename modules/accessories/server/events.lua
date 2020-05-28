@@ -12,7 +12,7 @@
 
 onRequest('esx_accessories:pay', function()
 
-  local player = ESX.GetPlayerFromId(source)
+  local player = xPlayer.fromId(source)
   player:removeMoney(self.Config.Price)
   TriggerClientEvent('esx:showNotification', source, _U('accesories:you_paid', ESX.Math.GroupDigits(self.Config.Price)))
 
