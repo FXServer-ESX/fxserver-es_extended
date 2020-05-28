@@ -72,6 +72,7 @@ self.OpenMenu = function()
           self.Menu = nil
 
           utils.ui.showNotification(_U('identity_welcome', props.firstName, props.lastName))
+          emit('esx:skin:registered')
         else
           utils.ui.showNotification(_U('identity_fill_in'))
         end

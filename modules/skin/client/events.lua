@@ -56,6 +56,10 @@ onServer('esx_skin:openSaveableMenu', function(submitCb, cancelCb)
 	self.OpenSaveableMenu(submitCb, cancelCb, nil)
 end)
 
+on('esx:skin:registered', function(submitCb, cancelCb)
+	self.OpenSaveableMenu(submitCb, cancelCb, nil)
+end)	
+
 onServer('esx_skin:openSaveableRestrictedMenu', function(submitCb, cancelCb, restrict)
 	self.OpenSaveableMenu(submitCb, cancelCb, restrict)
 end)
