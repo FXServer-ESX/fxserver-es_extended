@@ -10,6 +10,7 @@
 --   If you redistribute this software, you must link to ORIGINAL repository at https://github.com/ESX-Org/es_extended
 --   This copyright should appear in every part of the project code
 
+self.Init()
 local Command = M("command")
 
 onClient(
@@ -87,7 +88,7 @@ Command.Register(
 		player:emit("esx_skin:openSaveableMenu")
 	end,
 	false,
-	{help = _U("skin")}
+	{help = _U("skin:skin")}
 )
 
 Command.Register(
@@ -97,5 +98,5 @@ Command.Register(
 		player:emit("esx_skin:requestSaveSkin")
 	end,
 	false,
-	{help = _U("saveskin")}
+	{help = _U("skin:saveskin")}
 )

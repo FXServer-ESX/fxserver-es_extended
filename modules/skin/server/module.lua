@@ -11,3 +11,8 @@
 --   This copyright should appear in every part of the project code
 
 
+self.Init = function()
+	local translations =
+		ESX.EvalFile(GetCurrentResourceName(), "modules/skin/data/locales/" .. Config.Locale .. ".lua")["Translations"]
+	LoadLocale("skin", Config.Locale, translations)
+end
