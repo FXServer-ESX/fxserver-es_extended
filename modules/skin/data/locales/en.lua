@@ -16,4 +16,10 @@ Translations = {
   ['skin'] = 'change skin',
   ['saveskin'] = 'save skin to a file',
   ['skin_saved'] = 'Skin saved successfully',
+  ['skinbody_menu'] = 'Body Menu',
+  ['skinclothes_menu'] = 'Clothes Menu',
+  ['skin_back'] = 'Back',
+  ['skin_body'] = 'Body',
+  ['skin_clothes'] = 'Clothes',
+  ['skin_submit'] = 'Submit'
 }

@@ -20,7 +20,7 @@
 
 	export let title = 'Untitled ESX Menu';
 
-	export let items  = [{name:"foo",label:"slider test",type:"slider",visible:!0},{name:"foo",label:"bar",type:"default",visible:!0},{name:"foo",label:"bar",type:"default",visible:!0},{name:"foo",label:"bar",type:"default",visible:!0},{name:"foo",label:"bar",type:"default",visible:!0},{name:"foo",label:"bar",type:"default",visible:!0},{name:"foo",label:"bar",type:"default",visible:!0},{name:"foo",label:"bar",type:"default",visible:!0},{name:"foo",label:"bar",type:"default",visible:!0},{name:"foo",label:"bar",type:"default",visible:!0},{name:"foo",label:"bar",type:"default",visible:!0},{name:"foo",label:"bar",type:"default",visible:!0},{name:"foo",label:"bar",type:"default",visible:!0},{name:"foo",label:"bar",type:"default",visible:!0},{name:"foo",label:"bar",type:"default",visible:!0},{name:"foo",label:"bar",type:"default",visible:!0},{name:"foo",label:"bar",type:"default",visible:!0},{name:"foo",label:"bar",type:"default",visible:!0},{name:"foo",label:"bar",type:"default",visible:!0},{name:"foo",label:"bar",type:"default",visible:!0},{name:"foo",label:"bar",type:"default",visible:!0},{name:"foo",label:"bar",type:"default",visible:!0},{name:"foo",label:"bar",type:"default",visible:!0},{name:"foo",label:"bar",type:"default",visible:!0},{name:"foo",label:"bar",type:"default",visible:!0},{name:"foo",label:"bar",type:"default",visible:!0},{name:"foo",label:"bar",type:"default",visible:!0},{name:"foo",label:"bar",type:"default",visible:!0},{name:"foo",label:"bar",type:"default",visible:!0},{name:"foo",label:"bar",type:"default",visible:!0},{name:"foo",label:"bar",type:"default",visible:!0},{name:"foo",label:"bar",type:"default",visible:!0},{name:"foo",label:"bar",type:"default",visible:!0},{name:"foo",label:"bar",type:"default",visible:!0},{name:"foo",label:"bar",type:"default",visible:!0},{name:"foo",label:"bar",type:"default",visible:!0},{name:"foo",label:"bar",type:"default",visible:!0},{name:"foo",label:"bar",type:"default",visible:!0},{name:"foo",label:"bar",type:"default",visible:!0},{name:"foo",label:"bar",type:"default",visible:!0},{name:"foo",label:"bar",type:"default",visible:!0},{name:"foo",label:"bar",type:"default",visible:!0},{name:"foo",label:"bar",type:"default",visible:!0},{name:"foo",label:"bar",type:"default",visible:!0},{name:"foo",label:"bar",type:"default",visible:!0},{name:"foo",label:"bar",type:"default",visible:!0},{name:"foo",label:"bar",type:"default",visible:!0},{name:"foo",label:"bar",type:"default",visible:!0},{name:"foo",label:"bar",type:"default",visible:!0},{name:"foo",label:"bar",type:"default",visible:!0}];
+	export let items  = [];
 	export let _items = [];
 
 	window.addEventListener('message', e => {
@@ -114,38 +114,38 @@
 
 		<item class="title">{title}</item>
 		<item class="titledivider"></item>
-<main-items>
-		{#each _items as item, i}
+		<main-items>
+			{#each _items as item, i}
 
-			{#if item.visible}
+				{#if item.visible}
 
-				{#if item.type === 'default' || item.type === 'button'}
-					<item class="{item.type === 'button' ? 'button' : ''}" on:click={e => onItemClick(e, item, i)}>{item.label}</item>
+					{#if item.type === 'default' || item.type === 'button'}
+						<item class="{item.type === 'button' ? 'button' : ''}" on:click={e => onItemClick(e, item, i)}>{item.label}</item>
+					{/if}
+
+					{#if item.type === 'slider'}
+						<item class="slider" on:click={e => onItemClick(e, item, i)} on:wheel={e => onSliderWheel(e, item, i)}>
+							<div>{item.label}</div>
+							<div><input type="range" bind:value={item.value} min={item.min} max={item.max}></div>
+						</item>
+					{/if}
+
+					{#if item.type === 'check'}
+						<item class="check" on:click={e => {onItemClick(e, item, i); item.value = !item.value}} >
+							{item.label} <input type="checkbox" bind:checked={item.value}/>
+						</item>
+					{/if}
+
+					{#if item.type === 'text'}
+						<item class="text" on:click={e => onItemClick(e, item, i)}>
+							<div>{item.label}</div>
+							<div><input type="text" bind:value={item.value} placeholder={item.placeholder || ''} autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/></div>
+						</item>
+					{/if}
+
 				{/if}
 
-				{#if item.type === 'slider'}
-					<item class="slider" on:click={e => onItemClick(e, item, i)} on:wheel={e => onSliderWheel(e, item, i)}>
-						<div>{item.label}</div>
-						<div><input type="range" bind:value={item.value} min={item.min} max={item.max}></div>
-					</item>
-				{/if}
-
-				{#if item.type === 'check'}
-					<item class="check" on:click={e => {onItemClick(e, item, i); item.value = !item.value}} >
-						{item.label} <input type="checkbox" bind:checked={item.value}/>
-					</item>
-				{/if}
-
-				{#if item.type === 'text'}
-					<item class="text" on:click={e => onItemClick(e, item, i)}>
-						<div>{item.label}</div>
-						<div><input type="text" bind:value={item.value} placeholder={item.placeholder || ''} autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/></div>
-					</item>
-				{/if}
-
-			{/if}
-
-		{/each}
+			{/each}
 		</main-items>
 	</main-wrap>
 </main>

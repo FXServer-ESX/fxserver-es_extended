@@ -93,7 +93,7 @@ self.OpenMenu = function(submitCb, cancelCb, restrict)
 		1,
 		{
 			name = "back",
-			label = "Back",
+			label = _U("skin:skin_back"),
 			type = "button"
 		}
 	)
@@ -102,7 +102,7 @@ self.OpenMenu = function(submitCb, cancelCb, restrict)
 		1,
 		{
 			name = "back",
-			label = "Back",
+			label = _U("skin:skin_back"),
 			type = "button"
 		}
 	)
@@ -159,6 +159,13 @@ self.OpenMenu = function(submitCb, cancelCb, restrict)
 					type = "slider"
 				}
 
+				for k, v in pairs(maxVals) do
+					if k == _components[i].name then
+						data.max = v
+						break
+					end
+				end
+
 				local found = false
 				if found == false then
 					for _, v in ipairs(bodyparts) do
@@ -188,9 +195,9 @@ self.OpenMenu = function(submitCb, cancelCb, restrict)
 				title = _U("skin:skin_menu"),
 				float = "top|left",
 				items = {
-					{name = "body", label = "Body", type = "button"},
-					{name = "clothes", label = "Clothes", type = "button"},
-					{name = "done", label = "Submit", type = "button"}
+					{name = "body", label = _U("skin:skin_body"), type = "button"},
+					{name = "clothes", label = _U("skin:skin_clothes"), type = "button"},
+					{name = "submit", label = _U("skin:skin_submit"), type = "button"}
 				}
 			}
 		)
@@ -208,7 +215,7 @@ self.OpenMenu = function(submitCb, cancelCb, restrict)
 					menu = nil
 
 					createClothesSubmenu()
-				elseif item.name == "done" then
+				elseif item.name == "submit" then
 					if next(body) == nil then
 						-- print("body false")
 					elseif next(clothes) == nil then
@@ -234,7 +241,7 @@ self.OpenMenu = function(submitCb, cancelCb, restrict)
 			Menu:create(
 			"bodymenu",
 			{
-				title = "Body",
+				title = _U("skin:skinbody_menu"),
 				float = "top|left",
 				items = bodymenuelements
 			}
@@ -267,7 +274,7 @@ self.OpenMenu = function(submitCb, cancelCb, restrict)
 			Menu:create(
 			"bodymenu",
 			{
-				title = "Clothes",
+				title = _U("skin:skinclothes_menu"),
 				float = "top|left",
 				items = clothesmenuelements
 			}

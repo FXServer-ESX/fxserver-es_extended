@@ -11,10 +11,15 @@
 --   This copyright should appear in every part of the project code
 
 Translations = {
-  ['skin_menu'] = 'Menú de skin',
+  ['skin_menu'] = 'Menú de Skin',
   ['use_rotate_view'] = 'presiona ~INPUT_VEH_FLY_ROLL_LEFT_ONLY~ y ~INPUT_VEH_FLY_ROLL_RIGHT_ONLY~ para girar la vista.',
   ['skin'] = 'cambiar skin',
   ['saveskin'] = 'guardar skin en un archivo',
   ['skin_saved'] = 'Skin saved successfully',
+  ['skinbody_menu'] = 'Menú de Cuerpo',
+  ['skinclothes_menu'] = 'Menú de Ropa',
+  ['skin_back'] = 'Volver',
+  ['skin_body'] = 'Cuerpo',
+  ['skin_clothes'] = 'Ropa',
+  ['skin_submit'] = 'Finalizar'
 }
- 
