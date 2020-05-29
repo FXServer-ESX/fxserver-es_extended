@@ -266,3 +266,9 @@ AddEventHandler('playerDropped', function(reason)
   end
 
 end)
+
+onClient('esx:updateCoords', function(formattedCoords)
+  local player   = xPlayer.fromId(source)
+
+  player:updateCoords(formattedCoords)
+end)

@@ -12,6 +12,7 @@
 
 M('class')         -- Require 'class' builtin module
 local DB = M('db') -- Require 'db' builtin module
+M('math')
 
 ---- Class representing a player
 --- @class xPlayer
@@ -391,7 +392,7 @@ xPlayer = Extends(nil)
   --- @param coords vector3 Coords
   --- @return nil
   function xPlayer:updateCoords(coords)
-    self.coords = {x = ESX.Math.Round(coords.x, 1), y = ESX.Math.Round(coords.y, 1), z = ESX.Math.Round(coords.z, 1), heading = ESX.Math.Round(coords.heading or 0.0, 1)}
+    self.coords = {x = math.round(coords.x, 1), y = math.round(coords.y, 1), z = math.round(coords.z, 1), heading = math.round(coords.heading or 0.0, 1)}
   end
 
   --- @function xPlayer:getCoords
