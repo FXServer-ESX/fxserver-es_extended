@@ -20,7 +20,7 @@
 
 	export let title = 'Untitled ESX Menu';
 
-	export let items  = [];
+	export let items  = [{name:"foo",label:"slider test",type:"slider",visible:!0},{name:"foo",label:"bar",type:"default",visible:!0},{name:"foo",label:"bar",type:"default",visible:!0},{name:"foo",label:"bar",type:"default",visible:!0},{name:"foo",label:"bar",type:"default",visible:!0},{name:"foo",label:"bar",type:"default",visible:!0},{name:"foo",label:"bar",type:"default",visible:!0},{name:"foo",label:"bar",type:"default",visible:!0},{name:"foo",label:"bar",type:"default",visible:!0},{name:"foo",label:"bar",type:"default",visible:!0},{name:"foo",label:"bar",type:"default",visible:!0},{name:"foo",label:"bar",type:"default",visible:!0},{name:"foo",label:"bar",type:"default",visible:!0},{name:"foo",label:"bar",type:"default",visible:!0},{name:"foo",label:"bar",type:"default",visible:!0},{name:"foo",label:"bar",type:"default",visible:!0},{name:"foo",label:"bar",type:"default",visible:!0},{name:"foo",label:"bar",type:"default",visible:!0},{name:"foo",label:"bar",type:"default",visible:!0},{name:"foo",label:"bar",type:"default",visible:!0},{name:"foo",label:"bar",type:"default",visible:!0},{name:"foo",label:"bar",type:"default",visible:!0},{name:"foo",label:"bar",type:"default",visible:!0},{name:"foo",label:"bar",type:"default",visible:!0},{name:"foo",label:"bar",type:"default",visible:!0},{name:"foo",label:"bar",type:"default",visible:!0},{name:"foo",label:"bar",type:"default",visible:!0},{name:"foo",label:"bar",type:"default",visible:!0},{name:"foo",label:"bar",type:"default",visible:!0},{name:"foo",label:"bar",type:"default",visible:!0},{name:"foo",label:"bar",type:"default",visible:!0},{name:"foo",label:"bar",type:"default",visible:!0},{name:"foo",label:"bar",type:"default",visible:!0},{name:"foo",label:"bar",type:"default",visible:!0},{name:"foo",label:"bar",type:"default",visible:!0},{name:"foo",label:"bar",type:"default",visible:!0},{name:"foo",label:"bar",type:"default",visible:!0},{name:"foo",label:"bar",type:"default",visible:!0},{name:"foo",label:"bar",type:"default",visible:!0},{name:"foo",label:"bar",type:"default",visible:!0},{name:"foo",label:"bar",type:"default",visible:!0},{name:"foo",label:"bar",type:"default",visible:!0},{name:"foo",label:"bar",type:"default",visible:!0},{name:"foo",label:"bar",type:"default",visible:!0},{name:"foo",label:"bar",type:"default",visible:!0},{name:"foo",label:"bar",type:"default",visible:!0},{name:"foo",label:"bar",type:"default",visible:!0},{name:"foo",label:"bar",type:"default",visible:!0},{name:"foo",label:"bar",type:"default",visible:!0},{name:"foo",label:"bar",type:"default",visible:!0}];
 	export let _items = [];
 
 	window.addEventListener('message', e => {
@@ -113,7 +113,8 @@
 	<main-wrap>
 
 		<item class="title">{title}</item>
-
+		<item class="titledivider"></item>
+<main-items>
 		{#each _items as item, i}
 
 			{#if item.visible}
@@ -145,6 +146,7 @@
 			{/if}
 
 		{/each}
+		</main-items>
 	</main-wrap>
 </main>
 
@@ -160,24 +162,35 @@
 		user-select: none;
 		flex-direction: column;
 		border-radius: 10px;
-    min-width: 280px;
-    max-width: calc(100vh - 50px);
-    max-height: calc(100vh - 50px);
-    overflow-y: auto;
+		min-width: 280px;
+		max-width: calc(100vh - 50px);
+		max-height: calc(100vh - 50px);
+		overflow: hidden;
   }
 
-	main > main-wrap::-webkit-scrollbar-track {
+	main > main-wrap > main-items {
+		display: flex;
+		border-left: 0;
+		padding: 15px 10px;
+		font-size: 1.1em;
+		user-select: none;
+		flex-direction: column;
+		border-radius: 10px;
+    	overflow-y: scroll;
+  }
+
+	main > main-wrap > main-items::-webkit-scrollbar-track {
 		box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
 		border-radius: 10px;
 		background-color: rgba(0,0,0,.1);
 	}
 
-	main > main-wrap::-webkit-scrollbar {
+	main > main-wrap > main-items::-webkit-scrollbar {
 		width: 10px;
 		background-color: transparent;
 	}
 
-	main > main-wrap::-webkit-scrollbar-thumb {
+	main > main-wrap > main-items::-webkit-scrollbar-thumb {
 		border-radius: 10px;
 		background-color: rgba(255, 255, 255, 0.75);
 	}
@@ -234,12 +247,27 @@
 	}
 
 	item.title {
-    text-align: center;
-    border-bottom: 1px solid rgba(109, 109, 109, 0.25);
-    border-radius: 0;
-    padding-bottom: 30px;
-    margin-bottom: 20px;
+		padding: 14px;
+		position: fixed;
+		overflow:hidden;
+		width: 250px;
+		text-align: center;
+		border-bottom: 1px solid rgba(109, 109, 109, 0.25);
+		border-radius: 0;
+		padding-bottom: 30px;
+		margin-bottom: 20px;
 	}
+
+	item.titledivider {
+		overflow:hidden ;
+		margin-bottom: 42.5px;
+	}
+
+	item.titledivider:hover {
+		background-color: unset;
+		cursor: default;
+	}
+
 
 	item.title:hover {
 		background-color: unset;
@@ -257,7 +285,7 @@
 
 	item.slider input {
 		width: calc(100% - 10px);
-		background-color: rgba(0, 0, 0, 0.25);
+		background-color: rgba(223, 223, 223, 0.25);
 		-webkit-appearance: none;
 	}
 
