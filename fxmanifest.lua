@@ -11,7 +11,7 @@
 --   This copyright should appear in every part of the project code
 
 local esx_config = {
-  enable_loadscreen = true
+  enable_loadscreen = false
 }
 
 fx_version      'adamant'
