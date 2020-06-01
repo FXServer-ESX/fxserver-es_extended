@@ -14,6 +14,7 @@
 local Input    = M('input')
 local Interact = M('interact')
 local Menu     = M('ui.menu')
+local utils    = M("utils")
 
 -- Properties
 self.Config = ESX.EvalFile(__RESOURCE__, 'modules/' .. __MODULE__ .. '/data/config.lua', {vector3 = vector3})['Config']
@@ -45,7 +46,7 @@ self.Init = function()
 
       on('esx:interact:enter:' .. key, function(data)
 
-      ESX.ShowHelpNotification(_U('accessories:press_access'))
+      utils.ui.showNotification(_U('accessories:press_access'))
 
       self.CurrentAction = function()
         self.OpenShopMenu(data.accessory)
@@ -116,7 +117,7 @@ self.SetUnsetAccessory = function(accessory)
       TriggerEvent('skinchanger:loadClothes', skin, accessorySkin)
     end)
     else
-    ESX.ShowNotification(_U('accessories:no_' .. _accessory))
+    utils.ui.showNotification(_U('accessories:no_' .. _accessory))
     end
   end, accessory)
 end
@@ -155,7 +156,7 @@ self.OpenShopMenu = function(accessory)
             TriggerEvent('esx_skin:getLastSkin', function(skin)
               TriggerEvent('skinchanger:loadSkin', skin)
             end)
-            ESX.ShowNotification(_U('accessories:not_enough_money'))
+            utils.ui.showNotification(_U('accessories:not_enough_money'))
           end
         end)
       end
