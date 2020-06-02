@@ -14,18 +14,19 @@
 local Input    = M('input')
 local Interact = M('interact')
 local Menu     = M('ui.menu')
+local utils    = M("utils")
 
 -- Properties
-module.Config = run('data/config.lua', {vector3 = vector3})['Config']
+self.Config = ESX.EvalFile(__RESOURCE__, 'modules/' .. __MODULE__ .. '/data/config.lua', {vector3 = vector3})['Config']
 
-module.Init = function()
+self.Init = function()
 
-  module.RegisterControls()
+  self.RegisterControls()
 
-  local translations = run('data/locales/' .. Config.Locale .. '.lua')['Translations']
+  local translations = ESX.EvalFile(GetCurrentResourceName(), 'modules/accessories/data/locales/' .. Config.Locale .. '.lua')['Translations']
   LoadLocale('accessories', Config.Locale, translations)
 
-  for k, v in pairs(module.Config.Zones) do
+  for k, v in pairs(self.Config.Zones) do
     for i = 1, #v.Pos, 1 do
 
       local key = 'accessories:' .. k .. ':' .. i
@@ -33,32 +34,32 @@ module.Init = function()
       Interact.Register({
         name = key,
         type = 'marker',
-        distance = module.Config.DrawDistance,
+        distance = self.Config.DrawDistance,
         radius = 2.0,
         pos = v.Pos[i],
-        size = module.Config.Size.z,
-        mtype = module.Config.Type,
-        color = module.Config.Color,
+        size = self.Config.Size.z,
+        mtype = self.Config.Type,
+        color = self.Config.Color,
         rotate = true,
         accessory = k
       })
 
       on('esx:interact:enter:' .. key, function(data)
 
-      ESX.ShowHelpNotification(_U('accessories:press_access'))
+      utils.ui.showNotification(_U('accessories:press_access'))
 
-      module.CurrentAction = function()
-        module.OpenShopMenu(data.accessory)
+      self.CurrentAction = function()
+        self.OpenShopMenu(data.accessory)
       end
 
       end)
 
-      on('esx:interact:exit:' .. key, function(data) module.CurrentAction = nil end)
+      on('esx:interact:exit:' .. key, function(data) self.CurrentAction = nil end)
 
     end
   end
 
-	for k,v in pairs(module.Config.ShopsBlips) do
+	for k,v in pairs(self.Config.ShopsBlips) do
 		if v.Pos ~= nil then
 			for i=1, #v.Pos, 1 do
 				local blip = AddBlipForCoord(v.Pos[i])
@@ -78,7 +79,7 @@ module.Init = function()
 
 end
 
-module.OpenAccessoryMenu = function()
+self.OpenAccessoryMenu = function()
   Menu.Open('default', GetCurrentResourceName(), 'set_unset_accessory', {
     title = _U('accessories:set_unset'),
     align = 'top-left',
@@ -90,11 +91,11 @@ module.OpenAccessoryMenu = function()
     }
   }, function(data, menu)
     menu.close()
-      module.SetUnsetAccessory(data.current.value)
+      self.SetUnsetAccessory(data.current.value)
     end, function(data, menu) menu.close() end)
 end
 
-module.SetUnsetAccessory = function(accessory)
+self.SetUnsetAccessory = function(accessory)
   ESX.TriggerServerCallback('esx_accessories:get', function(hasAccessory, accessorySkin)
     local _accessory = string.lower(accessory)
 
@@ -116,12 +117,12 @@ module.SetUnsetAccessory = function(accessory)
       TriggerEvent('skinchanger:loadClothes', skin, accessorySkin)
     end)
     else
-    ESX.ShowNotification(_U('accessories:no_' .. _accessory))
+    utils.ui.showNotification(_U('accessories:no_' .. _accessory))
     end
   end, accessory)
 end
 
-module.OpenShopMenu = function(accessory)
+self.OpenShopMenu = function(accessory)
 
   local _accessory = string.lower(accessory)
   local restrict = {}
@@ -137,7 +138,7 @@ module.OpenShopMenu = function(accessory)
       align = 'top-left',
       elements = {
       {label = _U('accessories:no'), value = 'no'}, {
-        label = _U('accessories:yes', ESX.Math.GroupDigits(module.Config.Price)),
+        label = _U('accessories:yes', ESX.Math.GroupDigits(self.Config.Price)),
         value = 'yes'
       }
       }
@@ -155,7 +156,7 @@ module.OpenShopMenu = function(accessory)
             TriggerEvent('esx_skin:getLastSkin', function(skin)
               TriggerEvent('skinchanger:loadSkin', skin)
             end)
-            ESX.ShowNotification(_U('accessories:not_enough_money'))
+            utils.ui.showNotification(_U('accessories:not_enough_money'))
           end
         end)
       end
@@ -175,27 +176,27 @@ module.OpenShopMenu = function(accessory)
           SetPedPropIndex(player, 1, -1, 0, 0)
         end
       end
-      module.CurrentAction = 'shop_menu'
-      module.CurrentActionMsg = _U('accessories:press_access')
-      module.CurrentActionData = {}
+      self.CurrentAction = 'shop_menu'
+      self.CurrentActionMsg = _U('accessories:press_access')
+      self.CurrentActionData = {}
     end, function(data, menu)
       menu.close()
-      module.CurrentAction = 'shop_menu'
-      module.CurrentActionMsg = _U('accessories:press_access')
-      module.CurrentActionData = {}
+      self.CurrentAction = 'shop_menu'
+      self.CurrentActionMsg = _U('accessories:press_access')
+      self.CurrentActionData = {}
     end)
   end, function(data, menu)
 
     menu.close()
 
-      module.CurrentAction     = 'shop_menu'
-      module.CurrentActionMsg  = _U('accessories:press_access')
-      module.CurrentActionData = {}
+      self.CurrentAction     = 'shop_menu'
+      self.CurrentActionMsg  = _U('accessories:press_access')
+      self.CurrentActionData = {}
 
     end, restrict)
 end
 
-module.RegisterControls = function()
+self.RegisterControls = function()
   Input.RegisterControl(Input.Groups.MOVE, Input.Controls.PICKUP)
   Input.RegisterControl(Input.Groups.MOVE, Input.Controls.REPLAY_SHOWHOTKEY)
 end
