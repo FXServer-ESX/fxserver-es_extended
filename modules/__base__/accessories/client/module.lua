@@ -13,7 +13,8 @@
 -- Locals
 local Input    = M('input')
 local Interact = M('interact')
-local Menu     = M('ui.menu')
+local utils    = M("utils")
+M('ui.menu')
 
 -- Properties
 module.Config = run('data/config.lua', {vector3 = vector3})['Config']
@@ -45,7 +46,7 @@ module.Init = function()
 
       on('esx:interact:enter:' .. key, function(data)
 
-      ESX.ShowHelpNotification(_U('accessories:press_access'))
+      utils.ui.showHelpNotification(_U('accessories:press_access'))
 
       module.CurrentAction = function()
         module.OpenShopMenu(data.accessory)
@@ -79,44 +80,49 @@ module.Init = function()
 end
 
 module.OpenAccessoryMenu = function()
-  Menu.Open('default', GetCurrentResourceName(), 'set_unset_accessory', {
+  local menu = Menu('set_unset_accessory', {
     title = _U('accessories:set_unset'),
-    align = 'top-left',
-    elements = {
-      {label = _U('accessories:helmet'), value = 'Helmet'},
-      {label = _U('accessories:ears'), value = 'Ears'},
-      {label = _U('accessories:mask'), value = 'Mask'},
-      {label = _U('accessories:glasses'), value = 'Glasses'}
+    float = 'top|left',
+    items = {
+      {name = 'Helmet', label = _U('accessories:helmet'),  type = 'button'},
+      {name = 'Ears', label = _U('accessories:ears'),    type = 'button'},
+      {name = 'Mask', label = _U('accessories:mask'),    type = 'button'},
+      {name = 'Glasses', label = _U('accessories:glasses'), type = 'button'},
     }
-  }, function(data, menu)
-    menu.close()
-      module.SetUnsetAccessory(data.current.value)
-    end, function(data, menu) menu.close() end)
+  })
+
+  menu:on('item.click', function(item, index)
+    if item.name == "Helmet" or item.name == "Ears" or item.name == "Mask" or item.name == "Glasses" then
+      menu:destroy()
+      module.SetUnsetAccessory(item.name)
+      print('item', item.name)
+    end
+  end)
 end
 
 module.SetUnsetAccessory = function(accessory)
-  ESX.TriggerServerCallback('esx_accessories:get', function(hasAccessory, accessorySkin)
+  request('esx_accessories:get', function(hasAccessory, accessorySkin)
     local _accessory = string.lower(accessory)
 
     if hasAccessory then
-    TriggerEvent('skinchanger:getSkin', function(skin)
-      local mAccessory = -1
-      local mColor = 0
+      TriggerEvent('skinchanger:getSkin', function(skin)
+        local mAccessory = -1
+        local mColor = 0
 
-      if _accessory == "mask" then mAccessory = 0 end
+        if _accessory == "mask" then mAccessory = 0 end
 
-      if skin[_accessory .. '_1'] == mAccessory then
-        mAccessory = accessorySkin[_accessory .. '_1']
-        mColor = accessorySkin[_accessory .. '_2']
-      end
+        if skin[_accessory .. '_1'] == mAccessory then
+          mAccessory = accessorySkin[_accessory .. '_1']
+          mColor = accessorySkin[_accessory .. '_2']
+        end
 
-      local accessorySkin = {}
-      accessorySkin[_accessory .. '_1'] = mAccessory
-      accessorySkin[_accessory .. '_2'] = mColor
-      TriggerEvent('skinchanger:loadClothes', skin, accessorySkin)
-    end)
+        local accessorySkin = {}
+        accessorySkin[_accessory .. '_1'] = mAccessory
+        accessorySkin[_accessory .. '_2'] = mColor
+        TriggerEvent('skinchanger:loadClothes', skin, accessorySkin)
+      end)
     else
-    ESX.ShowNotification(_U('accessories:no_' .. _accessory))
+      utils.ui.showNotification(_U('accessories:no_' .. _accessory))
     end
   end, accessory)
 end
@@ -130,22 +136,20 @@ module.OpenShopMenu = function(accessory)
 
   TriggerEvent('esx_skin:openRestrictedMenu', function(data, menu)
 
-    menu.close()
+    menu:destroy()
 
-    Menu.Open('default', GetCurrentResourceName(), 'shop_confirm', {
+    local menu = Menu('shop_confirm', {
       title = _U('accessories:valid_purchase'),
-      align = 'top-left',
-      elements = {
-      {label = _U('accessories:no'), value = 'no'}, {
-        label = _U('accessories:yes', ESX.Math.GroupDigits(module.Config.Price)),
-        value = 'yes'
+      float = 'top|left',
+      items = {
+        {name = 'yes', label = _U('accessories:yes', math.groupDigits(self.Config.Price)), type = 'button'},
+        {name = 'no', label = _U('accessories:no'), type = 'button'}
       }
-      }
-    }, function(data, menu)
-      menu.close()
-      if data.current.value == 'yes' then
-        ESX.TriggerServerCallback('esx_accessories:checkMoney',
-                      function(hasEnoughMoney)
+    })
+
+    menu:on('item.click', function(item, index)
+      if item.name == "yes" then
+        request('esx_accessories:checkMoney', function(hasEnoughMoney)
           if hasEnoughMoney then
             TriggerServerEvent('esx_accessories:pay')
             TriggerEvent('skinchanger:getSkin', function(skin)
@@ -155,12 +159,11 @@ module.OpenShopMenu = function(accessory)
             TriggerEvent('esx_skin:getLastSkin', function(skin)
               TriggerEvent('skinchanger:loadSkin', skin)
             end)
-            ESX.ShowNotification(_U('accessories:not_enough_money'))
+            utils.ui.showNotification(_U('accessories:not_enough_money'))
           end
         end)
-      end
 
-      if data.current.value == 'no' then
+      elseif item.name == "no" then
         local player = PlayerPedId()
         TriggerEvent('esx_skin:getLastSkin', function(skin)
           TriggerEvent('skinchanger:loadSkin', skin)
@@ -179,14 +182,14 @@ module.OpenShopMenu = function(accessory)
       module.CurrentActionMsg = _U('accessories:press_access')
       module.CurrentActionData = {}
     end, function(data, menu)
-      menu.close()
+      menu:destroy()
       module.CurrentAction = 'shop_menu'
       module.CurrentActionMsg = _U('accessories:press_access')
       module.CurrentActionData = {}
     end)
   end, function(data, menu)
 
-    menu.close()
+    menu:destroy()
 
       module.CurrentAction     = 'shop_menu'
       module.CurrentActionMsg  = _U('accessories:press_access')
