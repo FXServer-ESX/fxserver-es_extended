@@ -47,6 +47,7 @@ ensure baseevents
 ensure yarn
 
 ensure mysql-async
+ensure async
 ensure cron
 
 ensure es_extended # Will now auto-generate fxmanifest.lua to prevent platform-dependant behavior, will prompt you to type ensure es_extended in console when fxmanifest has changed. To save some typing, uncomment below lines
