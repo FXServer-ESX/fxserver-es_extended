@@ -20,6 +20,7 @@ ensure rconlog
 ensure baseevents
 
 ensure mysql-async
+ensure async
 ensure cron
 ensure skinchanger
 
