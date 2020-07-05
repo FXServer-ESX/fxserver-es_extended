@@ -55,8 +55,8 @@ function Player:PlayerKilledByPlayer(killerServerId, killerClientId, deathCause)
 		killerClientId = killerClientId
 	}
 
-  emit('esx:onPlayerDeath', data)
-  emitServer('esx:onPlayerDeath', data)
+  emit('esx:player:death', data)
+  emitServer('esx:player:death', data)
 end
 
 function Player:PlayerKilled(deathCause)
@@ -70,7 +70,7 @@ function Player:PlayerKilled(deathCause)
 		deathCause     = deathCause
 	}
 
-  emit('esx:onPlayerDeath', data)
-  emitServer('esx:onPlayerDeath', data)
+  emit('esx:player:death', data)
+  emitServer('esx:player:death', data)
 end
 
