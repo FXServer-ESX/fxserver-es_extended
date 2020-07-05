@@ -38,4 +38,39 @@ end
 
 Cache.player = PlayerCacheConsumer()
 
+function Player:PlayerKilledByPlayer(killerServerId, killerClientId, deathCause)
+  local victimCoords = GetEntityCoords(PlayerPedId())
+	local killerCoords = GetEntityCoords(GetPlayerPed(killerClientId))
+	local distance     = #(victimCoords - killerCoords)
+
+	local data = {
+		victimCoords = {x = math.round(victimCoords.x, 1), y = math.round(victimCoords.y, 1), z = math.round(victimCoords.z, 1)},
+		killerCoords = {x = math.round(killerCoords.x, 1), y = math.round(killerCoords.y, 1), z = math.round(killerCoords.z, 1)},
+
+		killedByPlayer = true,
+		deathCause     = deathCause,
+		distance       = math.round(distance, 1),
+
+		killerServerId = killerServerId,
+		killerClientId = killerClientId
+	}
+
+  emit('esx:onPlayerDeath', data)
+  emitServer('esx:onPlayerDeath', data)
+end
+
+function Player:PlayerKilled(deathCause)
+	local playerPed = PlayerPedId()
+	local victimCoords = GetEntityCoords(playerPed)
+
+	local data = {
+		victimCoords = {x = math.round(victimCoords.x, 1), y = math.round(victimCoords.y, 1), z = math.round(victimCoords.z, 1)},
+
+		killedByPlayer = false,
+		deathCause     = deathCause
+	}
+
+  emit('esx:onPlayerDeath', data)
+  emitServer('esx:onPlayerDeath', data)
+end
 
