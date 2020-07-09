@@ -10,7 +10,7 @@
 --   If you redistribute this software, you must link to ORIGINAL repository at https://github.com/ESX-Org/es_extended
 --   This copyright should appear in every part of the project code
 
-local interval
+local interval, intervalisDead
 
 interval = ESX.SetInterval(100, function()
 
@@ -21,11 +21,9 @@ interval = ESX.SetInterval(100, function()
 
 end)
 
-Citizen.CreateThread(function()
-	local isDead = false
+local isDead = false
 
-	while true do
-		Citizen.Wait(0)
+intervalisDead = ESX.SetInterval(0, function()
 		local player = PlayerId()
 
 		if NetworkIsPlayerActive(player) then
@@ -47,5 +45,4 @@ Citizen.CreateThread(function()
 				isDead = false
 			end
 		end
-	end
 end)
