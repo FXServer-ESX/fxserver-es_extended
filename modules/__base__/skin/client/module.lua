@@ -643,6 +643,10 @@ function Skin:getModel()
   return self.model
 end
 
+function Skin:isFreemodeModel()
+  return utils.game.isHumanModel(self:getModel()) and utils.game.isFreemodeModel(self:getModel())
+end
+
 function Skin:setComponentDrawable(componentIdOrName, drawableId)
   local component = self:getComponent(componentIdOrName)
   component[1] = drawableId
@@ -1216,7 +1220,7 @@ end
 
 function Skin:applyAll(cb)
   local modelHash = GetHashKey(self:getModel())
-  
+
   utils.game.requestModel(modelHash, function()
     SetPlayerModel(PlayerId(), modelHash)
 
@@ -1260,45 +1264,48 @@ function Skin:applyAll(cb)
     local moreBodyBlemishes        = self:getMoreBodyBlemishes()
     local moreBodyBlemishesOpacity = self:getMoreBodyBlemishesOpacity()
 
-    SetPedHeadBlendData(ped, blend[1], blend[2], blend[3], blend[4], blend[5], blend[6], blendFaceMix, blendSkinMix, blendOverrideMix, true)
+    if self:isFreemodeModel() then
+      SetPedHeadBlendData(ped, blend[1], blend[2], blend[3], blend[4], blend[5], blend[6], blendFaceMix, blendSkinMix, blendOverrideMix, true)
+  
+      while HasPedHeadBlendFinished(ped)  do
+        Citizen.Wait(0)
+      end
 
-    while HasPedHeadBlendFinished(ped) do
-      Citizen.Wait(0)
+      SetPedHeadOverlay(ped, 0, blemishes, blemishesOpacity)
+
+      SetPedHeadOverlay(ped, 2, eyebrow, opacity)
+      SetPedHeadOverlayColor(ped, 2, 1, eyebrowColor1, eyebrowColor2)
+
+      SetPedHeadOverlay(ped, 1, beard, beardOpacity)
+      SetPedHeadOverlayColor(ped, 1, 1, beardColor1, beardColor2)
+
+      SetPedHeadOverlay(ped, 5, blush, blushOpacity)
+      SetPedHeadOverlayColor(ped, 5, 2, blushColor1, blushColor2)
+
+      SetPedHeadOverlay(ped, 6, complexion, complexionOpacity)
+
+      SetPedHeadOverlay(ped, 9, freckles, frecklesOpacity)
+
+      SetPedHeadOverlay(ped, 4, makeup, makeupOpacity)
+
+      SetPedHeadOverlay(ped, 8, lipstick, lipstickOpacity)
+      SetPedHeadOverlayColor(ped, 8, 2, lipstickColor, lipstickColor)
+
+      SetPedHeadOverlay(ped, 10, chestHair, chestHairOpacity)
+      SetPedHeadOverlayColor(ped, 10, 1, chestHairColor, chestHairColor)
+
+      SetPedHeadOverlay(ped, 7, sunDamage, sunDamageOpacity)
+      SetPedHeadOverlay(ped, 11, bodyBlemishes, bodyBlemishesOpacity)
+      SetPedHeadOverlay(ped, 12, moreBodyBlemishes, moreBodyBlemishesOpacity)
+
+      local hairColor = self:getHairColor()
+      SetPedHairColor(ped, hairColor[1], hairColor[2])
+  
     end
-
-    SetPedHeadOverlay(ped, 0, blemishes, blemishesOpacity)
-
-    SetPedHeadOverlay(ped, 2, eyebrow, opacity)
-    SetPedHeadOverlayColor(ped, 2, 1, eyebrowColor1, eyebrowColor2)
-
-    SetPedHeadOverlay(ped, 1, beard, beardOpacity)
-    SetPedHeadOverlayColor(ped, 1, 1, beardColor1, beardColor2)
-
-    SetPedHeadOverlay(ped, 5, blush, blushOpacity)
-    SetPedHeadOverlayColor(ped, 5, 2, blushColor1, blushColor2)
-
-    SetPedHeadOverlay(ped, 6, complexion, complexionOpacity)
-
-    SetPedHeadOverlay(ped, 9, freckles, frecklesOpacity)
-
-    SetPedHeadOverlay(ped, 4, makeup, makeupOpacity)
-
-    SetPedHeadOverlay(ped, 8, lipstick, lipstickOpacity)
-    SetPedHeadOverlayColor(ped, 8, 2, lipstickColor, lipstickColor)
-
-    SetPedHeadOverlay(ped, 10, chestHair, chestHairOpacity)
-    SetPedHeadOverlayColor(ped, 10, 1, chestHairColor, chestHairColor)
-
-    SetPedHeadOverlay(ped, 7, sunDamage, sunDamageOpacity)
-    SetPedHeadOverlay(ped, 11, bodyBlemishes, bodyBlemishesOpacity)
-    SetPedHeadOverlay(ped, 12, moreBodyBlemishes, moreBodyBlemishesOpacity)
 
     for componentId,component in pairs(self.components) do
       SetPedComponentVariation(ped, componentId, component[1], component[2], 1)
     end
-
-    local hairColor = self:getHairColor()
-    SetPedHairColor(ped, hairColor[1], hairColor[2])
 
     SetModelAsNoLongerNeeded(modelHash)
 
@@ -1306,7 +1313,7 @@ function Skin:applyAll(cb)
       cb()
     end
   end)
-  
+
 end
 
 function Skin:commit()
@@ -1904,6 +1911,8 @@ function SkinEditor:destructor()
   camera.destroy()
   self.mainMenu:destroy()
 
+  SetPedConfigFlag(GetPlayerPed(-1), 292, false)
+
   -- TODO : Fix this, field super is nil ?
   -- self.super:destructor()
 end
@@ -1916,7 +1925,7 @@ function SkinEditor:start()
   end
 
   SetEntityCoords(PlayerPedId(), 402.869, -996.5966, -99.0003, 0.0, 0.0, 0.0, true)
-  SetEntityHeading(PlayerPedId(), 180.01846313477)
+  SetEntityHeading(PlayerPedId(), 0)
 
   Citizen.Wait(1000)
 
@@ -1928,6 +1937,7 @@ function SkinEditor:start()
   self:openMenu()
   self.skin:applyAll(function()
     self:mainCameraScene()
+    SetPedConfigFlag(GetPlayerPed(-1), 292, true)
     self:emit('start')
   end)
 end
@@ -1938,7 +1948,7 @@ function SkinEditor:ensurePed()
   self.pedModel             = GetEntityModel(ped)
   self.isPedPlayer          = IsPedAPlayer(ped)
   self.isPedHuman           = utils.game.isHumanModel(self.pedModel)
-  self.isPedFreemode        = self.isPedHuman and utils.game.isFreemodeModel(self.pedModel)
+  self.isPedFreemode        = self.skin:isFreemodeModel()
   self.canEnforceComponents = self.isPedFreemode
 
   if self.isPedPlayer then
@@ -1979,7 +1989,6 @@ function SkinEditor:openMenu()
 
   self.mainMenu = Menu('skin', {
     title = 'Character',
-    float = 'top|left', -- not needed, default value
     items = items
   })
 
@@ -2035,7 +2044,6 @@ function SkinEditor:openBaseMenu(comp)
 
   self.baseMenu = Menu('skin.base', {
     title = "Base",
-    float = 'top|left', -- not needed, default value
     items = items
   })
 
@@ -2098,7 +2106,6 @@ function SkinEditor:openStyleMenu(comp)
 
   self.styleMenu = Menu('skin.style', {
     title = "Style",
-    float = 'top|left', -- not needed, default value
     items = items
   })
 
@@ -2155,7 +2162,6 @@ function SkinEditor:openClothesMenu()
 
   self.clothesMenu = Menu('skin.clothes', {
     title = 'Clothes',
-    float = 'top|left', -- not needed, default value
     items = items
   })
 
@@ -2216,7 +2222,6 @@ function SkinEditor:openParentsMenu(comp)
 
   local menu = Menu('skin.base.parents', {
     title = "Parents",
-    float = 'top|left', -- not needed, default value
     items = items
   })
 
@@ -2301,7 +2306,6 @@ function SkinEditor:openEyesMenu(comp)
 
   local menu = Menu('skin.base.eyes', {
     title = "Eyes",
-    float = 'top|left', -- not needed, default value
     items = items
   })
 
@@ -2381,7 +2385,6 @@ function SkinEditor:openNoseMenu(comp)
 
   local menu = Menu('skin.base.nose', {
     title = "Nose",
-    float = 'top|left', -- not needed, default value
     items = items
   })
 
@@ -2455,7 +2458,6 @@ function SkinEditor:openChinMenu(comp)
 
   local menu = Menu('skin.base.chin', {
     title = "Chin",
-    float = 'top|left', -- not needed, default value
     items = items
   })
 
@@ -2526,7 +2528,6 @@ function SkinEditor:openCheeksMenu(comp)
 
   local menu = Menu('skin.base.cheeks', {
     title = "Cheeks",
-    float = 'top|left', -- not needed, default value
     items = items
   })
 
@@ -2586,7 +2587,6 @@ function SkinEditor:openLipsMenu(comp)
 
   local menu = Menu('skin.base.lips', {
     title = "Lips",
-    float = 'top|left', -- not needed, default value
     items = items
   })
 
@@ -2640,7 +2640,6 @@ function SkinEditor:openNeckMenu(comp)
 
   local menu = Menu('skin.base.neck', {
     title = "Lips",
-    float = 'top|left', -- not needed, default value
     items = items
   })
 
@@ -2699,7 +2698,6 @@ function SkinEditor:openFaceMenu(comp)
 
   local menu = Menu('skin.style.face', {
     title = "Face",
-    float = 'top|left', -- not needed, default value
     items = items
   })
 
@@ -2771,7 +2769,6 @@ function SkinEditor:openMarkingsMenu(comp)
 
   local menu = Menu('skin.style.markings', {
     title = "markings",
-    float = 'top|left', -- not needed, default value
     items = items
   })
 
@@ -2836,7 +2833,6 @@ function SkinEditor:openHairMenu(comp)
 
   local menu = Menu('skin.style.hair', {
     title = "Hair",
-    float = 'top|left', -- not needed, default value
     items = items
   })
 
@@ -2899,7 +2895,6 @@ function SkinEditor:openBeardMenu(comp)
 
   local menu = Menu('skin.style.beard', {
     title = "Beard",
-    float = 'top|left', -- not needed, default value
     items = items
   })
 
@@ -2966,7 +2961,6 @@ function SkinEditor:openMakeupMenu(comp)
 
   local menu = Menu('skin.style.beard', {
     title = "Beard",
-    float = 'top|left', -- not needed, default value
     items = items
   })
 
@@ -3033,7 +3027,6 @@ function SkinEditor:openAgingMenu(comp)
 
   local menu = Menu('skin.style.aging', {
     title = "Aging",
-    float = 'top|left', -- not needed, default value
     items = items
   })
 
@@ -3092,7 +3085,6 @@ function SkinEditor:openChestMenu(comp)
 
   local menu = Menu('skin.style.chest', {
     title = "Chest",
-    float = 'top|left', -- not needed, default value
     items = items
   })
 
@@ -3157,7 +3149,6 @@ function SkinEditor:openBodyMenu(comp)
 
   local menu = Menu('skin.style.body', {
     title = "Body",
-    float = 'top|left', -- not needed, default value
     items = items
   })
 
@@ -3232,9 +3223,9 @@ function SkinEditor:onItemChanged(item, prop, val, index)
           -- byName['enforce'].visible = self.isPedFreemode
 
           local modelLabel = self:getModelLabelByIndex(val)
-
           ped = self:getPed()
 
+          SetPedConfigFlag(ped, 292, true)
           camera.pointToBone(SKEL_ROOT)
         end)
       end)
@@ -3579,7 +3570,6 @@ function SkinEditor:openComponentMenu(comp)
 
   local menu = Menu('skin.component.' .. GetEnumKey(PED_COMPONENTS, comp), {
     title = label,
-    float = 'top|left', -- not needed, default value
     items = items
   })
 
