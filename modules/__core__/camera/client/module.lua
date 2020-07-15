@@ -67,8 +67,8 @@ module.start = function()
       
       if module.camRadius < 0.75 then
         module.camRadius = 0.75
-      elseif module.camRadius > 2.5 then
-        module.camRadius = 2.5
+      elseif module.camRadius > 5.0 then
+        module.camRadius = 5.0
       end
 
     end

@@ -808,6 +808,10 @@ module.OpenShopMenu = function()
 	module.EnterShop()
 
 	Citizen.Wait(500)
+
+	camera.setPolarAzimuthAngle(250.0, 120.0)
+	camera.setRadius(3.5)
+
 	DoScreenFadeIn(250)
 
 	local items = {}
@@ -907,7 +911,7 @@ end)
 -- Shop Sub-Menu Functions
 -----------------------------------------------------------------------------------
 
-module.OpenCompactsCoupesMenu = function()
+module.OpenCompactsCoupesMenu = function()	
 	local items = {}
 	local count = 0
 
