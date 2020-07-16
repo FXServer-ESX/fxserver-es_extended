@@ -38,7 +38,8 @@ end
 
 Cache.identity = IdentityCacheConsumer()
 
-module.Menu = nil
+module.Menu          = nil
+module.PreventSaving = false
 
 module.OpenMenu = function(cb)
 
@@ -222,17 +223,19 @@ module.LoadHUD = function()
 
 end
 
-module.SavePosition = ESX.SetInterval(60000, function()
+module.SavePosition = ESX.SetInterval(30000, function()
   if NetworkIsPlayerActive(PlayerId()) then
-    local playerCoords = GetEntityCoords(PlayerPedId())
-    local heading      = GetEntityHeading(PlayerPedId())
-    local position     = {
-      x       = math.round(playerCoords.x, 1),
-      y       = math.round(playerCoords.y, 1),
-      z       = math.round(playerCoords.z, 1),
-      heading = math.round(heading, 1)
-    }
+    if not module.PreventSaving then
+      local playerCoords = GetEntityCoords(PlayerPedId())
+      local heading      = GetEntityHeading(PlayerPedId())
+      local position     = {
+        x       = math.round(playerCoords.x, 1),
+        y       = math.round(playerCoords.y, 1),
+        z       = math.round(playerCoords.z, 1),
+        heading = math.round(heading, 1)
+      }
 
-    emitServer('esx:identity:updatePosition', position)
+      emitServer('esx:identity:updatePosition', position)
+    end
   end
 end)

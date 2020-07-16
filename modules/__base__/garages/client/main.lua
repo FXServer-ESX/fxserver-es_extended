@@ -27,11 +27,15 @@ Citizen.CreateThread(function()
 		local playerPed = PlayerPedId()
 		local playerCoords = GetEntityCoords(PlayerPedId())
 		
-
 		module.IsInMarker = false
 		module.LetSleep = true
 
 		if IsPedInAnyVehicle(playerPed, false) then
+
+			if module.CurrentAction == "VehicleSpawner" then
+				module.CurrentAction = nil
+			end
+
 			for k,v in pairs(module.Zones) do
 				if GetDistanceBetweenCoords(playerCoords, v.VehicleReturn.Pos, true) < module.DrawDistance then
 					module.LetSleep = false
@@ -48,11 +52,15 @@ Citizen.CreateThread(function()
 				end
 			end
 		else
+			if module.CurrentAction == "store_vehicle" then
+				module.CurrentAction = nil
+			end
+
 			for k,v in pairs(module.Zones) do
 				if GetDistanceBetweenCoords(playerCoords, v.VehicleSpawner.Pos, true) < module.DrawDistance then
 					module.LetSleep = false
 
-					if v.Type ~= -1 then
+					if v.VehicleSpawner.Type ~= -1 then
 						DrawMarker_2(v.VehicleSpawner.Type, v.VehicleSpawner.Pos, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, v.VehicleSpawner.Size.x, v.VehicleSpawner.Size.y, v.VehicleSpawner.Size.z, v.VehicleSpawner.MarkerColor.r, v.VehicleSpawner.MarkerColor.g, v.VehicleSpawner.MarkerColor.b, v.VehicleSpawner.MarkerColor.a, false, false, 2, true, nil, nil, false, true)
 					end
 
@@ -65,15 +73,12 @@ Citizen.CreateThread(function()
 			end
 		end
 
-		if module.IsInMarker and not module.HasAlreadyEnteredMarker or (module.IsInMarker and (module.LastGarage ~= module.currentGarage or module.LastPart ~= module.currentPart or module.LastParking ~= module.currentParking) ) then
-		
-			if module.LastGarage ~= module.CurrentGarage or module.LastPart ~= module.currentPart then
-				module.HasAlreadyEnteredMarker = true
-				LastGarage                     = module.CurrentGarage
-				LastPart                       = module.CurrentPart
-				
-				emit('garages:hasEnteredMarker', module.CurrentGarage, module.CurrentPart)
-			end
+		if module.IsInMarker and not module.HasAlreadyEnteredMarker or (module.IsInMarker and (module.LastGarage ~= module.CurrentGarage or module.LastPart ~= module.CurrentPart or module.LastParking ~= module.CurrentParking) ) then
+			module.HasAlreadyEnteredMarker = true
+			module.LastGarage              = module.CurrentGarage
+			module.LastPart                = module.CurrentPart
+
+			emit('garages:hasEnteredMarker', module.LastGarage, module.LastPart)
 		end
 
 		if not module.IsInMarker and module.HasAlreadyEnteredMarker then

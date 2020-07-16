@@ -39,7 +39,7 @@ on('garages:hasEnteredMarker', function(name, part)
 						request('garages:checkOwnedVehicle', function(result)
 							if result then
 								module.CurrentAction     = 'store_vehicle'
-								module.CurrentActionMsg  = tostring("Press ~INPUT_CONTEXT~ to return your ~y~ " .. name .. "~s~ to the garage.")
+								module.CurrentActionMsg  = tostring("Press ~INPUT_CONTEXT~ to return your ~y~" .. name .. "~s~ to the garage.")
 								module.CurrentActionData = {
 									vehicle = vehicle,
 									label   = name,

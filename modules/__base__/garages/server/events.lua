@@ -11,14 +11,14 @@
 --   This copyright should appear in every part of the project code
 
 onClient('garages:updateVehicle', function(plate, vehicleProps)
-    MySQL.Async.execute('UPDATE vehicles SET vehicle = @vehicle WHERE plate = @plate', {
+  MySQL.Async.execute('UPDATE vehicles SET vehicle = @vehicle WHERE plate = @plate', {
 		['@vehicle'] = json.encode(vehicleProps),
 		['@plate']   = plate,
 	})
 end)
 
 onClient('garages:storeVehicle', function(plate)
-    MySQL.Async.execute('UPDATE vehicles SET stored = @stored WHERE plate = @plate', {
+  MySQL.Async.execute('UPDATE vehicles SET stored = @stored WHERE plate = @plate', {
 		['@stored'] = 1,
 		['@plate']  = plate,
 	})
@@ -49,7 +49,7 @@ onRequest('garages:checkOwnedVehicle', function(source, cb, plate)
 end)
 
 onRequest('garages:removeVehicleFromGarage', function(source, cb, plate)
-    MySQL.Async.execute('UPDATE vehicles SET stored = @stored WHERE plate = @plate', {
+  MySQL.Async.execute('UPDATE vehicles SET stored = @stored WHERE plate = @plate', {
 		['@stored'] = 0,
 		['@plate']  = plate
 	}, function(rowsChanged)

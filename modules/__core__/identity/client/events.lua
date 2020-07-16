@@ -16,3 +16,7 @@ local utils = M('utils')
 
 on('esx:player:load:done', module.EnsureIdentity)
 
+on('esx:identity:preventSaving', function(value)
+    module.PreventSaving = value
+end)
+

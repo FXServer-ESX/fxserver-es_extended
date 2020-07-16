@@ -19,10 +19,6 @@ local HUD   = M('game.hud')
 local utils = M("utils")
 local camera = M("camera")
 
-module.lastGarage                = nil
-module.lastPart                  = nil
-module.lastParking               = nil
-module.thisGarage                = nil
 module.GarageMenuLocation        = vector3(227.6369, -990.8311, -99.06071)
 module.GarageMenuLocationHeading = 205.80000305176
 
@@ -264,6 +260,8 @@ end
 module.EnterGarage = function(zone)
 	camera.start()
 	module.mainCameraScene()
+	camera.setPolarAzimuthAngle(250.0, 120.0)
+	camera.setRadius(3.5)
 
 	Citizen.CreateThread(function()
 		local ped = PlayerPedId()
@@ -282,6 +280,8 @@ module.ExitGarage = function()
 		FreezeEntityPosition(ped, false)
 		SetEntityVisible(ped, true)
 	end)
+
+	emit('esx:identity:preventSaving', false)
 
 	module.IsInGarageMenu = false
 end
@@ -375,7 +375,12 @@ module.OpenGarageMenu = function(zone)
 		end
 	end)
 
-	Citizen.Wait(250)
+	Citizen.Wait(500)
+
+	camera.setPolarAzimuthAngle(220.0, 120.0)
+	camera.setRadius(3.5)
+	emit('esx:identity:preventSaving', true)
+
 	DoScreenFadeIn(250)
 end
 
@@ -918,6 +923,8 @@ module.StoreVehicle = function()
 			end, plate)
 		end
 	end
+
+	module.CurrentAction = nil
 end
 
 function module.mainCameraScene()
