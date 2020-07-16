@@ -672,24 +672,8 @@ module.Init = function()
 		SetBlipColour (blip,11)
 	end)
 
-	-- Citizen.CreateThread(function()
-	-- 	local blip2 = AddBlipForCoord(module.zones.shopSell.pos)
-	
-	-- 	SetBlipSprite (blip2, 326)
-	-- 	SetBlipDisplay(blip2, 4)
-	-- 	SetBlipScale  (blip2, 0.75)
-	-- 	SetBlipAsShortRange(blip2, true)
-	
-	-- 	BeginTextCommandSetBlipName('STRING')
-	-- 	AddTextComponentSubstringPlayerName("Car Resell")
-	-- 	EndTextCommandSetBlipName(blip2)
-	-- 	SetBlipColour (blip2,6)
-	-- end)
-
 	request("vehicleshop:storeAllVehicles", function(result)
-		if result then
-			print("Stored all vehicles.")
-		end
+
 	end)
 
 	-- request("vehicleshop:getCompactsCoupes", function(result)
