@@ -811,6 +811,7 @@ module.OpenShopMenu = function()
 
 	camera.setPolarAzimuthAngle(250.0, 120.0)
 	camera.setRadius(3.5)
+	emit('esx:identity:preventSaving', true)
 
 	DoScreenFadeIn(250)
 
@@ -879,8 +880,6 @@ module.OpenShopMenu = function()
 			end
 
 			module.ExitShop()
-			module.ReturnPlayer()
-			camera.destroy()
 		end
 	end)
 end
@@ -2511,9 +2510,11 @@ end
 module.ExitShop = function()
 	Citizen.CreateThread(function()
 		local ped = PlayerPedId()
-
 		FreezeEntityPosition(ped, false)
 		SetEntityVisible(ped, true)
+		module.ReturnPlayer()
+		camera.destroy()
+		emit('esx:identity:preventSaving', false)
 	end)
 
 	module.isInShopMenu = false

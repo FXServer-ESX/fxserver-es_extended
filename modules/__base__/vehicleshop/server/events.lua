@@ -18,7 +18,7 @@ on("esx:db:ready", function()
 end)
 
 onClient('vehicleshop:updateVehicle', function(vehicleProps, plate)
-    MySQL.Async.execute('UPDATE vehicles SET vehicle = @vehicle WHERE plate = @plate', {
+  MySQL.Async.execute('UPDATE vehicles SET vehicle = @vehicle WHERE plate = @plate', {
 		['@plate']   = plate,
 		['@vehicle'] = json.encode(vehicleProps)
 	})
