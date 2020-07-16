@@ -51,17 +51,29 @@ end)
 onRequest("vehicleshop:buyVehicle", function(source, cb, model, plate, price, formattedPrice)
 	local player = Player.fromId(source)
 	local playerData = player:getIdentity()
+	local foundVehicle = false
 
 	if player then
-		MySQL.Async.execute('INSERT INTO vehicles (id, owner, plate, vehicle) VALUES (@id, @owner, @plate, @vehicle)', {
-			['@id']         = player:getIdentityId(),
-			['@owner']      = player.identifier,
-			['@plate']      = plate,
-			['@vehicle']    = json.encode({model = GetHashKey(model), plate = plate}),
-		}, function(rowsChanged)
-			-- print(playerData:getFirstName() .. " " .. playerData:getLastName() .. " bought a " .. model .. " for $" .. tostring(formattedPrice))
-			cb(true)
-		end)
+		for k,v in pairs(module.sellableVehicles) do
+			if tostring(model) == tostring(v.model) then
+				foundVehicle = true
+				break
+			end
+		end
+
+		if foundVehicle then
+			MySQL.Async.execute('INSERT INTO vehicles (id, owner, plate, vehicle) VALUES (@id, @owner, @plate, @vehicle)', {
+				['@id']         = player:getIdentityId(),
+				['@owner']      = player.identifier,
+				['@plate']      = plate,
+				['@vehicle']    = json.encode({model = GetHashKey(model), plate = plate}),
+			}, function(rowsChanged)
+				-- print(playerData:getFirstName() .. " " .. playerData:getLastName() .. " bought a " .. model .. " for $" .. tostring(formattedPrice))
+				cb(true)
+			end)
+		else
+			cb(false)
+		end
 	else
 		cb(false)
 	end
@@ -89,4 +101,80 @@ onRequest("vehicleshop:storeAllVehicles", function(source, cb, plate)
 	}, function(rowsChanged)
 		cb(true)
 	end)
+end)
+
+onRequest("vehicleshop:getCategories", function(source, cb)
+	cb(module.categories)
+end)
+
+onRequest("vehicleshop:getCompactsCoupes", function(source, cb)
+	cb(module.cc)
+end)
+
+onRequest("vehicleshop:getCoupesSedans", function(source, cb)
+	cb(module.cs)
+end)
+
+onRequest("vehicleshop:getSports", function(source, cb)
+	cb(module.sports)
+end)
+
+onRequest("vehicleshop:getSports2", function(source, cb)
+	cb(module.sports2)
+end)
+
+onRequest("vehicleshop:getSports3", function(source, cb)
+	cb(module.sports3)
+end)
+
+onRequest("vehicleshop:getSportsClassics", function(source, cb)
+	cb(module.sportsclassics)
+end)
+
+onRequest("vehicleshop:getSportsClassics2", function(source, cb)
+	cb(module.sportsclassics2)
+end)
+
+onRequest("vehicleshop:getSuper", function(source, cb)
+	cb(module.super)
+end)
+
+onRequest("vehicleshop:getSuper2", function(source, cb)
+	cb(module.super2)
+end)
+
+onRequest("vehicleshop:getMuscle", function(source, cb)
+	cb(module.muscle)
+end)
+
+onRequest("vehicleshop:getMuscle2", function(source, cb)
+	cb(module.muscle2)
+end)
+
+onRequest("vehicleshop:getOffroad", function(source, cb)
+	cb(module.offroad)
+end)
+
+onRequest("vehicleshop:getSUVs", function(source, cb)
+	cb(module.suvs)
+end)
+
+onRequest("vehicleshop:getVans", function(source, cb)
+	cb(module.vans)
+end)
+
+onRequest("vehicleshop:getMotorcycles", function(source, cb)
+	cb(module.motorocycles)
+end)
+
+onRequest("vehicleshop:getMotorcycles2", function(source, cb)
+	cb(module.motorocycles2)
+end)
+
+onRequest("vehicleshop:getMotorcycles3", function(source, cb)
+	cb(module.motorocycles3)
+end)
+
+onRequest("vehicleshop:getSellableVehicles", function(source, cb)
+	cb(module.sellableVehicles)
 end)

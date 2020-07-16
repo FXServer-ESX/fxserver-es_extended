@@ -65,561 +65,6 @@ module.selectedMotorcyclesVehicle     = module.selectedMotorcyclesVehicle or 1
 module.selectedMotorcycles2Vehicle    = module.selectedMotorcycles2Vehicle or 1
 module.selectedMotorcycles3Vehicle    = module.selectedMotorcycles3Vehicle or 1
 
-module.categories = {
-	{name = 'cc',                     label = 'Compacts/Coupes'               },
-	{name = 'cs',                     label = 'Coupes/Sedans'                 },
-	{name = 'sports',                 label = 'Sports'                        },
-	{name = 'sports2',                label = 'Sports 2'                      },
-	{name = 'sports3',                label = 'Sports 3'                      },
-	{name = 'sportsclassics',         label = 'Sports Classics'               },
-	{name = 'sportsclassics2',        label = 'Sports Classics 2'             },
-	{name = 'super',                  label = 'Super'                         },
-	{name = 'super2',                 label = 'Super 2'                       },
-	{name = 'muscle',                 label = 'Muscle'                        },
-	{name = 'muscle2',                label = 'Muscle 2'                      },
-	{name = 'offroad',                label = 'Off-road'                      },
-	{name = 'suvs',                   label = 'SUVs'                          },
-	{name = 'vans',                   label = 'Vans'                          },
-	{name = 'motorcycles',            label = 'Motorcycles'                   },
-	{name = 'motorcycles2',           label = 'Motorcycles 2'                 },
-	{name = 'motorcycles3',           label = 'Motorcycles 3'                 }
-}
-
-module.cc = {
-	{name = 'Blista',                 model = 'blista',       price = 8000    },
-	{name = 'Brioso R/A',             model = 'brioso',       price = 18000   },
-	{name = 'Issi',                   model = 'issi2',        price = 10000   },
-	{name = 'Panto',                  model = 'panto',        price = 10000   },
-	{name = 'Prairie',                model = 'prairie',      price = 12000   },
-	{name = 'Cognoscenti Cabrio',     model = 'cogcabrio',    price = 55000   },
-	{name = 'Exemplar',               model = 'exemplar',     price = 32000   },
-	{name = 'F620',                   model = 'f620',         price = 40000   },
-	{name = 'Felon',                  model = 'felon',        price = 42000   },
-	{name = 'Felon GT',               model = 'felon2',       price = 55000   },
-	{name = 'Jackal',                 model = 'jackal',       price = 38000   },
-	{name = 'Oracle XS',              model = 'oracle2',      price = 35000   },
-	{name = 'Sentinel',               model = 'sentinel',     price = 32000   },
-	{name = 'Sentinel XS',            model = 'sentinel2',    price = 40000   },
-	{name = 'Windsor',                model = 'windsor',      price = 95000   },
-	{name = 'Windsor Drop',           model = 'windsor2',     price = 125000  },
-	{name = 'Zion',                   model = 'zion',         price = 36000   },
-}
-
-module.cs = {
-	{name = 'Zion Cabrio',            model = 'zion2',        price = 45000   },
-	{name = 'Asea',                   model = 'asea',         price = 5500    },
-	{name = 'Cognoscenti',            model = 'cognoscenti',  price = 55000   },
-	{name = 'Emperor',                model = 'emperor',      price = 8500    },
-	{name = 'Fugitive',               model = 'fugitive',     price = 12000   },
-	{name = 'Glendale',               model = 'glendale',     price = 6500    },
-	{name = 'Intruder',               model = 'intruder',     price = 7500    },
-	{name = 'Premier',                model = 'premier',      price = 8000    },
-	{name = 'Primo Custom',           model = 'primo2',       price = 14000   },
-	{name = 'Regina',                 model = 'regina',       price = 5000    },
-	{name = 'Schafter',               model = 'schafter2',    price = 25000   },
-	{name = 'Stretch',                model = 'stretch',      price = 90000   },
-	{name = 'Super Diamond',          model = 'superd',       price = 130000  },
-	{name = 'Tailgater',              model = 'tailgater',    price = 30000   },
-	{name = 'Warrener',               model = 'warrener',     price = 4000    },
-	{name = 'Washington',             model = 'washington',   price = 9000    }
-}
-
-module.sports = {
-	{name = '9F',                     model = 'ninef',        price = 65000   },
-	{name = '9F Cabrio',              model = 'ninef2',       price = 80000   },
-	{name = 'Alpha',                  model = 'alpha',        price = 60000   },
-	{name = 'Banshee',                model = 'banshee',      price = 70000   },
-	{name = 'Bestia GTS',             model = 'bestiagts',    price = 55000   },
-	{name = 'Buffalo',                model = 'buffalo',      price = 12000   },
-	{name = 'Buffalo S',              model = 'buffalo2',     price = 20000   },
-	{name = 'Carbonizzare',           model = 'carbonizzare', price = 75000   },
-	{name = 'Comet',                  model = 'comet2',       price = 65000   },
-	{name = 'Coquette',               model = 'coquette',     price = 65000   },
-	{name = 'Drift Tampa',            model = 'tampa2',       price = 80000   },
-	{name = 'Elegy',                  model = 'elegy2',       price = 38500   },
-	{name = 'Feltzer',                model = 'feltzer2',     price = 55000   },
-	{name = 'Furore GT',              model = 'furoregt',     price = 45000   },
-	{name = 'Fusilade',               model = 'fusilade',     price = 40000   },
-	{name = 'Jester',                 model = 'jester',       price = 65000   },
-	{name = 'Jester(Racecar)',        model = 'jester2',      price = 135000  }
-}
-
-module.sports2 = {
-	{name = 'Khamelion',              model = 'khamelion',    price = 38000   },
-	{name = 'Kuruma',                 model = 'kuruma',       price = 30000   },
-	{name = 'Lynx',                   model = 'lynx',         price = 40000   },
-	{name = 'Mamba',                  model = 'mamba',        price = 70000   },
-	{name = 'Massacro',               model = 'massacro',     price = 65000   },
-	{name = 'Massacro(Racecar)',      model = 'massacro2',    price = 130000  },
-	{name = 'Omnis',                  model = 'omnis',        price = 35000   },
-	{name = 'Penumbra',               model = 'penumbra',     price = 28000   },
-	{name = 'Rapid GT',               model = 'rapidgt',      price = 35000   },
-	{name = 'Rapid GT Convertible',   model = 'rapidgt2',     price = 45000   },
-	{name = 'Schafter V12',           model = 'schafter3',    price = 50000   },
-	{name = 'Seven 70',               model = 'seven70',      price = 39500   },
-	{name = 'Sultan',                 model = 'sultan',       price = 15000   },
-	{name = 'Surano',                 model = 'surano',       price = 50000   },
-	{name = 'Tropos',                 model = 'tropos',       price = 40000   },
-	{name = 'Verlierer',              model = 'verlierer2',   price = 70000   },
-	{name = 'raiden',                 model = 'raiden',       price = 1375000 }
-}
-
-module.sports3 = {
-	{name = 'Pariah',                 model = 'pariah',       price = 1420000 },
-	{name = 'Stromberg',              model = 'stromberg',    price = 3185350 },
-	{name = 'Streiter',               model = 'streiter',     price = 500000  },
-	{name = 'Comet 5',                model = 'comet5',       price = 1145000 }, 
-	{name = 'Neon',                   model = 'neon',         price = 1500000 },
-	{name = 'Revolter',               model = 'revolter',     price = 1610000 },
-	{name = 'Sentinel 3',              model = 'sentinel3',   price = 650000  }
-}
-
-module.sportsclassics = {
-	{name = 'Btype',                  model = 'btype',        price = 62000   },
-	{name = 'Btype Luxe',             model = 'btype3',       price = 85000   },
-	{name = 'Btype Hotroad',          model = 'btype2',       price = 155000  },
-	{name = 'Casco',                  model = 'casco',        price = 30000   },
-	{name = 'Coquette Classic',       model = 'coquette2',    price = 40000   },
-	{name = 'Manana',                 model = 'manana',       price = 12800   },
-	{name = 'Monroe',                 model = 'monroe',       price = 55000   },
-	{name = 'Pigalle',                model = 'pigalle',      price = 20000   },
-	{name = 'Stinger',                model = 'stinger',      price = 80000   },
-	{name = 'Stinger GT',             model = 'stingergt',    price = 75000   },
-	{name = 'Stirling GT',            model = 'feltzer3',     price = 65000   },
-	{name = 'Z-Type',                 model = 'ztype',        price = 220000  },
-	{name = 'Ardent',                 model = 'ardent',       price = 1150000 },
-	{name = 'Retinue',                model = 'retinue',      price = 615000  },
-	{name = 'Rapid GT3',              model = 'rapidgt3',     price = 885000  },
-	{name = 'Deluxo',                 model = 'deluxo',       price = 4721500 },
-	{name = 'Savestra',               model = 'savestra',     price = 990000  }
-}
-
-module.sportsclassics2 = {
-	{name = 'GT 500',                 model = 'gt500',        price = 785000  },
-	{name = 'Z190',                   model = 'z190',         price = 900000  },
-	{name = 'Viseris',                model = 'viseris',      price = 875000  },
-	{name = 'Senna',                  model = 'senna',        price = 0       }
-}
-
-module.super = {
-	{name = 'Adder',                  model = 'adder',        price = 900000  },
-	{name = 'Banshee 900R',           model = 'banshee2',     price = 255000  },
-	{name = 'Bullet',                 model = 'bullet',       price = 90000   },
-	{name = 'Cheetah',                model = 'cheetah',      price = 375000  },
-	{name = 'Entity XF',              model = 'entityxf',     price = 425000  },
-	{name = 'ETR1',                   model = 'sheava',       price = 220000  },
-	{name = 'FMJ',                    model = 'fmj',          price = 185000  },
-	{name = 'Infernus',               model = 'infernus',     price = 180000  },
-	{name = 'Osiris',                 model = 'osiris',       price = 160000  },
-	{name = 'Pfister',                model = 'pfister811',   price = 85000   },
-	{name = 'RE-7B',                  model = 'le7b',         price = 325000  },
-	{name = 'Reaper',                 model = 'reaper',       price = 150000  },
-	{name = 'Sultan RS',              model = 'sultanrs',     price = 65000   },
-	{name = 'T20',                    model = 't20',          price = 300000  },
-	{name = 'Turismo R',              model = 'turismor',     price = 350000  },
-	{name = 'Tyrus',                  model = 'tyrus',        price = 600000  },
-	{name = 'Vacca',                  model = 'vacca',        price = 120000  }
-}
-
-module.super2 = {
-	{name = 'Voltic',                 model = 'voltic',       price = 90000   },
-	{name = 'X80 Proto',              model = 'prototipo',    price = 2500000 },
-	{name = 'Zentorno',               model = 'zentorno',     price = 1500000 },
-	{name = 'Voltic 2',               model = 'voltic2',      price = 3830400 },
-	{name = 'Oppressor',              model = 'oppressor',    price = 3524500 },
-	{name = 'Visione',                model = 'visione',      price = 2250000 },
-	{name = 'Cyclone',                model = 'cyclone',      price = 1890000 },
-	{name = 'SC 1',                   model = 'sc1',          price = 1603000 },
-	{name = 'Autarch',                model = 'autarch',      price = 1955000 }
-}
-
-module.muscle = {
-	{name = 'Blade',                  model = 'blade',        price = 15000   },
-	{name = 'Buccaneer',              model = 'buccaneer',    price = 18000   },
-	{name = 'Buccaneer Rider',        model = 'buccaneer2',   price = 24000   },
-	{name = 'Chino',                  model = 'chino',        price = 15000   },
-	{name = 'Chino Luxe',             model = 'chino2',       price = 19000   },
-	{name = 'Coquette BlackFin',      model = 'coquette3',    price = 55000   },
-	{name = 'Dominator',              model = 'dominator',    price = 35000   },
-	{name = 'Dukes',                  model = 'dukes',        price = 28000   },
-	{name = 'Gauntlet',               model = 'gauntlet',     price = 30000   },
-	{name = 'Hotknife',               model = 'hotknife',     price = 125000  },
-	{name = 'Faction',                model = 'faction',      price = 20000   },
-	{name = 'Faction Rider',          model = 'faction2',     price = 30000   },
-	{name = 'Faction XL',             model = 'faction3',     price = 40000   },
-	{name = 'Nightshade',             model = 'nightshade',   price = 65000   },
-	{name = 'Phoenix',                model = 'phoenix',      price = 12500   },
-	{name = 'Picador',                model = 'picador',      price = 18000   },
-	{name = 'Sabre Turbo',            model = 'sabregt',      price = 20000   }
-}
-
-module.muscle2 = {
-	{name = 'Sabre GT',               model = 'sabregt2',     price = 25000   },
-	{name = 'Slam Van',               model = 'slamvan3',     price = 11500   },
-	{name = 'Tampa',                  model = 'tampa',        price = 16000   },
-	{name = 'Virgo',                  model = 'virgo',        price = 14000   },
-	{name = 'Vigero',                 model = 'vigero',       price = 12500   },
-	{name = 'Voodoo',                 model = 'voodoo',       price = 7200    },
-	{name = 'Ruiner 2',               model = 'ruiner2',      price = 5745600 },
-	{name = 'Yosemite',               model = 'yosemite',     price = 485000  },
-	{name = 'Hermes',                 model = 'hermes',       price = 535000  },
-	{name = 'Hustler',                model = 'hustler',      price = 625000  }
-}
-
-module.offroad = {
-	{name = 'Bifta',                  model = 'bifta',        price = 12000   },
-	{name = 'Bf Injection',           model = 'bfinjection',  price = 16000   },
-	{name = 'Blazer',                 model = 'blazer',       price = 6500    },
-	{name = 'Blazer Sport',           model = 'blazer4',      price = 8500    },
-	{name = 'Brawler',                model = 'brawler',      price = 45000   },
-	{name = 'Bubsta 6x6',             model = 'dubsta3',      price = 120000  },
-	{name = 'Dune Buggy',             model = 'dune',         price = 8000    },
-	{name = 'Guardian',               model = 'guardian',     price = 45000   },
-	{name = 'Rebel',                  model = 'rebel2',       price = 35000   },
-	{name = 'Sandking',               model = 'sandking',     price = 55000   },
-	{name = 'The Liberator',          model = 'monster',      price = 210000  },
-	{name = 'Trophy Truck',           model = 'trophytruck',  price = 60000   },
-	{name = 'Trophy Truck Limited',   model = 'trophytruck2', price = 80000   },
-	{name = 'Blazer 5',               model = 'blazer5',      price = 1755600 },
-	{name = 'Riata',                  model = 'riata',        price = 380000  },
-	{name = 'Kamacho',                model = 'kamacho',      price = 345000  }
-}
-
-module.suvs = {
-	{name = 'Baller',                 model = 'baller2',      price = 40000   },
-	{name = 'Baller Sport',           model = 'baller3',      price = 60000   },
-	{name = 'Cavalcade',              model = 'cavalcade2',   price = 55000   },
-	{name = 'Contender',              model = 'contender',    price = 70000   },
-	{name = 'Dubsta',                 model = 'dubsta',       price = 45000   },
-	{name = 'Dubsta Luxuary',         model = 'dubsta2',      price = 60000   },
-	{name = 'Fhantom',                model = 'fq2',          price = 17000   },
-	{name = 'Grabger',                model = 'granger',      price = 50000   },
-	{name = 'Gresley',                model = 'gresley',      price = 47500   },
-	{name = 'Huntley S',              model = 'huntley',      price = 40000   },
-	{name = 'Landstalker',            model = 'landstalker',  price = 35000   },
-	{name = 'Mesa',                   model = 'mesa',         price = 16000   },
-	{name = 'Mesa Trail',             model = 'mesa3',        price = 40000   },
-	{name = 'Patriot',                model = 'patriot',      price = 55000   },
-	{name = 'Radius',                 model = 'radi',         price = 29000   },
-	{name = 'Rocoto',                 model = 'rocoto',       price = 45000   },
-	{name = 'Seminole',               model = 'seminole',     price = 25000   },
-	{name = 'XLS',                    model = 'xls',          price = 32000   }
-}
-
-module.vans = {
-	{name = 'Bison',                  model = 'bison',        price = 45000   },
-	{name = 'Bobcat XL',              model = 'bobcatxl',     price = 32000   },
-	{name = 'Burrito',                model = 'burrito3',     price = 19000   },
-	{name = 'Burrito',                model = 'gburrito2',    price = 29000   },
-	{name = 'Camper',                 model = 'camper',       price = 42000   },
-	{name = 'Gang Burrito',           model = 'gburrito',     price = 45000   },
-	{name = 'Journey',                model = 'journey',      price = 6500    },
-	{name = 'Minivan',                model = 'minivan',      price = 13000   },
-	{name = 'Moonbeam',               model = 'moonbeam',     price = 18000   },
-	{name = 'Moonbeam Rider',         model = 'moonbeam2',    price = 35000   },
-	{name = 'Paradise',               model = 'paradise',     price = 19000   },
-	{name = 'Rumpo',                  model = 'rumpo',        price = 15000   },
-	{name = 'Rumpo Trail',            model = 'rumpo3',       price = 19500   },
-	{name = 'Surfer',                 model = 'surfer',       price = 12000   },
-	{name = 'Youga',                  model = 'youga',        price = 10800   },
-	{name = 'Youga Luxuary',          model = 'youga2',       price = 14500   }
-}
-
-module.motorcycles = {
-	{name = 'Akuma',                  model = 'AKUMA',        price = 7500    },
-	{name = 'Avarus',                 model = 'avarus',       price = 18000   },
-	{name = 'Bagger',                 model = 'bagger',       price = 13500   },
-	{name = 'Bati 801',               model = 'bati',         price = 12000   },
-	{name = 'Bati 801RR',             model = 'bati2',        price = 19000   },
-	{name = 'BF400',                  model = 'bf400',        price = 6500    },
-	{name = 'BMX (Velo)',             model = 'bmx',          price = 160     },
-	{name = 'Carbon RS',              model = 'carbonrs',     price = 18000   },
-	{name = 'Chimera',                model = 'chimera',      price = 38000   },
-	{name = 'Cliffhanger',            model = 'cliffhanger',  price = 9500    },
-	{name = 'Cruiser (Velo)',         model = 'cruiser',      price = 510     },
-	{name = 'Daemon',                 model = 'daemon',       price = 11500   },
-	{name = 'Daemon High',            model = 'daemon2',      price = 13500   },
-	{name = 'Defiler',                model = 'defiler',      price = 9800    },
-	{name = 'Double T',               model = 'double',       price = 28000   },
-	{name = 'Enduro',                 model = 'enduro',       price = 5500    },
-	{name = 'Esskey',                 model = 'esskey',       price = 4200    }
-}
-
-module.motorcycles2 = {
-	{name = 'Faggio',                 model = 'faggio',       price = 1900    },
-	{name = 'Vespa',                  model = 'faggio2',      price = 2800    },
-	{name = 'Fixter (Velo)',          model = 'fixter',       price = 225     },
-	{name = 'Gargoyle',               model = 'gargoyle',     price = 16500   },
-	{name = 'Hakuchou',               model = 'hakuchou',     price = 31000   },
-	{name = 'Hakuchou Sport',         model = 'hakuchou2',    price = 55000   },
-	{name = 'Hexer',                  model = 'hexer',        price = 12000   },
-	{name = 'Innovation',             model = 'innovation',   price = 23500   },
-	{name = 'Manchez',                model = 'manchez',      price = 5300    },
-	{name = 'Nemesis',                model = 'nemesis',      price = 5800    },
-	{name = 'Nightblade',             model = 'nightblade',   price = 35000   },
-	{name = 'PCJ-600',                model = 'pcj',          price = 6200    },
-	{name = 'Ruffian',                model = 'ruffian',      price = 6800    },
-	{name = 'Sanchez',                model = 'sanchez',      price = 5300    },
-	{name = 'Sanchez Sport',          model = 'sanchez2',     price = 5300    },
-	{name = 'Sanctus',                model = 'sanctus',      price = 25000   },
-	{name = 'Scorcher (Velo)',        model = 'scorcher',     price = 280     }
-}
-
-module.motorcycles3 = {
-	{name = 'Sovereign',              model = 'sovereign',    price = 22000   },
-	{name = 'Shotaro Concept',        model = 'shotaro',      price = 320000  },
-	{name = 'Thrust',                 model = 'thrust',       price = 24000   },
-	{name = 'Tri bike (Velo)',        model = 'tribike3',     price = 520     },
-	{name = 'Vader',                  model = 'vader',        price = 7200    },
-	{name = 'Vortex',                 model = 'vortex',       price = 9800    },
-	{name = 'Woflsbane',              model = 'wolfsbane',    price = 9000    },
-	{name = 'Zombie',                 model = 'zombiea',      price = 9500    },
-	{name = 'Zombie Luxuary',         model = 'zombieb',      price = 12000   }
-}
-
-module.sellableVehicles = {
-	{name = 'Blade',                  model = 'blade',        price = 15000,   category = 'muscle'},
-	{name = 'Buccaneer',              model = 'buccaneer',    price = 18000,   category = 'muscle'},
-	{name = 'Buccaneer Rider',        model = 'buccaneer2',   price = 24000,   category = 'muscle'},
-	{name = 'Chino',                  model = 'chino',        price = 15000,   category = 'muscle'},
-	{name = 'Chino Luxe',             model = 'chino2',       price = 19000,   category = 'muscle'},
-	{name = 'Coquette BlackFin',      model = 'coquette3',    price = 55000,   category = 'muscle'},
-	{name = 'Dominator',              model = 'dominator',    price = 35000,   category = 'muscle'},
-	{name = 'Dukes',                  model = 'dukes',        price = 28000,   category = 'muscle'},
-	{name = 'Gauntlet',               model = 'gauntlet',     price = 30000,   category = 'muscle'},
-	{name = 'Hotknife',               model = 'hotknife',     price = 125000,  category = 'muscle'},
-	{name = 'Faction',                model = 'faction',      price = 20000,   category = 'muscle'},
-	{name = 'Faction Rider',          model = 'faction2',     price = 30000,   category = 'muscle'},
-	{name = 'Faction XL',             model = 'faction3',     price = 40000,   category = 'muscle'},
-	{name = 'Nightshade',             model = 'nightshade',   price = 65000,   category = 'muscle'},
-	{name = 'Phoenix',                model = 'phoenix',      price = 12500,   category = 'muscle'},
-	{name = 'Picador',                model = 'picador',      price = 18000,   category = 'muscle'},
-	{name = 'Sabre Turbo',            model = 'sabregt',      price = 20000,   category = 'muscle'},
-	{name = 'Sabre GT',               model = 'sabregt2',     price = 25000,   category = 'muscle'},
-	{name = 'Slam Van',               model = 'slamvan3',     price = 11500,   category = 'muscle'},
-	{name = 'Tampa',                  model = 'tampa',        price = 16000,   category = 'muscle'},
-	{name = 'Virgo',                  model = 'virgo',        price = 14000,   category = 'muscle'},
-	{name = 'Vigero',                 model = 'vigero',       price = 12500,   category = 'muscle'},
-	{name = 'Voodoo',                 model = 'voodoo',       price = 7200,    category = 'muscle'},
-	{name = 'Blista',                 model = 'blista',       price = 8000,    category = 'compacts'},
-	{name = 'Brioso R/A',             model = 'brioso',       price = 18000,   category = 'compacts'},
-	{name = 'Issi',                   model = 'issi2',        price = 10000,   category = 'compacts'},
-	{name = 'Panto',                  model = 'panto',        price = 10000,   category = 'compacts'},
-	{name = 'Prairie',                model = 'prairie',      price = 12000,   category = 'compacts'},
-	{name = 'Bison',                  model = 'bison',        price = 45000,   category = 'vans'},
-	{name = 'Bobcat XL',              model = 'bobcatxl',     price = 32000,   category = 'vans'},
-	{name = 'Burrito',                model = 'burrito3',     price = 19000,   category = 'vans'},
-	{name = 'Burrito',                model = 'gburrito2',    price = 29000,   category = 'vans'},
-	{name = 'Camper',                 model = 'camper',       price = 42000,   category = 'vans'},
-	{name = 'Gang Burrito',           model = 'gburrito',     price = 45000,   category = 'vans'},
-	{name = 'Journey',                model = 'journey',      price = 6500,    category = 'vans'},
-	{name = 'Minivan',                model = 'minivan',      price = 13000,   category = 'vans'},
-	{name = 'Moonbeam',               model = 'moonbeam',     price = 18000,   category = 'vans'},
-	{name = 'Moonbeam Rider',         model = 'moonbeam2',    price = 35000,   category = 'vans'},
-	{name = 'Paradise',               model = 'paradise',     price = 19000,   category = 'vans'},
-	{name = 'Rumpo',                  model = 'rumpo',        price = 15000,   category = 'vans'},
-	{name = 'Rumpo Trail',            model = 'rumpo3',       price = 19500,   category = 'vans'},
-	{name = 'Surfer',                 model = 'surfer',       price = 12000,   category = 'vans'},
-	{name = 'Youga',                  model = 'youga',        price = 10800,   category = 'vans'},
-	{name = 'Youga Luxuary',          model = 'youga2',       price = 14500,   category = 'vans'},
-	{name = 'Asea',                   model = 'asea',         price = 5500,    category = 'sedans'},
-	{name = 'Cognoscenti',            model = 'cognoscenti',  price = 55000,   category = 'sedans'},
-	{name = 'Emperor',                model = 'emperor',      price = 8500,    category = 'sedans'},
-	{name = 'Fugitive',               model = 'fugitive',     price = 12000,   category = 'sedans'},
-	{name = 'Glendale',               model = 'glendale',     price = 6500,    category = 'sedans'},
-	{name = 'Intruder',               model = 'intruder',     price = 7500,    category = 'sedans'},
-	{name = 'Premier',                model = 'premier',      price = 8000,    category = 'sedans'},
-	{name = 'Primo Custom',           model = 'primo2',       price = 14000,   category = 'sedans'},
-	{name = 'Regina',                 model = 'regina',       price = 5000,    category = 'sedans'},
-	{name = 'Schafter',               model = 'schafter2',    price = 25000,   category = 'sedans'},
-	{name = 'Stretch',                model = 'stretch',      price = 90000,   category = 'sedans'},
-	{name = 'Super Diamond',          model = 'superd',       price = 130000,  category = 'sedans'},
-	{name = 'Tailgater',              model = 'tailgater',    price = 30000,   category = 'sedans'},
-	{name = 'Warrener',               model = 'warrener',     price = 4000,    category = 'sedans'},
-	{name = 'Washington',             model = 'washington',   price = 9000,    category = 'sedans'},
-	{name = 'Baller',                 model = 'baller2',      price = 40000,   category = 'suvs'},
-	{name = 'Baller Sport',           model = 'baller3',      price = 60000,   category = 'suvs'},
-	{name = 'Cavalcade',              model = 'cavalcade2',   price = 55000,   category = 'suvs'},
-	{name = 'Contender',              model = 'contender',    price = 70000,   category = 'suvs'},
-	{name = 'Dubsta',                 model = 'dubsta',       price = 45000,   category = 'suvs'},
-	{name = 'Dubsta Luxuary',         model = 'dubsta2',      price = 60000,   category = 'suvs'},
-	{name = 'Fhantom',                model = 'fq2',          price = 17000,   category = 'suvs'},
-	{name = 'Grabger',                model = 'granger',      price = 50000,   category = 'suvs'},
-	{name = 'Gresley',                model = 'gresley',      price = 47500,   category = 'suvs'},
-	{name = 'Huntley S',              model = 'huntley',      price = 40000,   category = 'suvs'},
-	{name = 'Landstalker',            model = 'landstalker',  price = 35000,   category = 'suvs'},
-	{name = 'Mesa',                   model = 'mesa',         price = 16000,   category = 'suvs'},
-	{name = 'Mesa Trail',             model = 'mesa3',        price = 40000,   category = 'suvs'},
-	{name = 'Patriot',                model = 'patriot',      price = 55000,   category = 'suvs'},
-	{name = 'Radius',                 model = 'radi',         price = 29000,   category = 'suvs'},
-	{name = 'Rocoto',                 model = 'rocoto',       price = 45000,   category = 'suvs'},
-	{name = 'Seminole',               model = 'seminole',     price = 25000,   category = 'suvs'},
-	{name = 'XLS',                    model = 'xls',          price = 32000,   category = 'suvs'},
-	{name = 'Btype',                  model = 'btype',        price = 62000,   category = 'sportsclassics'},
-	{name = 'Btype Luxe',             model = 'btype3',       price = 85000,   category = 'sportsclassics'},
-	{name = 'Btype Hotroad',          model = 'btype2',       price = 155000,  category = 'sportsclassics'},
-	{name = 'Casco',                  model = 'casco',        price = 30000,   category = 'sportsclassics'},
-	{name = 'Coquette Classic',       model = 'coquette2',    price = 40000,   category = 'sportsclassics'},
-	{name = 'Manana',                 model = 'manana',       price = 12800,   category = 'sportsclassics'},
-	{name = 'Monroe',                 model = 'monroe',       price = 55000,   category = 'sportsclassics'},
-	{name = 'Pigalle',                model = 'pigalle',      price = 20000,   category = 'sportsclassics'},
-	{name = 'Stinger',                model = 'stinger',      price = 80000,   category = 'sportsclassics'},
-	{name = 'Stinger GT',             model = 'stingergt',    price = 75000,   category = 'sportsclassics'},
-	{name = 'Stirling GT',            model = 'feltzer3',     price = 65000,   category = 'sportsclassics'},
-	{name = 'Z-Type',                 model = 'ztype',        price = 220000,  category = 'sportsclassics'},
-	{name = 'Bifta',                  model = 'bifta',        price = 12000,   category = 'offroad'},
-	{name = 'Bf Injection',           model = 'bfinjection',  price = 16000,   category = 'offroad'},
-	{name = 'Blazer',                 model = 'blazer',       price = 6500,    category = 'offroad'},
-	{name = 'Blazer Sport',           model = 'blazer4',      price = 8500,    category = 'offroad'},
-	{name = 'Brawler',                model = 'brawler',      price = 45000,   category = 'offroad'},
-	{name = 'Bubsta 6x6',             model = 'dubsta3',      price = 120000,  category = 'offroad'},
-	{name = 'Dune Buggy',             model = 'dune',         price = 8000,    category = 'offroad'},
-	{name = 'Guardian',               model = 'guardian',     price = 45000,   category = 'offroad'},
-	{name = 'Rebel',                  model = 'rebel2',       price = 35000,   category = 'offroad'},
-	{name = 'Sandking',               model = 'sandking',     price = 55000,   category = 'offroad'},
-	{name = 'The Liberator',          model = 'monster',      price = 210000,  category = 'offroad'},
-	{name = 'Trophy Truck',           model = 'trophytruck',  price = 60000,   category = 'offroad'},
-	{name = 'Trophy Truck Limited',   model = 'trophytruck2', price = 80000,   category = 'offroad'},
-	{name = 'Cognoscenti Cabrio',     model = 'cogcabrio',    price = 55000,   category = 'coupes'},
-	{name = 'Exemplar',               model = 'exemplar',     price = 32000,   category = 'coupes'},
-	{name = 'F620',                   model = 'f620',         price = 40000,   category = 'coupes'},
-	{name = 'Felon',                  model = 'felon',        price = 42000,   category = 'coupes'},
-	{name = 'Felon GT',               model = 'felon2',       price = 55000,   category = 'coupes'},
-	{name = 'Jackal',                 model = 'jackal',       price = 38000,   category = 'coupes'},
-	{name = 'Oracle XS',              model = 'oracle2',      price = 35000,   category = 'coupes'},
-	{name = 'Sentinel',               model = 'sentinel',     price = 32000,   category = 'coupes'},
-	{name = 'Sentinel XS',            model = 'sentinel2',    price = 40000,   category = 'coupes'},
-	{name = 'Windsor',                model = 'windsor',      price = 95000,   category = 'coupes'},
-	{name = 'Windsor Drop',           model = 'windsor2',     price = 125000,  category = 'coupes'},
-	{name = 'Zion',                   model = 'zion',         price = 36000,   category = 'coupes'},
-	{name = 'Zion Cabrio',            model = 'zion2',        price = 45000,   category = 'coupes'},
-	{name = '9F',                     model = 'ninef',        price = 65000,   category = 'sports'},
-	{name = '9F Cabrio',              model = 'ninef2',       price = 80000,   category = 'sports'},
-	{name = 'Alpha',                  model = 'alpha',        price = 60000,   category = 'sports'},
-	{name = 'Banshee',                model = 'banshee',      price = 70000,   category = 'sports'},
-	{name = 'Bestia GTS',             model = 'bestiagts',    price = 55000,   category = 'sports'},
-	{name = 'Buffalo',                model = 'buffalo',      price = 12000,   category = 'sports'},
-	{name = 'Buffalo S',              model = 'buffalo2',     price = 20000,   category = 'sports'},
-	{name = 'Carbonizzare',           model = 'carbonizzare', price = 75000,   category = 'sports'},
-	{name = 'Comet',                  model = 'comet2',       price = 65000,   category = 'sports'},
-	{name = 'Coquette',               model = 'coquette',     price = 65000,   category = 'sports'},
-	{name = 'Drift Tampa',            model = 'tampa2',       price = 80000,   category = 'sports'},
-	{name = 'Elegy',                  model = 'elegy2',       price = 38500,   category = 'sports'},
-	{name = 'Feltzer',                model = 'feltzer2',     price = 55000,   category = 'sports'},
-	{name = 'Furore GT',              model = 'furoregt',     price = 45000,   category = 'sports'},
-	{name = 'Fusilade',               model = 'fusilade',     price = 40000,   category = 'sports'},
-	{name = 'Jester',                 model = 'jester',       price = 65000,   category = 'sports'},
-	{name = 'Jester(Racecar)',        model = 'jester2',      price = 135000,  category = 'sports'},
-	{name = 'Khamelion',              model = 'khamelion',    price = 38000,   category = 'sports'},
-	{name = 'Kuruma',                 model = 'kuruma',       price = 30000,   category = 'sports'},
-	{name = 'Lynx',                   model = 'lynx',         price = 40000,   category = 'sports'},
-	{name = 'Mamba',                  model = 'mamba',        price = 70000,   category = 'sports'},
-	{name = 'Massacro',               model = 'massacro',     price = 65000,   category = 'sports'},
-	{name = 'Massacro(Racecar)',      model = 'massacro2',    price = 130000,  category = 'sports'},
-	{name = 'Omnis',                  model = 'omnis',        price = 35000,   category = 'sports'},
-	{name = 'Penumbra',               model = 'penumbra',     price = 28000,   category = 'sports'},
-	{name = 'Rapid GT',               model = 'rapidgt',      price = 35000,   category = 'sports'},
-	{name = 'Rapid GT Convertible',   model = 'rapidgt2',     price = 45000,   category = 'sports'},
-	{name = 'Schafter V12',           model = 'schafter3',    price = 50000,   category = 'sports'},
-	{name = 'Seven 70',               model = 'seven70',      price = 39500,   category = 'sports'},
-	{name = 'Sultan',                 model = 'sultan',       price = 15000,   category = 'sports'},
-	{name = 'Surano',                 model = 'surano',       price = 50000,   category = 'sports'},
-	{name = 'Tropos',                 model = 'tropos',       price = 40000,   category = 'sports'},
-	{name = 'Verlierer',              model = 'verlierer2',   price = 70000,   category = 'sports'},
-	{name = 'Adder',                  model = 'adder',        price = 900000,  category = 'super'},
-	{name = 'Banshee 900R',           model = 'banshee2',     price = 255000,  category = 'super'},
-	{name = 'Bullet',                 model = 'bullet',       price = 90000,   category = 'super'},
-	{name = 'Cheetah',                model = 'cheetah',      price = 375000,  category = 'super'},
-	{name = 'Entity XF',              model = 'entityxf',     price = 425000,  category = 'super'},
-	{name = 'ETR1',                   model = 'sheava',       price = 220000,  category = 'super'},
-	{name = 'FMJ',                    model = 'fmj',          price = 185000,  category = 'super'},
-	{name = 'Infernus',               model = 'infernus',     price = 180000,  category = 'super'},
-	{name = 'Osiris',                 model = 'osiris',       price = 160000,  category = 'super'},
-	{name = 'Pfister',                model = 'pfister811',   price = 85000,   category = 'super'},
-	{name = 'RE-7B',                  model = 'le7b',         price = 325000,  category = 'super'},
-	{name = 'Reaper',                 model = 'reaper',       price = 150000,  category = 'super'},
-	{name = 'Sultan RS',              model = 'sultanrs',     price = 65000,   category = 'super'},
-	{name = 'T20',                    model = 't20',          price = 300000,  category = 'super'},
-	{name = 'Turismo R',              model = 'turismor',     price = 350000,  category = 'super'},
-	{name = 'Tyrus',                  model = 'tyrus',        price = 600000,  category = 'super'},
-	{name = 'Vacca',                  model = 'vacca',        price = 120000,  category = 'super'},
-	{name = 'Voltic',                 model = 'voltic',       price = 90000,   category = 'super'},
-	{name = 'X80 Proto',              model = 'prototipo',    price = 2500000, category = 'super'},
-	{name = 'Zentorno',               model = 'zentorno',     price = 1500000, category = 'super'},
-	{name = 'Akuma',                  model = 'AKUMA',        price = 7500,    category = 'motorcycles'},
-	{name = 'Avarus',                 model = 'avarus',       price = 18000,   category = 'motorcycles'},
-	{name = 'Bagger',                 model = 'bagger',       price = 13500,   category = 'motorcycles'},
-	{name = 'Bati 801',               model = 'bati',         price = 12000,   category = 'motorcycles'},
-	{name = 'Bati 801RR',             model = 'bati2',        price = 19000,   category = 'motorcycles'},
-	{name = 'BF400',                  model = 'bf400',        price = 6500,    category = 'motorcycles'},
-	{name = 'BMX (Velo)',             model = 'bmx',          price = 160,     category = 'motorcycles'},
-	{name = 'Carbon RS',              model = 'carbonrs',     price = 18000,   category = 'motorcycles'},
-	{name = 'Chimera',                model = 'chimera',      price = 38000,   category = 'motorcycles'},
-	{name = 'Cliffhanger',            model = 'cliffhanger',  price = 9500,    category = 'motorcycles'},
-	{name = 'Cruiser (Velo)',         model = 'cruiser',      price = 510,     category = 'motorcycles'},
-	{name = 'Daemon',                 model = 'daemon',       price = 11500,   category = 'motorcycles'},
-	{name = 'Daemon High',            model = 'daemon2',      price = 13500,   category = 'motorcycles'},
-	{name = 'Defiler',                model = 'defiler',      price = 9800,    category = 'motorcycles'},
-	{name = 'Double T',               model = 'double',       price = 28000,   category = 'motorcycles'},
-	{name = 'Enduro',                 model = 'enduro',       price = 5500,    category = 'motorcycles'},
-	{name = 'Esskey',                 model = 'esskey',       price = 4200,    category = 'motorcycles'},
-	{name = 'Faggio',                 model = 'faggio',       price = 1900,    category = 'motorcycles'},
-	{name = 'Vespa',                  model = 'faggio2',      price = 2800,    category = 'motorcycles'},
-	{name = 'Fixter (Velo)',          model = 'fixter',       price = 225,     category = 'motorcycles'},
-	{name = 'Gargoyle',               model = 'gargoyle',     price = 16500,   category = 'motorcycles'},
-	{name = 'Hakuchou',               model = 'hakuchou',     price = 31000,   category = 'motorcycles'},
-	{name = 'Hakuchou Sport',         model = 'hakuchou2',    price = 55000,   category = 'motorcycles'},
-	{name = 'Hexer',                  model = 'hexer',        price = 12000,   category = 'motorcycles'},
-	{name = 'Innovation',             model = 'innovation',   price = 23500,   category = 'motorcycles'},
-	{name = 'Manchez',                model = 'manchez',      price = 5300,    category = 'motorcycles'},
-	{name = 'Nemesis',                model = 'nemesis',      price = 5800,    category = 'motorcycles'},
-	{name = 'Nightblade',             model = 'nightblade',   price = 35000,   category = 'motorcycles'},
-	{name = 'PCJ-600',                model = 'pcj',          price = 6200,    category = 'motorcycles'},
-	{name = 'Ruffian',                model = 'ruffian',      price = 6800,    category = 'motorcycles'},
-	{name = 'Sanchez',                model = 'sanchez',      price = 5300,    category = 'motorcycles'},
-	{name = 'Sanchez Sport',          model = 'sanchez2',     price = 5300,    category = 'motorcycles'},
-	{name = 'Sanctus',                model = 'sanctus',      price = 25000,   category = 'motorcycles'},
-	{name = 'Scorcher (Velo)',        model = 'scorcher',     price = 280,     category = 'motorcycles'},
-	{name = 'Sovereign',              model = 'sovereign',    price = 22000,   category = 'motorcycles'},
-	{name = 'Shotaro Concept',        model = 'shotaro',      price = 320000,  category = 'motorcycles'},
-	{name = 'Thrust',                 model = 'thrust',       price = 24000,   category = 'motorcycles'},
-	{name = 'Tri bike (Velo)',        model = 'tribike3',     price = 520,     category = 'motorcycles'},
-	{name = 'Vader',                  model = 'vader',        price = 7200,    category = 'motorcycles'},
-	{name = 'Vortex',                 model = 'vortex',       price = 9800,    category = 'motorcycles'},
-	{name = 'Woflsbane',              model = 'wolfsbane',    price = 9000,    category = 'motorcycles'},
-	{name = 'Zombie',                 model = 'zombiea',      price = 9500,    category = 'motorcycles'},
-	{name = 'Zombie Luxuary',         model = 'zombieb',      price = 12000,   category = 'motorcycles'},
-	{name = 'blazer5',                model = 'blazer5',      price = 1755600, category = 'offroad'},
-	{name = 'Ruiner 2',               model = 'ruiner2',      price = 5745600, category = 'muscle'},
-	{name = 'Voltic 2',               model = 'voltic2',      price = 3830400, category = 'super'},
-	{name = 'Ardent',                 model = 'ardent',       price = 1150000, category = 'sportsclassics'},
-	{name = 'Oppressor',              model = 'oppressor',    price = 3524500, category = 'super'},
-	{name = 'Visione',                model = 'visione',      price = 2250000, category = 'super'},
-	{name = 'Retinue',                model = 'retinue',      price = 615000,  category = 'sportsclassics'},
-	{name = 'Cyclone',                model = 'cyclone',      price = 1890000, category = 'super'}, 
-	{name = 'Rapid GT3',              model = 'rapidgt3',     price = 885000,  category = 'sportsclassics'},
-	{name = 'raiden',                 model = 'raiden',       price = 1375000, category = 'sports'},
-	{name = 'Yosemite',               model = 'yosemite',     price = 485000,  category = 'muscle'},
-	{name = 'Deluxo',                 model = 'deluxo',       price = 4721500, category = 'sportsclassics'},
-	{name = 'Pariah',                 model = 'pariah',       price = 1420000, category = 'sports'},
-	{name = 'Stromberg',              model = 'stromberg',    price = 3185350, category = 'sports'},
-	{name = 'SC 1',                   model = 'sc1',          price = 1603000, category = 'super'},
-	{name = 'riata',                  model = 'riata',        price = 380000,  category = 'offroad'},
-	{name = 'Hermes',                 model = 'hermes',       price = 535000,  category = 'muscle'},
-	{name = 'Savestra',               model = 'savestra',     price = 990000,  category = 'sportsclassics'},
-	{name = 'Streiter',               model = 'streiter',     price = 500000,  category = 'sports'},
-	{name = 'Kamacho',                model = 'kamacho',      price = 345000,  category = 'offroad'},
-	{name = 'GT 500',                 model = 'gt500',        price = 785000,  category = 'sportsclassics'},
-	{name = 'Z190',                   model = 'z190',         price = 900000,  category = 'sportsclassics'},
-	{name = 'Viseris',                model = 'viseris',      price = 875000,  category = 'sportsclassics'},
-	{name = 'Autarch',                model = 'autarch',      price = 1955000, category = 'super'},
-	{name = 'Comet 5',                model = 'comet5',       price = 1145000, category = 'sports'}, 
-	{name = 'Neon',                   model = 'neon',         price = 1500000, category = 'sports'},
-	{name = 'Revolter',               model = 'revolter',     price = 1610000, category = 'sports'},
-	{name = 'Sentinel3',              model = 'sentinel3',    price = 650000,  category = 'sports'},
-	{name = 'Hustler',                model = 'hustler',      price = 625000,  category = 'muscle'}
-}
-
 module.zones = {
 	shopBuy = {
 		pos   = vector3(-57.45989, -1096.654, 25.45),
@@ -641,8 +86,8 @@ module.shopInside               = {
 }
 
 module.shopOutside               = {
-	pos     = vector3(-28.6, -1085.6, 25.5),
-	heading = 330.0
+	pos     = vector3(-33.50243, -1079.901, 26.3878),
+	heading = 69.750938415527
 }
 
 for i = 48, 57 do
@@ -676,107 +121,81 @@ module.Init = function()
 
 	end)
 
-	-- request("vehicleshop:getCompactsCoupes", function(result)
-	-- 	if result then
-	-- 		print("Stored all vehicles.")
-	-- 	end
-	-- end)
+	request("vehicleshop:getCategories", function(categories)
+		module.categories = categories
+	end)
 
-	-- request("vehicleshop:getCoupesSedans", function(result)
-	-- 	if result then
-	-- 		print("Stored all vehicles.")
-	-- 	end
-	-- end)
+	request("vehicleshop:getCompactsCoupes", function(cc)
+		module.cc = cc
+	end)
 
-	-- request("vehicleshop:getSports", function(result)
-	-- 	if result then
-	-- 		print("Stored all vehicles.")
-	-- 	end
-	-- end)
+	request("vehicleshop:getCoupesSedans", function(cs)
+		module.cs = cs
+	end)
 
-	-- request("vehicleshop:getSports2", function(result)
-	-- 	if result then
-	-- 		print("Stored all vehicles.")
-	-- 	end
-	-- end)
+	request("vehicleshop:getSports", function(sports)
+		module.sports = sports
+	end)
 
-	-- request("vehicleshop:getSports3", function(result)
-	-- 	if result then
-	-- 		print("Stored all vehicles.")
-	-- 	end
-	-- end)
+	request("vehicleshop:getSports2", function(sports2)
+		module.sports2 = sports2
+	end)
 
-	-- request("vehicleshop:getSportsClassics", function(result)
-	-- 	if result then
-	-- 		print("Stored all vehicles.")
-	-- 	end
-	-- end)
+	request("vehicleshop:getSports3", function(sports3)
+		module.sports3 = sports3
+	end)
 
-	-- request("vehicleshop:getSportsClassics2", function(result)
-	-- 	if result then
-	-- 		print("Stored all vehicles.")
-	-- 	end
-	-- end)
+	request("vehicleshop:getSportsClassics", function(sportsclassics)
+		module.sportsclassics = sportsclassics
+	end)
 
-	-- request("vehicleshop:getSuper", function(result)
-	-- 	if result then
-	-- 		print("Stored all vehicles.")
-	-- 	end
-	-- end)
+	request("vehicleshop:getSportsClassics2", function(sportsclassics2)
+		module.sportsclassics2 = sportsclassics2
+	end)
 
-	-- request("vehicleshop:getSuper2", function(result)
-	-- 	if result then
-	-- 		print("Stored all vehicles.")
-	-- 	end
-	-- end)
+	request("vehicleshop:getSuper", function(super)
+		module.super = super
+	end)
 
-	-- request("vehicleshop:getMuscle", function(result)
-	-- 	if result then
-	-- 		print("Stored all vehicles.")
-	-- 	end
-	-- end)
+	request("vehicleshop:getSuper2", function(super2)
+		module.super2 = super2
+	end)
 
-	-- request("vehicleshop:getMuscle2", function(result)
-	-- 	if result then
-	-- 		print("Stored all vehicles.")
-	-- 	end
-	-- end)
+	request("vehicleshop:getMuscle", function(muscle)
+		module.muscle = muscle
+	end)
 
-	-- request("vehicleshop:getOffroad", function(result)
-	-- 	if result then
-	-- 		print("Stored all vehicles.")
-	-- 	end
-	-- end)
+	request("vehicleshop:getMuscle2", function(muscle2)
+		module.muscle2 = muscle2
+	end)
 
-	-- request("vehicleshop:getSUVs", function(result)
-	-- 	if result then
-	-- 		print("Stored all vehicles.")
-	-- 	end
-	-- end)
+	request("vehicleshop:getOffroad", function(offroad)
+		module.offroad = offroad
+	end)
 
-	-- request("vehicleshop:getVans", function(result)
-	-- 	if result then
-	-- 		print("Stored all vehicles.")
-	-- 	end
-	-- end)
+	request("vehicleshop:getSUVs", function(suvs)
+		module.suvs = suvs
+	end)
 
-	-- request("vehicleshop:getMotorcycles", function(result)
-	-- 	if result then
-	-- 		print("Stored all vehicles.")
-	-- 	end
-	-- end)
+	request("vehicleshop:getVans", function(vans)
+		module.vans = vans
+	end)
 
-	-- request("vehicleshop:getMotorcycles2", function(result)
-	-- 	if result then
-	-- 		print("Stored all vehicles.")
-	-- 	end
-	-- end)
+	request("vehicleshop:getMotorcycles", function(motorcycles)
+		module.motorocycles = motorcycles
+	end)
 
-	-- request("vehicleshop:getMotorcycles3", function(result)
-	-- 	if result then
-	-- 		print("Stored all vehicles.")
-	-- 	end
-	-- end)
+	request("vehicleshop:getMotorcycles2", function(motorcycles2)
+		module.motorocycles2 = motorcycles2
+	end)
+
+	request("vehicleshop:getMotorcycles3", function(motorcycles3)
+		module.motorocycles3 = motorcycles3
+	end)
+
+	request("vehicleshop:getSellableVehicles", function(sellableVehicles)
+		module.sellableVehicles = sellableVehicles
+	end)
 end
 
 -----------------------------------------------------------------------------------
