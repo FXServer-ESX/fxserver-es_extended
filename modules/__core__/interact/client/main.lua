@@ -10,6 +10,8 @@
 --   If you redistribute this software, you must link to ORIGINAL repository at https://github.com/ESX-Org/es_extended
 --   This copyright should appear in every part of the project code
 
+local Utils = M('utils')
+
 module.LOVE_PLAYER_GROUP = AddRelationshipGroup('LOVE_PLAYER')
 
 SetRelationshipBetweenGroups(0, module.LOVE_PLAYER_GROUP, 'PLAYER')
@@ -100,7 +102,7 @@ ESX.SetInterval(1000, function()
 
         local found = false
 
-        local closestPed, closestDistance = ESX.Game.GetClosestPed({
+        local closestPed, closestDistance = Utils.game.getClosestPed({
           x = curr.pos.x + 0.0,
           y = curr.pos.y + 0.0,
           z = curr.pos.z + 0.0

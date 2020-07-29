@@ -88,6 +88,27 @@ local EnumerateEntities = function(initFunc, moveFunc, disposeFunc)
 	end)
 end
 
+EnumerateEntitiesWithinDistance = function(entities, isPlayerEntities, coords, maxDistance)
+	local nearbyEntities = {}
+
+	if coords then
+		coords = vector3(coords.x, coords.y, coords.z)
+	else
+		local playerPed = PlayerPedId()
+		coords = GetEntityCoords(playerPed)
+	end
+
+	for k,entity in pairs(entities) do
+		local distance = #(coords - GetEntityCoords(entity))
+
+		if distance <= maxDistance then
+			table.insert(nearbyEntities, isPlayerEntities and k or entity)
+		end
+	end
+
+	return nearbyEntities
+end
+
 -- Game
 module.game.enumerateObjects = function()
 	return EnumerateEntities(FindFirstObject, FindNextObject, EndFindObject)
@@ -137,6 +158,25 @@ module.game.requestModel = function(model, cb)
 
   end)
 
+end
+
+module.game.teleport = function(entity, coords)
+  if DoesEntityExist(entity) then
+		RequestCollisionAtCoord(coords.x, coords.y, coords.z)
+		local timeout = 0
+
+		-- we can get stuck here if any of the axies are "invalid"
+		while not HasCollisionLoadedAroundEntity(entity) and timeout < 2000 do
+			Citizen.Wait(0)
+			timeout = timeout + 1
+		end
+
+		SetEntityCoords(entity, coords.x, coords.y, coords.z, false, false, false, false)
+
+		if type(coords) == 'table' and coords.heading then
+			SetEntityHeading(entity, coords.heading)
+		end
+	end
 end
 
 module.game.createObject = function(model, coords, cb)
@@ -235,6 +275,22 @@ module.game.createLocalVehicle = function(model, coords, heading, cb)
 
 end
 
+module.game.deleteVehicle = function(vehicle)
+
+  SetEntityAsMissionEntity(vehicle, false, true)
+  Citizen.Wait(250)
+  DeleteVehicle(vehicle)
+  
+end
+
+module.game.deleteObject = function(obj)
+
+  SetEntityAsMissionEntity(object, false, true)
+  Citizen.Wait(250)
+  DeleteObject(object)
+  
+end
+
 module.game.isVehicleEmpty = function(vehicle)
 
 	local passengers     = GetVehicleNumberOfPassengers(vehicle)
@@ -242,6 +298,47 @@ module.game.isVehicleEmpty = function(vehicle)
 
   return (passengers == 0) and driverSeatFree
 
+end
+
+module.game.getVehicles = function()
+	local vehicles = {}
+
+	for vehicle in EnumerateVehicles() do
+		table.insert(vehicles, vehicle)
+	end
+
+	return vehicles
+end
+
+module.game.getPeds = function(onlyOtherPeds)
+	local peds, myPed = {}, PlayerPedId()
+
+	for ped in EnumeratePeds() do
+		if ((onlyOtherPeds and ped ~= myPed) or not onlyOtherPeds) then
+			table.insert(peds, ped)
+		end
+	end
+
+	return peds
+end
+
+module.game.getVehiclesInArea = function(coords, maxDistance) 
+  return EnumerateEntitiesWithinDistance(module.game.getVehicles(), false, coords, maxDistance) 
+end
+
+module.game.getVehicleInDirection = function()
+  
+	local playerPed    = PlayerPedId()
+	local playerCoords = GetEntityCoords(playerPed)
+	local inDirection  = GetOffsetFromEntityInWorldCoords(playerPed, 0.0, 5.0, 0.0)
+	local rayHandle    = StartShapeTestRay(playerCoords, inDirection, 10, playerPed, 0)
+	local numRayHandle, hit, endCoords, surfaceNormal, entityHit = GetShapeTestResult(rayHandle)
+
+	if hit == 1 and GetEntityType(entityHit) == 2 then
+		return entityHit
+	end
+
+	return nil
 end
 
 module.game.getVehicleProperties = function(vehicle)
@@ -480,6 +577,41 @@ module.game.ensureForcedComponents = function(ped, componentId, drawableId, text
 
   return forcedComponents
 
+end
+
+module.game.getClosestEntity = function(entities, isPlayerEntities, coords, modelFilter)
+	local closestEntity, closestEntityDistance, filteredEntities = -1, -1, nil
+
+	if coords then
+		coords = vector3(coords.x, coords.y, coords.z)
+	else
+		local playerPed = PlayerPedId()
+		coords = GetEntityCoords(playerPed)
+	end
+
+	if modelFilter then
+		filteredEntities = {}
+
+		for k,entity in pairs(entities) do
+			if modelFilter[GetEntityModel(entity)] then
+				table.insert(filteredEntities, entity)
+			end
+		end
+	end
+
+	for k,entity in pairs(filteredEntities or entities) do
+		local distance = #(coords - GetEntityCoords(entity))
+
+		if closestEntityDistance == -1 or distance < closestEntityDistance then
+			closestEntity, closestEntityDistance = isPlayerEntities and k or entity, distance
+		end
+	end
+
+	return closestEntity, closestEntityDistance
+end
+
+module.game.getClosestPed = function(coords, modelFilter) 
+  return module.game.getClosestEntity(module.game.getPeds(true), false, coords, modelFilter) 
 end
 
 module.game.setEnforcedPedComponentVariation = function(ped, componentId, drawableId, textureId, paletteId)
