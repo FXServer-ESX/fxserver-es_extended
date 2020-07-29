@@ -13,9 +13,9 @@
 M('command')
 
 module.init = function()
-  registerTPTMCommand()
-  registerSpawnVehicleCommand()
-  registerDeleteVehicleCommand()
+  module.registerTPTMCommand()
+  module.registerSpawnVehicleCommand()
+  module.registerDeleteVehicleCommand()
 end
 
 module.registerTPTMCommand = function()
