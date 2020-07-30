@@ -78,9 +78,11 @@ module.Init = function()
 
 end
 
+module.OpenClotheShopMenu = function()
+  -- TODO: Create Shop Menu
+end
+
 module.RegisterControls = function()
   Input.RegisterControl(Input.Groups.MOVE, Input.Controls.PICKUP)
   Input.RegisterControl(Input.Groups.MOVE, Input.Controls.REPLAY_SHOWHOTKEY)
 end
-
--- TODO: Create Shop Menu
