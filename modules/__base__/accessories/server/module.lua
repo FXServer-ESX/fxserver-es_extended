@@ -14,7 +14,6 @@
 M('class')
 M('player')
 
-
 module.Config = run('data/config.lua', {vector3 = vector3})['Config']
 
 Player.define({
@@ -36,4 +35,5 @@ function Player:setAcccessory(name, item1, item2)
   accessories[name] = {item1, item2}
 
   self:emit('accessory.set', accessories[name])
+
 end

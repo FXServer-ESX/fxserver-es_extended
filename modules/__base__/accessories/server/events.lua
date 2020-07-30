@@ -10,13 +10,12 @@
 --   If you redistribute this software, you must link to ORIGINAL repository at https://github.com/ESX-Org/es_extended
 --   This copyright should appear in every part of the project code
 
-local utils = M('utils')
-
-
 onRequest('esx_accessories:pay', function()
+
   local player = xPlayer.fromId(source)
   player:removeMoney(module.Config.Price)
-  utils.ui.showNotification(_U('accesories:you_paid', ESX.Math.GroupDigits(module.Config.Price)))
+  TriggerClientEvent('esx:showNotification', source, _U('accesories:you_paid', ESX.Math.GroupDigits(module.Config.Price)))
+
 end)
 
 onRequest('esx_accessories:save', function(skin, accessory)
