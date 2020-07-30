@@ -88,7 +88,7 @@ local EnumerateEntities = function(initFunc, moveFunc, disposeFunc)
 	end)
 end
 
-local EnumerateEntitiesWithinDistance = function(entities, isPlayerEntities, coords, maxDistance)
+module.game.enumerateEntitiesWithinDistance = function(entities, isPlayerEntities, coords, maxDistance)
 	local nearbyEntities = {}
 
 	if coords then
@@ -323,7 +323,7 @@ module.game.getPeds = function(onlyOtherPeds)
 end
 
 module.game.getVehiclesInArea = function(coords, maxDistance) 
-  return EnumerateEntitiesWithinDistance(module.game.getVehicles(), false, coords, maxDistance) 
+  return module.enumerateEntitiesWithinDistance(module.game.getVehicles(), false, coords, maxDistance) 
 end
 
 module.game.getVehicleInDirection = function()
