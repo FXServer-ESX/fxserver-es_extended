@@ -14,7 +14,6 @@
 local Input = M('input')
 local Interact = M('interact')
 local Menu = M('ui.menu')
-local utils = M('utils')
 
 -- Properties
 module.Config = run('data/config.lua', {vector3 = vector3})['Config']
@@ -46,7 +45,7 @@ module.Init = function()
 
       on('esx:interact:enter:' .. key, function(data)
 
-      utils.ui.ShowHelpNotification(_U('clotheshop:press_menu'))
+      Interact.ShowHelpNotification(_U('clotheshop:press_menu'))
 
       module.CurrentAction = function()
         module.OpenClotheShopMenu()
@@ -54,7 +53,10 @@ module.Init = function()
 
       end)
 
-      on('esx:interact:exit:' .. key, function(data) module.CurrentAction = nil end)
+      on('esx:interact:exit:' .. key, function(data) 
+        module.CurrentAction = nil 
+        Interact.StopHelpNotification()
+      end)
 
     end
   end
