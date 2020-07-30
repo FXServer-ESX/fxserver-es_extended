@@ -14,6 +14,8 @@
 local Input    = M('input')
 local Interact = M('interact')
 local Menu     = M('ui.menu')
+local utils = M('utils')
+
 
 -- Properties
 module.Config = run('data/config.lua', {vector3 = vector3})['Config']
@@ -45,7 +47,7 @@ module.Init = function()
 
       on('esx:interact:enter:' .. key, function(data)
 
-      ESX.ShowHelpNotification(_U('accessories:press_access'))
+      Interact.ShowHelpNotification(_U('accessories:press_access'))
 
       module.CurrentAction = function()
         module.OpenShopMenu(data.accessory)
@@ -53,7 +55,10 @@ module.Init = function()
 
       end)
 
-      on('esx:interact:exit:' .. key, function(data) module.CurrentAction = nil end)
+      on('esx:interact:exit:' .. key, function(data) 
+        module.CurrentAction = nil 
+        Interact.StopHelpNotification()
+      end)
 
     end
   end
@@ -95,11 +100,11 @@ module.OpenAccessoryMenu = function()
 end
 
 module.SetUnsetAccessory = function(accessory)
-  ESX.TriggerServerCallback('esx_accessories:get', function(hasAccessory, accessorySkin)
+  request('esx_accessories:get', function(hasAccessory, accessorySkin)
     local _accessory = string.lower(accessory)
 
     if hasAccessory then
-    TriggerEvent('skinchanger:getSkin', function(skin)
+    emit('skinchanger:getSkin', function(skin)
       local mAccessory = -1
       local mColor = 0
 
@@ -113,10 +118,10 @@ module.SetUnsetAccessory = function(accessory)
       local accessorySkin = {}
       accessorySkin[_accessory .. '_1'] = mAccessory
       accessorySkin[_accessory .. '_2'] = mColor
-      TriggerEvent('skinchanger:loadClothes', skin, accessorySkin)
+      emit('skinchanger:loadClothes', skin, accessorySkin)
     end)
     else
-    ESX.ShowNotification(_U('accessories:no_' .. _accessory))
+    utils.ui.showNotification(_U('accessories:no_' .. _accessory))
     end
   end, accessory)
 end
@@ -128,7 +133,7 @@ module.OpenShopMenu = function(accessory)
 
   restrict = {_accessory .. '_1', _accessory .. '_2'}
 
-  TriggerEvent('esx_skin:openRestrictedMenu', function(data, menu)
+  emit('esx_skin:openRestrictedMenu', function(data, menu)
 
     menu.close()
 
@@ -144,26 +149,26 @@ module.OpenShopMenu = function(accessory)
     }, function(data, menu)
       menu.close()
       if data.current.value == 'yes' then
-        ESX.TriggerServerCallback('esx_accessories:checkMoney',
+        request('esx_accessories:checkMoney',
                       function(hasEnoughMoney)
           if hasEnoughMoney then
-            TriggerServerEvent('esx_accessories:pay')
-            TriggerEvent('skinchanger:getSkin', function(skin)
-              TriggerServerEvent('esx_accessories:save', skin, accessory)
+            emitServer('esx_accessories:pay')
+            emit('skinchanger:getSkin', function(skin)
+              emitServer('esx_accessories:save', skin, accessory)
             end)
           else
-            TriggerEvent('esx_skin:getLastSkin', function(skin)
-              TriggerEvent('skinchanger:loadSkin', skin)
+            emit('esx_skin:getLastSkin', function(skin)
+              emit('skinchanger:loadSkin', skin)
             end)
-            ESX.ShowNotification(_U('accessories:not_enough_money'))
+            utils.ui.showNotification(_U('accessories:not_enough_money'))
           end
         end)
       end
 
       if data.current.value == 'no' then
         local player = PlayerPedId()
-        TriggerEvent('esx_skin:getLastSkin', function(skin)
-          TriggerEvent('skinchanger:loadSkin', skin)
+        emit('esx_skin:getLastSkin', function(skin)
+          emit('skinchanger:loadSkin', skin)
         end)
         if accessory == "Ears" then
           ClearPedProp(player, 2)
