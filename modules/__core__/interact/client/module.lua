@@ -57,3 +57,13 @@ module.Register = function(data)
   end
 
 end
+
+module.ShowHelpNotification = function(msg)
+  module.msg    = msg
+  module.active = true
+end
+
+module.StopHelpNotification = function()
+  module.active = false
+  module.msg    = nil
+end

@@ -11,6 +11,7 @@
 --   This copyright should appear in every part of the project code
 
 module.Ready              = false
+module.IsPaused           = false
 module.Frame              = nil
 module.RegisteredElements = {}
 

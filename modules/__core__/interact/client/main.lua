@@ -89,6 +89,13 @@ ESX.SetInterval(0, function()
   end
 end)
 
+-- Help Notification While In Marker
+ESX.SetInterval(0, function()
+  if module.active and module.msg then
+    utils.ui.showHelpNotification(module.msg, false, false, 1)
+  end
+end)
+
 -- NPCs
 ESX.SetInterval(1000, function()
 
