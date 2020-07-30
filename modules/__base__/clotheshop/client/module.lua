@@ -41,7 +41,7 @@ module.Init = function()
         mtype = module.Config.Type,
         color = module.Config.Color,
         rotate = true,
-        accessory = k
+        clotheshop = "Clotheshop"
       })
 
       on('esx:interact:enter:' .. key, function(data)
@@ -49,7 +49,7 @@ module.Init = function()
       utils.ui.ShowHelpNotification(_U('clotheshop:press_menu'))
 
       module.CurrentAction = function()
-        module.OpenShopMenu(data.accessory)
+        module.OpenClotheShopMenu(data.accessory)
       end
 
       end)

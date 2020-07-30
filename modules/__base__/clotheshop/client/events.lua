@@ -18,8 +18,8 @@ local Menu = M('ui.menu')
 on('esx_clotheshop:hasEnteredMarker', function(zone)
 
   module.CurrentAction = 'shop_menu'
-  module.CurrentActionMsg = _U('accessories:press_access')
-  module.CurrentActionData = { accessory = zone }
+  module.CurrentActionMsg = _U('clotheshop:press_menu')
+  module.CurrentActionData = { }
 end)
 
 on('esx_clotheshop:hasExitedMarker', function(zone)
