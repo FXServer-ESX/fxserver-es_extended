@@ -49,7 +49,7 @@ module.Init = function()
       utils.ui.ShowHelpNotification(_U('clotheshop:press_menu'))
 
       module.CurrentAction = function()
-        module.OpenClotheShopMenu(data.accessory)
+        module.OpenClotheShopMenu()
       end
 
       end)
