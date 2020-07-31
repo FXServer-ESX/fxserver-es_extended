@@ -19,9 +19,9 @@ Config.Price = 100
 Config.EnableControls = true
 
 Config.DrawDistance = 100.0
-Config.MarkerSize   = {x = 1.5, y = 1.5, z = 1.0}
-Config.MarkerColor  = {r = 102, g = 102, b = 204}
-Config.MarkerType   = 1
+Config.Size   = {x = 1.5, y = 1.5, z = 1.0}
+Config.Color  = {r = 102, g = 102, b = 204, a = 100}
+Config.Type   = 1
 
 Config.Shops = {
 	vector3(72.3, -1399.1, 28.4),
