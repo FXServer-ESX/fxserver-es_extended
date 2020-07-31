@@ -115,6 +115,7 @@ Persist = function(schema, pk, ...)
 
     local queryFields = {}
     local keys        = {}
+    local queryFlag   = false
 
     for k,v in pairs(fields) do
       keys[#keys + 1] = v.data.name
@@ -122,11 +123,12 @@ Persist = function(schema, pk, ...)
 
     for k,v in pairs(query) do
       queryFields[fields[k].data.name] = v
+      queryFlag = true
     end
 
     local baseQuery = db.DBQuery().select(keys).from(schema)
 
-    if (#queryFields > 0) then
+    if queryFlag then
       baseQuery = baseQuery.where(queryFields)
     end
 
