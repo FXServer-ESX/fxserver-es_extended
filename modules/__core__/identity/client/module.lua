@@ -18,7 +18,7 @@ M('ui.menu')
 local HUD   = M('game.hud')
 local utils = M('utils')
 
-local spawn = Config.DefaultSpawnPos
+local spawn = {x = -269.4, y = -955.3, z = 31.2, heading = 205.8}
 module.SavePositionInterval = nil
 
 Identity = Extends(Serializable, 'Identity')

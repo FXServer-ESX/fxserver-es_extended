@@ -13,7 +13,7 @@
 M('table')
 M('persistent')
 
-local spawn = Config.DefaultSpawnPos
+local spawn = {x = -269.4, y = -955.3, z = 31.2, heading = 205.8}
 
 Identity = Persist('identities', 'id', Enrolable)
 

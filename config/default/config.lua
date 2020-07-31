@@ -15,7 +15,6 @@ Config = {}
 Config.Locale             = 'en'
 Config.DisableWantedLevel = true
 Config.EnablePvP          = true
-Config.DefaultSpawnPos    = {x = -269.4, y = -955.3, z = 31.2, heading = 205.8}
 Config.EnableHUD          = true
 Config.InventoryKey       = "REPLAY_START_STOP_RECORDING_SECONDARY" -- Key F2 by default
 Config.EnableLoadScreen   = true
