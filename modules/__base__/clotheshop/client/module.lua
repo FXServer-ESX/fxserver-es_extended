@@ -43,23 +43,25 @@ module.Init = function()
     })
 
     on('esx:interact:enter:' .. key, function(data)
+      Interact.ShowHelpNotification(_U('clotheshop:press_menu'))
 
-    Interact.ShowHelpNotification(_U('clotheshop:press_menu'))
+      module.CurrentAction = function()
+        module.OpenClotheShopMenu()
+        FreezeEntityPosition(PlayerPedId(), true)
+      end
 
-    module.CurrentAction = function()
-      module.OpenClotheShopMenu()
-    end
-
+      isExit = false
     end)
 
-    on('esx:interact:exit:' .. key, function(data) 
+    on('esx:interact:exit:' .. key, function(data)
       module.CurrentAction = nil 
       Interact.StopHelpNotification()
+      isExit = true
     end)
   end
 
-	for k,v in pairs(module.Config.Shops) do
-		if v ~= nil then
+  for k,v in pairs(module.Config.Shops) do
+    if v ~= nil then
 			local blip = AddBlipForCoord(v)
 
 			SetBlipSprite(blip, 73)
@@ -70,12 +72,14 @@ module.Init = function()
 
 			BeginTextCommandSetBlipName("STRING")
 			AddTextComponentString(_U('clotheshop:clothes'))
-			EndTextCommandSetBlipName(blip)
-		end
+      EndTextCommandSetBlipName(blip)
+    end
   end
 end
 
 module.OpenClotheShopMenu = function()
+  Interact.StopHelpNotification()
+
   local menu = Menu('clotheshop', {
     float = 'top|left',
     title = 'Cloteshop Menu',
@@ -87,11 +91,12 @@ module.OpenClotheShopMenu = function()
   menu:on('item.click', function(item, index)
     if item.name == 'close' then
       menu:destroy()
-      
-      Interact.ShowHelpNotification(_U('clotheshop:press_menu'))
-
-      module.CurrentAction = function()
-        module.OpenClotheShopMenu()
+      FreezeEntityPosition(PlayerPedId(), false)
+      if not isExit then
+        Interact.ShowHelpNotification(_U('clotheshop:press_menu'))
+        module.CurrentAction = function()
+          module.OpenClotheShopMenu()
+        end
       end
     end
   end)
