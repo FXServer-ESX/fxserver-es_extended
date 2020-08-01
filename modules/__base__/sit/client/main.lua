@@ -13,7 +13,6 @@
 module.init()
 
 ESX.SetInterval(1, function()
-	while true do
 		local playerPed = GetPlayerPed(-1)
 
 		if module.sitting and not IsPedUsingScenario(playerPed, currentScenario) then
