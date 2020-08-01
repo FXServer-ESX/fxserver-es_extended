@@ -26,7 +26,7 @@ module.saveData = function()
 	SetTimeout(10 * 60 * 1000, module.saveData)
 end
 
-createStatus:constructor(xPlayer, name, default, color, visible, tickCallback, clientAction)
+function createStatus:constructor(xPlayer, name, default, color, visible, tickCallback, clientAction)
 
 	local self = {}
 
@@ -76,7 +76,7 @@ createStatus:constructor(xPlayer, name, default, color, visible, tickCallback, c
 	end
 
 	self.updateClient = function()
-		TriggerEvent('esx_status:updateClient', self.xPlayer.source)
+		emit('esx_status:updateClient', self.xPlayer.source)
 	end
 
 	return self

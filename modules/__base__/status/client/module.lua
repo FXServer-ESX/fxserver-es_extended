@@ -40,7 +40,7 @@ module.getStatusData = function(minimal)
 	return status
 end
 
-createStatus:constructor(name, default, color, visible, tickCallback)
+function createStatus:constructor(name, default, color, visible, tickCallback)
   self.super:ctor()
   self.val          = default
 	self.name         = name
