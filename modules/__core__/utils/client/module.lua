@@ -160,6 +160,76 @@ module.game.requestModel = function(model, cb)
 
 end
 
+module.game.requestStreamedTextureDict = function(textureDict, cb)
+	if not HasStreamedTextureDictLoaded(textureDict) then
+		RequestStreamedTextureDict(textureDict)
+
+		while not HasStreamedTextureDictLoaded(textureDict) do
+			Citizen.Wait(1)
+		end
+	end
+
+	if cb ~= nil then
+		cb()
+	end
+end
+
+module.game.requestNamedPtfxAsset = function(assetName, cb)
+	if not HasNamedPtfxAssetLoaded(assetName) then
+		RequestNamedPtfxAsset(assetName)
+
+		while not HasNamedPtfxAssetLoaded(assetName) do
+			Citizen.Wait(1)
+		end
+	end
+
+	if cb ~= nil then
+		cb()
+	end
+end
+
+module.game.requestAnimSet = function(animSet, cb)
+	if not HasAnimSetLoaded(animSet) then
+		RequestAnimSet(animSet)
+
+		while not HasAnimSetLoaded(animSet) do
+			Citizen.Wait(1)
+		end
+	end
+
+	if cb ~= nil then
+		cb()
+	end
+end
+
+module.game.requestAnimDict = function(animDict, cb)
+	if not HasAnimDictLoaded(animDict) then
+		RequestAnimDict(animDict)
+
+		while not HasAnimDictLoaded(animDict) do
+			Citizen.Wait(1)
+		end
+	end
+
+	if cb ~= nil then
+		cb()
+	end
+end
+
+module.game.requestWeaponAsset = function(weaponHash, cb)
+	if not HasWeaponAssetLoaded(weaponHash) then
+		RequestWeaponAsset(weaponHash)
+
+		while not HasWeaponAssetLoaded(weaponHash) do
+			Citizen.Wait(1)
+		end
+	end
+
+	if cb ~= nil then
+		cb()
+	end
+end
+
 module.game.teleport = function(entity, coords)
   if DoesEntityExist(entity) then
 		RequestCollisionAtCoord(coords.x, coords.y, coords.z)
@@ -308,6 +378,16 @@ module.game.getVehicles = function()
 	end
 
 	return vehicles
+end
+
+module.game.getObjects = function()
+	local objects = {}
+
+	for object in module.game.enumerateObjects() do
+		table.insert(objects, object)
+	end
+
+	return objects
 end
 
 module.game.getPeds = function(onlyOtherPeds)
@@ -610,6 +690,10 @@ module.game.getClosestEntity = function(entities, isPlayerEntities, coords, mode
 	return closestEntity, closestEntityDistance
 end
 
+module.game.getClosestObject  = function(coords, modelFilter)
+  return module.game.getClosestEntity(module.game.getObjects(), false, coords, modelFilter)
+end
+
 module.game.getClosestPed = function(coords, modelFilter) 
   return module.game.getClosestEntity(module.game.getPeds(true), false, coords, modelFilter) 
 end
@@ -685,6 +769,34 @@ module.ui.howFloatingHelpNotification = function(msg, coords, timeout)
 
   end)
 
+end
+
+module.ui.drawText3D = function(coords, text, size, font)
+	coords = vector3(coords.x, coords.y, coords.z)
+
+	local camCoords = GetGameplayCamCoords()
+	local distance = #(coords - camCoords)
+
+	if not size then size = 1 end
+	if not font then font = 0 end
+
+	local scale = (size / distance) * 2
+	local fov = (1 / GetGameplayCamFov()) * 100
+	scale = scale * fov
+
+	SetTextScale(0.0 * scale, 0.55 * scale)
+	SetTextFont(font)
+	SetTextColour(255, 255, 255, 255)
+	SetTextDropshadow(0, 0, 0, 0, 255)
+	SetTextDropShadow()
+	SetTextOutline()
+	SetTextCentre(true)
+
+	SetDrawOrigin(coords, 0)
+	BeginTextCommandDisplayText('STRING')
+	AddTextComponentSubstringPlayerName(text)
+	EndTextCommandDisplayText(0.0, 0.0)
+	ClearDrawOrigin()
 end
 
 module.math.polar3DToWorld3D = function(center, polar, azimuth, radius)
