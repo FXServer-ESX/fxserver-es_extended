@@ -12,24 +12,24 @@
 
 -- Properties
 M('class')
-M('player')
+M('identity')
 
 
 module.Config = run('data/config.lua', {vector3 = vector3})['Config']
 
-Player.define({
+Identity.define({
   {name = 'accessories', field = {name = 'accessories', type = 'MEDIUMTEXT', length = nil,  default = '{}', extra = nil}, encode = json.encode, decode = json.decode},
 })
 
-function Player:hasAcccessory(name)
+function Identity:hasAcccessory(name)
   return self:getAcccesories()[name] ~= nil
 end
 
-function Player:getAcccessory(name)
+function Identity:getAcccessory(name)
   return self:getAcccessories()[name]
 end
 
-function Player:setAcccessory(name, item1, item2)
+function Identity:setAcccessory(name, item1, item2)
 
   local accessories = self:getAcccesories()
   local accessory   = accessories[name] or {}
