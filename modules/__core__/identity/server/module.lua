@@ -13,7 +13,7 @@
 M('table')
 M('persistent')
 
-local spawn = Config.DefaultSpawnPos
+local spawn = ESX.GetConfig().DefaultSpawnPos
 
 Identity = Persist('identities', 'id', Enrolable)
 
