@@ -10,138 +10,192 @@
 --   If you redistribute this software, you must link to ORIGINAL repository at https://github.com/ESX-Org/es_extended
 --   This copyright should appear in every part of the project code
 
+M('events')
+M('serializable')
+M('cache')
 M('table')
-M('persistent')
+M('ui.menu')
+local HUD   = M('game.hud')
+local utils = M('utils')
 
 local spawn = ESX.GetConfig(DefaultSpawnPos)
+module.SavePositionInterval = nil
 
-Identity = Persist('identities', 'id', Enrolable)
+Identity = Extends(Serializable, 'Identity')
 
-Identity.define({
-  {name = 'id',         field = {name = 'id',         type = 'INT',        length = nil, default = nil,                extra = 'NOT NULL AUTO_INCREMENT'}},
-  {name = 'identifier', field = {name = 'identifier', type = 'VARCHAR',    length = 64,  default = 'UUID()',           extra = 'NOT NULL'}},
-  {name = 'owner',      field = {name = 'owner',      type = 'VARCHAR',    length = 64,  default  = nil,               extra = 'NOT NULL'}},
-  {name = 'position',   field = {name = 'position',   type = 'VARCHAR',    length = 255, default = json.encode(spawn), extra = nil}, encode = json.encode, decode = json.decode},
-  {name = 'firstName',  field = {name = 'first_name', type = 'VARCHAR',    length = 32,  default = 'NULL',             extra = nil}},
-  {name = 'lastName',   field = {name = 'last_name',  type = 'VARCHAR',    length = 32,  default = 'NULL',             extra = nil}},
-  {name = 'DOB',        field = {name = 'dob',        type = 'VARCHAR',    length = 10,  default = 'NULL',             extra = nil}},
-  {name = 'isMale',     field = {name = 'is_male',    type = 'INT',        length = nil, default = 1,                  extra = nil}},
-  {name = 'roles',      field = {name = 'roles',      type = 'MEDIUMTEXT', length = nil, default = '[]',               extra = nil}, encode = json.encode, decode = json.decode},
-})
+Identity.parseRole = module.Identity_parseRoles
+Identity.getRole   = module.Identity_getRole
+Identity.hasRole   = module.Identity_hasRole
 
-Identity.all = setmetatable({}, {
-  __index    = function(t, k) return rawget(t, tostring(k)) end,
-  __newindex = function(t, k, v) rawset(t, tostring(k), v) end,
-})
+IdentityCacheConsumer = Extends(CacheConsumer, 'IdentityCacheConsumer')
 
-Identity.fromId = function(id)
-  return Identity.all[id]
+function IdentityCacheConsumer:provide(key, cb)
+
+  -- @TODO make a way to get the identities or identity based on id
+  -- for now it return an Array by default, but it should be better
+  -- to split this into 2 differents places to make it more clear.
+  request('esx:cache:identity:get', function(exists, identities)
+    local instancedIdentities = nil
+    if exists then
+      instancedIdentities = table.map(identities, function(identity)
+        return Identity(identity)
+      end)
+    end
+    cb(exists, exists and instancedIdentities or nil)
+  end, key)
+
 end
 
-function Identity.allFromPlayer(player, cb, doSerialize)
-  if not(player) then
-    error("Expect the player to be defined.")
+Cache.identity = IdentityCacheConsumer()
+
+module.SelectIdentityAndSpawnCharacter = function(requestedIdentity)
+  if requestedIdentity == nil then
+    error('Expect identity to be defined')
   end
 
-  if not(cb) or type(cb) ~= 'function' then
-    error("Expect the cb to be defined and to be a function.")
-  end
+  request('esx:identity:selectIdentity', function(identity)
+    module.initIdentity(identity)
+  end, requestedIdentity:getId())
+end
 
-  Identity.find({owner = player:getIdentifier()}, function(instances)
+-- take a serialized identity, load it, fetch position server-side
+-- spawn the character (ped) and start init routine
+-- it's not a good idea to call it from outside as the function is.
+-- @TODO: split this into tinier pieces so we can be modular
+module.initIdentity = function(identity)
+  local identity = Identity(identity)
 
-    if instances == nil then
-      cb(false, nil)
-    else
+  ESX.Player:field('identity', identity)
+  local position = spawn
 
-      if doSerialize then
-        instances = table.map(instances, function(instance)
-          Identity.all[instance:getId()] = instance
+  request('esx:identity:getSavedPosition', function(savedPos)
+    module.DoSpawn({
 
-          local serializedInstance = instance:serialize()
-  
-          return serializedInstance
-        end)
-      end
-      
-      cb(true, instances)
+        x        = savedPos and savedPos.x or position.x,
+        y        = savedPos and savedPos.y or position.y,
+        z        = savedPos and savedPos.z or position.z,
+        heading  = savedPos and savedPos.heading or position.heading,
+        model    = 'mp_m_freemode_01',
+        skipFade = false
+
+      }, function()
+        local playerPed = PlayerPedId()
+
+        if Config.EnablePvP then
+          SetCanAttackFriendly(playerPed, true, false)
+          NetworkSetFriendlyFireOption(true)
+        end
+
+        if Config.EnableHUD then
+          module.LoadHUD()
+        end
+
+        ESX.Ready = true
+
+        emitServer('esx:client:ready')
+        emit('esx:ready')
+
+        initPlayerDeadCheckInterval()
+
+        Citizen.Wait(2000)
+
+        ShutdownLoadingScreen()
+        ShutdownLoadingScreenNui()
+
+        module.SavePositionInterval = ESX.SetInterval(Config.Modules.identity.playerCoordsSaveInterval * 1000, module.SavePosition)
+      end)
+
+  end, identity:serialize())
+end
+
+module.LoadHUD = function()
+
+  Citizen.CreateThread(function()
+
+    while (not HUD.Frame) or (not HUD.Frame.loaded) do
+      Citizen.Wait(0)
     end
 
+    HUD.RegisterElement('display_name', 1, 0, '{{firstName}} {{lastName}}', ESX.Player.identity:serialize())
+
   end)
+
 end
 
-function Identity.loadForPlayer(identity, player)
-
-  Identity.all[identityId] = identity
-
-  player:setIdentityId(identity:getId())
-  player:field('identity', identity)
-
-  player:emit('identity:loaded', identity)
+module.DoSpawn = function(data, cb)
+  exports.spawnmanager:spawnPlayer(data, cb)
 end
 
-function Identity.registerForPlayer(data, player, cb)
+-- request a coords sync with the server.
+-- @TODO: maybe move this code server-side if we can ensure \
+-- server is running OneSync
+module.SavePosition = function()
+  if NetworkIsPlayerActive(PlayerId()) then
+    local playerCoords = GetEntityCoords(PlayerPedId())
+    local heading      = GetEntityHeading(PlayerPedId())
+    local position     = {
+      x       = math.round(playerCoords.x, 1),
+      y       = math.round(playerCoords.y, 1),
+      z       = math.round(playerCoords.z, 1),
+      heading = math.round(heading, 1)
+    }
 
-  local identity = Identity({
-    owner     = player.identifier,
-    firstName = data.firstName,
-    lastName  = data.lastName,
-    DOB       = data.dob,
-    isMale    = data.isMale
+    emitServer('esx:identity:updatePosition', position)
+  end
+end
+
+-- open the registration menu and save the created identity
+-- then load it into the player
+module.RequestRegistration = function(cb)
+
+  utils.ui.showNotification(_U('identity_register'))
+
+  ESX.Player:field('identity', identity)
+  
+  module.Menu = Menu("identity", {
+    float = "center|middle",
+    title = _U('identity_create'),
+    items = {
+      {name = "firstName", label =  _U('identity_firstname'),    type = "text", placeholder = "John"},
+      {name = "lastName",  label =  _U('identity_lastname'),     type = "text", placeholder = "Smith"},
+      {name = "dob",       label =  _U('identity_birthdate'),    type = "text", placeholder = "01/02/1234"},
+      {name = "isMale",    label =  _U('identity_male'),         type = "check", value = true},
+      {name = "submit",    label =  _U('submit'),                type = "button"}
+    }
   })
 
-  identity:save(function(identityId)
+  module.Menu:on("item.change", function(item, prop, val, index)
 
-    Identity.loadForPlayer(identity, player)
-
-    cb(identity:serialize())
-
-  end)
-end
-
-Identity.parseRole = module.Identity_parseRole
-
-function Identity:constructor(data, source)
-  self.super:ctor(data)
-  self.source = source
-end
-
-Identity.getRole = module.Identity_getRole
-Identity.hasRole = module.Identity_hasRole
-
-function Identity:addRole(name)
-
-  if not self:hasRole(name) then
-    self.roles[#self.roles + 1] = name
-    self:emit('role.add', name)
-  end
-
-end
-
-function Identity:removeRole(name)
-
-  local newRoles = {}
-  local found    = false
-
-  for i=1, #self.roles, 1 do
-
-    local role = self.roles[i]
-
-    if role == name then
-      found = true
-    else
-      newRoles[#newRoles + 1] = role
+    if (item.name == "isMale") and (prop == "value") then
+      if val then
+        item.label = _U('identity_male')
+      else
+        item.label = _U('identity_female')
+      end
     end
 
-  end
+  end)
 
-  self.roles = newRoles
+  module.Menu:on("item.click", function(item, index)
 
-  if found then
-    self:emit('role.remove', name)
-  end
+    if item.name == "submit" then
 
-end
+      local props = module.Menu:kvp()
 
-function Identity:getPlayer()
-  return Player.fromId(self.source)
+      if (props.firstName ~= '') and (props.lastName ~= '') and (props.dob ~= '') then
+
+        module.Menu:destroy()
+        module.Menu = nil
+
+        request('esx:identity:register', cb, props)
+
+        utils.ui.showNotification(_U('identity_welcome', props.firstName, props.lastName))
+      else
+        utils.ui.showNotification(_U('identity_fill_in'))
+      end
+
+    end
+
+  end)
+
 end
