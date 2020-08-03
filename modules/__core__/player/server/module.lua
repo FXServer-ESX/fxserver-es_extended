@@ -11,14 +11,16 @@
 --   This copyright should appear in every part of the project code
 
 M('persistent')
+M('role')
 
-Player = Persist('players', 'id')
+Player, PlayerBase = Persist('players', 'id', Enrolable)
 
 Player.define({
-  {name = 'id',         field = {name = 'id',          type = 'INT',     length = nil, default = nil,    extra = 'NOT NULL AUTO_INCREMENT'}},
-  {name = 'identifier', field = {name = 'identifier',  type = 'VARCHAR', length = 64,  default = nil,    extra = 'NOT NULL'}},
-  {name = 'name',       field = {name = 'name',        type = 'VARCHAR', length = 255, default = 'NULL', extra = nil}},
-  {name = 'identityId', field = {name = 'identity_id', type = 'VARCHAR', length = 64,  default = 'NULL', extra = nil}},
+  {name = 'id',         field = {name = 'id',          type = 'INT',        length = nil, default = nil,    extra = 'NOT NULL AUTO_INCREMENT'}},
+  {name = 'identifier', field = {name = 'identifier',  type = 'VARCHAR',    length = 64,  default = nil,    extra = 'NOT NULL'}},
+  {name = 'name',       field = {name = 'name',        type = 'VARCHAR',    length = 255, default = 'NULL', extra = nil}},
+  {name = 'identityId', field = {name = 'identity_id', type = 'VARCHAR',    length = 64,  default = 'NULL', extra = nil}},
+  {name = 'roles',      field = {name = 'roles',       type = 'MEDIUMTEXT', length = nil, default = '[]',   extra = nil}, encode = json.encode, decode = json.decode},
 })
 
 Player.all = setmetatable({}, {
@@ -77,8 +79,22 @@ Player.onJoin = function(source)
           player:field('source', source)
           player:on('change', print)
 
+          -- update ACL
+          player:on('role.add', function(roleName)
+            ExecuteCommand(("add_principal identifier.license:%s group.%s"):format(player.identifier, roleName))
+          end)
+          player:on('role.remove', function(roleName)
+            ExecuteCommand(("remove_principal identifier.license:%s group.%s"):format(player.identifier, roleName))
+          end)
+
+          for i,roleName in ipairs(player.roles) do
+            ExecuteCommand(("add_principal identifier.license:%s group.%s"):format(player.identifier, roleName))
+          end
+
+          -- add the player to the global list
           Player.all[source] = player
 
+          -- propagate the information
           emit('esx:player:load', player)
           emitClient('esx:player:load', source, source)
 
@@ -93,9 +109,3 @@ Player.onJoin = function(source)
   end)
 
 end
-
-local p = Player({})
-
-p = nil
-
-

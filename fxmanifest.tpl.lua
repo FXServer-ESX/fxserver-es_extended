@@ -23,8 +23,6 @@ dependencies {
   'baseevents',
   'mysql-async',
   'async',
-  'cron',
-  'skinchanger'
 }
 
 files {
@@ -70,6 +68,8 @@ client_scripts {
 
   'locale.lua',
   'locales/*.lua',
+
+  'vendor/matrix.lua',
 
   'config/default/config.lua',
   'config/default/config.*.lua',

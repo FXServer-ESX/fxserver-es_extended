@@ -11,6 +11,9 @@
 --   This copyright should appear in every part of the project code
 
 Locales['fr'] = {
+  -- Global
+  ['submit'] = 'Valider',
+  
   -- Inventory
   ['inventory'] = 'inventaire %s / %s',
   ['use'] = 'utiliser',
@@ -239,4 +242,11 @@ Locales['fr'] = {
   ['identity_register'] = 'Veuillez enregistrer votre personnage.',
   ['identity_welcome'] = 'Bonjour, ~b~%s %s',
   ['identity_fill_in'] = 'Veuillez remplir tous les champs avant de soumettre!',
+  ['identity_firstname'] = 'Prènom',
+  ['identity_lastname'] = 'Nom',
+  ['identity_birthdate'] = 'Date de naissance',
+  ['identity_sex'] = "Sexe",
+  ['identity_male'] = "Masculin",
+  ['identity_female'] = "Féminin",
+
 }

@@ -14,49 +14,70 @@ onRequest('esx:identity:register', function(source, cb, data)
 
   local player = Player.fromId(source)
 
-  local identity = Identity({
-    owner     = player.identifier,
-    firstName = data.firstName,
-    lastName  = data.lastName,
-    DOB       = data.dob,
-    isMale    = data.isMale
-  })
+  Identity.registerForPlayer(data, player, cb)
 
-  identity:save(function(id)
+end)
 
-    Identity.all[id] = identity
+onRequest('esx:identity:selectIdentity', function(source, cb, identityId)
 
-    player:setIdentityId(id)
-    player:field('identity', identity)
-    player:save()
+  local player = Player.fromId(source)
 
-    cb(id)
+  Identity.findOne({id = identityId}, function(identity)
+    if identity == nil then
+      return cb(nil)
+    end
 
+    Identity.loadForPlayer(identity, player)
+
+    cb(identity:serialize())
   end)
 
 end)
 
 onRequest('esx:cache:identity:get', function(source, cb, id)
 
+  local player = Player.fromId(source)
+
   local instance = Identity.all[id]
 
   if instance then
 
-    cb(true, instance:serialize())
+    cb(true, {instance:serialize()})
 
   else
 
-    Identity.findOne({id = id}, function(instance)
-
-      if instance == nil then
-        cb(false, nil)
-      else
-        Identity.all[id] = instance
-        cb(true, instance:serialize())
-      end
-
-    end)
+    Identity.allFromPlayer(player, cb, true)
 
   end
 
+end)
+
+onRequest('esx:identity:getSavedPosition', function(source, cb, id)
+  local player = Player.fromId(source)
+
+  MySQL.Async.fetchAll('SELECT position FROM identities WHERE id = @identityId AND owner = @owner', {
+    ['@identityId'] = player:getIdentityId(),
+    ['@owner']      = player.identifier
+  }, function(result)
+    if result then
+      if result[1] then
+        local pos = json.decode(result[1].position)
+        cb(pos)
+      else
+        cb(false)
+      end
+    else
+      cb(false)
+    end
+  end)
+end)
+
+onClient('esx:identity:updatePosition', function(position)
+  local player = Player.fromId(source)
+
+  MySQL.Async.execute('UPDATE identities SET position = @position WHERE id = @id AND owner = @owner', {
+    ['@position'] = json.encode(position),
+    ['@id']       = player:getIdentityId(),
+    ['@owner']    = player.identifier
+  })
 end)

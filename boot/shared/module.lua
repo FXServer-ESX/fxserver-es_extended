@@ -57,12 +57,12 @@ local tableIndexOf = function(t, val)
 end
 
 -- ESX base
-ESX                   = {}
-ESX.Loaded            = false
-ESX.Ready             = false
-ESX.Modules           = {}
-ESX.TimeoutCount      = 1
-ESX.CancelledTimeouts = {}
+ESX                = {}
+ESX.Loaded         = false
+ESX.Ready          = false
+ESX.Modules        = {}
+ESX.TaskCount      = 1
+ESX.CancelledTasks = {}
 
 ESX.GetConfig = function()
   return Config
@@ -90,33 +90,50 @@ ESX.EvalFile = function(resource, file, env)
 
 end
 
+ESX.GetTaskId = function()
+
+  local id      = (ESX.TaskCount + 1 < 65635) and (ESX.TaskCount + 1) or 1
+  ESX.TaskCount = id
+
+  return id
+
+end
+
+ESX.ClearTask = function(id)
+  ESX.CancelledTasks[id] = true
+end
+
+ESX.AckClearedTask = function(id)
+  ESX.CancelledTasks[id] = nil
+end
+
+ESX.IsTaskCancelled = function(id)
+  return ESX.CancelledTasks[id]
+end
+
 ESX.SetTimeout = function(msec, cb)
 
-  local id = (ESX.TimeoutCount + 1 < 65635) and (ESX.TimeoutCount + 1) or 1
+  local id = ESX.GetTaskId()
 
   SetTimeout(msec, function()
 
-    if ESX.CancelledTimeouts[id] then
-      ESX.CancelledTimeouts[id] = nil
+    if ESX.CancelledTasks[id] then
+      ESX.AckClearedTask(id)
     else
       cb()
     end
 
   end)
 
-  ESX.TimeoutCount = id;
-
   return id
 
 end
 
-ESX.ClearTimeout = function(id)
-  ESX.CancelledTimeouts[id] = true
-end
+ESX.ClearTimeout = ESX.ClearTask
 
 ESX.SetInterval = function(msec, cb)
 
-  local id = (ESX.TimeoutCount + 1 < 65635) and (ESX.TimeoutCount + 1) or 1
+  local id = ESX.GetTaskId()
 
   local run
 
@@ -124,8 +141,8 @@ ESX.SetInterval = function(msec, cb)
 
     ESX.SetTimeout(msec, function()
 
-      if ESX.CancelledTimeouts[id] then
-        ESX.CancelledTimeouts[id] = nil
+      if ESX.IsTaskCancelled(id) then
+        ESX.AckClearedTask(id)
       else
         cb()
         run()
@@ -135,17 +152,34 @@ ESX.SetInterval = function(msec, cb)
 
   end
 
-  ESX.TimeoutCount = id;
-
   run()
 
   return id
 
 end
 
-ESX.ClearInterval = function(id)
-  ESX.CancelledTimeouts[id] = true
+ESX.ClearInterval = ESX.ClearTask
+
+ESX.SetTick = function(fn)
+
+  local id = ESX.GetTaskId()
+
+  Citizen.CreateThread(function()
+
+    while not ESX.IsTaskCancelled(id) do
+      fn()
+      Citizen.Wait(0)
+    end
+
+    ESX.AckClearedTask(id)
+
+  end)
+
+  return id
+
 end
+
+ESX.ClearTick = ESX.ClearTask
 
 -- ESX main module
 ESX.Modules['boot'] = {}
@@ -214,7 +248,7 @@ module.CreateModuleEnv = function(name, group)
   env.__GROUP__    = group
   env.__RESOURCE__ = resName
   env.__DIR__      = 'modules/__' .. group .. '__/' .. name
-  env.run          = function(file, _env) return ESX.EvalFile(env.__RESOURCE__, env.__DIR__ .. '/' .. file, _env) end
+  env.run          = function(file, _env) return ESX.EvalFile(env.__RESOURCE__, env.__DIR__ .. '/' .. file, _env or env) end
   env.module       = {}
   env.M            = module.LoadModule
 

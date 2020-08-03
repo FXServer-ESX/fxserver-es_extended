@@ -9,12 +9,15 @@
   "devDependencies": {
     "@rollup/plugin-commonjs": "11.0.2",
     "@rollup/plugin-node-resolve": "^7.0.0",
+    "hex-rgb": "^4.1.0",
+    "rgb-hex": "^3.0.0",
     "rollup": "^1.20.0",
     "rollup-plugin-copy": "^3.3.0",
     "rollup-plugin-livereload": "^1.0.0",
     "rollup-plugin-svelte": "^5.0.3",
     "rollup-plugin-terser": "^5.1.2",
-    "svelte": "^3.20.1"
+    "svelte": "^3.23.0",
+    "svelte-color-picker": "^1.0.7"
   },
   "dependencies": {
     "sirv-cli": "^0.4.4"

@@ -41,12 +41,22 @@ RegisterNUICallback('frame_load', function(data, cb)
 end)
 
 RegisterNUICallback('frame_message', function(data, cb)
-  emit('esx:frame:message', data.name, data.msg)
-  cb('')
+  
+  local subscribed = false
+
+  emit('esx:frame:message', data.name, data.msg, function()
+    subscribed = true
+    return cb
+  end)
+
+  if not subscribed then
+    cb('')
+  end
+
 end)
 
 on('esx:frame:load', function(name)
-
+  
   local frame = module.Frames[name]
 
   if frame == nil then
@@ -61,17 +71,29 @@ on('esx:frame:load', function(name)
 
 end)
 
-on('esx:frame:message', function(name, msg)
+-- If you call handleCallback, esx will not call the nui callback automatically
+-- Instead it will return it from that handleCallback function so you can call it whenever you want
+-- If you want to make use of this behavior, it is mandatory to call handleCallback synchronously
+-- When you have the callback returned by handleCallback, you can wall it whenever you want tough
+-- Because it will be marked as 'subscribed' and esx will never call it by itself
 
-  local frame = module.Frames[name]
+on('esx:frame:message', function(name, msg, handleCallback)
 
-  if frame == nil then
+  if name == '__root__' then
 
-    print('error, frame [' .. name .. '] not found')
+    emit('esx:hud:message', msg, handleCallback)
 
   else
 
-    frame:emit('message', msg)
+    local frame = module.Frames[name]
+
+    if frame == nil then
+      print('error, frame [' .. name .. '] not found')
+    else
+      if not(frame.destroyed) then
+        frame:emit('message', msg, handleCallback)
+      end
+    end
 
   end
 

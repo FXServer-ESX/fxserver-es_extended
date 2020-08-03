@@ -27,3 +27,8 @@ html, body {
 
   font-family: 'Maven Pro', sans-serif;
 }
+
+/* overrides */
+.hex-text-block, .rgb-text-block {
+  line-height: 16px !important;
+}

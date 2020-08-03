@@ -12,44 +12,80 @@
 
 (() => {
 
-	let ESXWrapper = {};
-	ESXWrapper.MessageSize = 1024;
-	ESXWrapper.messageId = 0;
+  class ESXWrapper {
 
-	window.SendMessage = function (namespace, type, msg) {
+    constructor() {
 
-		ESXWrapper.messageId = (ESXWrapper.messageId < 65535) ? ESXWrapper.messageId + 1 : 0;
-		const str = JSON.stringify(msg);
+      this.resName = window.GetParentResourceName ? GetParentResourceName() : 'es_extended';
 
-		for (let i = 0; i < str.length; i++) {
+      window.addEventListener('keydown',     e => this.onKeyDown(e));
+      window.addEventListener('keyup',       e => this.onKeyUp(e));
+      window.addEventListener('mouseup',     e => this.onMouseUp(e));
+      window.addEventListener('mousedown',   e => this.onMouseDown(e));
+      // window.addEventListener('mousemove',   e => this.onMouseMove(e)); We'll spam GetNuiCursorPosition() instead
+      window.addEventListener('mousewheel',  e => this.onMouseWheel(e));
+      window.addEventListener('contextmenu', e => this.onContextMenu(e));
 
-			let count = 0;
-			let chunk = '';
+      window.NUICallback = (name, data = {}, asJSON = false) => this.NUICallback(name, data, asJSON);
+      
+    }
 
-			while (count < ESXWrapper.MessageSize && i < str.length) {
+    postFrameMessage(msg) {
+      
+      if(window.__ESXROOT__)
+        window.__ESXROOT__.postFrameMessage('__root__', msg);
+      else
+        window.parent.postMessage({...msg, __esxinternal: true}, '*');
+    }
 
-				chunk += str[i];
+    async NUICallback(name, data = {}, asJSON = false) {
 
-				count++;
-				i++;
-			}
+      const res = await fetch('http://' + this.resName + '/' + name, {
+        method: 'POST',
+        headers: {
+          'Accept'      : 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      });
 
-			i--;
+      if(asJSON)
+        return res.json();
+      else
+        return res.text();
 
-			const data = {
-				__namespace: namespace,
-				__type: type,
-				id: ESXWrapper.messageId,
-				chunk: chunk
-			}
+    }
 
-			if (i == str.length - 1)
-				data.end = true;
+    onKeyDown(e) {
+      this.postFrameMessage({action: 'key:down', args: [e.keyCode]});
+    }
 
-			$.post('http://es_extended/__chunk', JSON.stringify(data));
+    onKeyUp(e) {
+      this.postFrameMessage({action: 'key:up', args: [e.keyCode]});
+    }
 
-		}
+    onMouseDown(e) {
+      this.postFrameMessage({action: 'mouse:down', args: [e.button]});
+    }
 
-	}
+    onMouseUp(e) {
+      this.postFrameMessage({action: 'mouse:up', args: [e.button]});
+    }
+
+    onMouseMove(e) {
+      this.postFrameMessage({action: 'mouse:move', args: [e.screenX, e.screenY]});
+    }
+
+    onMouseWheel(e) {
+      this.postFrameMessage({action: 'mouse:wheel', args: [(e.wheelDelta > 0 ? 1 : -1)]});
+    }
+
+    onContextMenu(e) {
+      this.postFrameMessage({action: 'context', args: []});
+    }
+
+  }
+
+  window.__ESXWRAPPER__ = window.__ESXWRAPPER__ || new ESXWrapper();
 
 })()

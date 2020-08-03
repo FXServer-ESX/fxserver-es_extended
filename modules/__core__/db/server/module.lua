@@ -15,6 +15,13 @@ M('events')
 
 module.Tables = {}
 
+--expressions
+module.Expressions = {'NULL', 'UUID()'}
+
+module.IsExpression = function(val)
+  return table.indexOf(module.Expressions, val) ~= -1
+end
+
 --query
 local DBQuery = function()
 
@@ -280,10 +287,8 @@ function DBField:sqlCompat()
 
     if type(self.default) == 'string' then
 
-      if self.default == 'NULL' then
-        sql = sql .. 'NULL'
-      elseif self.default == 'UUID()' then
-        sql = sql .. '(UUID())'
+      if module.IsExpression(self.default) then
+        sql = sql .. self.default
       else
         sql = sql .. '\'' .. self.default .. '\''
       end
@@ -319,10 +324,8 @@ function DBField:sql()
 
     if type(self.default) == 'string' then
 
-      if self.default == 'NULL' then
-        sql = sql .. 'NULL'
-      elseif self.default == 'UUID()' then
-        sql = sql .. 'UUID()'
+      if module.IsExpression(self.default) then
+        sql = sql .. self.default
       else
         sql = sql .. '\'' .. self.default .. '\''
       end
@@ -358,10 +361,8 @@ function DBField:sqlAlterCompat(tableName)
 
     if type(self.default) == 'string' then
 
-      if self.default == 'NULL' then
-        sql = sql .. 'NULL'
-      elseif self.default == 'UUID()' then
-        sql = sql .. 'UUID()'
+      if module.IsExpression(self.default) then
+        sql = sql .. self.default
       else
         sql = sql .. '\\\'' .. self.default .. '\\\''
       end
@@ -510,10 +511,8 @@ function DBTable:ensure()
 
         if type(fieldValue) == 'string' then
 
-          if fieldValue == 'NULL' then
-            sql = sql .. 'NULL'
-          elseif fieldValue == 'UUID()' then
-            sql = sql .. 'UUID()'
+          if module.IsExpression(fieldValue) then
+            sql = sql .. fieldValue
           else
             sql = sql .. '\'' .. fieldValue .. '\''
           end

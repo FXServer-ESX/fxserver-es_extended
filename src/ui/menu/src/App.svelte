@@ -14,17 +14,20 @@
 
 <script>
 
-	import { onMount, beforeUpdate } from 'svelte';
+	import { onMount, onDestroy, beforeUpdate } from 'svelte';
+  import { HsvPicker }                        from 'svelte-color-picker';
+  import rgbHex                               from 'rgb-hex';
+  import hexRgb                               from 'hex-rgb';
 
 	export let float = 'left|top';
-
 	export let title = 'Untitled ESX Menu';
+  export let items = [];
 
-	export let items  = [];
-	export let _items = [];
+	let _items = [];
+	let el     = null;
 
 	window.addEventListener('message', e => {
-
+		
 		const msg = e.data;
 
 		switch(msg.action) {
@@ -59,6 +62,9 @@
 
       ((i) => {
 
+        if((items[i].type === 'color') && (items[i].restrict instanceof Array) && (items[i].value === undefined))
+          items[i].value = items[i].restrict[0] || '#FFF';
+
         _items[i] = new Proxy(items[i], {
 
           get: (obj, prop) => {
@@ -66,7 +72,7 @@
           },
 
           set: (obj, prop, val) => {
-            obj[prop] = val;
+            items[i][prop] = val; // not obj[prop] because svelte will not undertstand if have to re-render
             window.parent.postMessage({action: 'item.change', index: i, prop, val}, '*');
             return true;
           },
@@ -88,12 +94,14 @@
 		_items = [..._items];
 
   }
+	
+	const onMouseEnter= (e) => {
+		window.parent.postMessage({action: 'mouse.in'}, '*');
+	}
 
-	onMount(() => {
-		window.parent.postMessage({action: 'ready'}, '*');
-	});
-
-	beforeUpdate(proxifyItems);
+	const onMouseLeave = (e) => {
+		window.parent.postMessage({action: 'mouse.out'}, '*');
+	}
 
 	const onItemClick = (e, item, index) => {
 		window.parent.postMessage({action: 'item.click', index}, '*');
@@ -107,9 +115,40 @@
 			item.value++;
 	}
 
+  const onPicker = (item, color) => {
+
+    if(typeof color =='string') {
+
+      const tmp  = hexRgb(color);
+      item.value = {r: tmp.red, g: tmp.green, b: tmp.blue, a: tmp.alpha};
+
+    } else {
+
+      item.value = color;
+
+    }
+
+	}
+
+	onMount(() => {
+
+		window.parent.postMessage({action: 'ready'}, '*');
+
+		el.addEventListener('mouseenter',  onMouseEnter);
+		el.addEventListener('mouseleave', onMouseLeave);
+
+	});
+
+	onDestroy(() => {
+		el.removeEventListener('mouseenter', onMouseEnter);
+		el.removeEventListener('mouseleave', onMouseLeave);
+	})
+
+	beforeUpdate(proxifyItems);
+
 </script>
 
-<main class="{float.split('|').map(e => 'float-' + e).join(' ')}">
+<main class="{float.split('|').map(e => 'float-' + e).join(' ')}" bind:this={el}>
 	<main-wrap>
 
 		<item class="title">{title}</item>
@@ -124,21 +163,50 @@
 
 				{#if item.type === 'slider'}
 					<item class="slider" on:click={e => onItemClick(e, item, i)} on:wheel={e => onSliderWheel(e, item, i)}>
-						<div>{item.label}</div>
+						<div class="label">{item.label}</div>
 						<div><input type="range" bind:value={item.value} min={item.min} max={item.max}></div>
 					</item>
 				{/if}
 
 				{#if item.type === 'check'}
 					<item class="check" on:click={e => {onItemClick(e, item, i); item.value = !item.value}} >
-						{item.label} <input type="checkbox" bind:checked={item.value}/>
+						<span class="label">{item.label}</span> <input type="checkbox" bind:checked={item.value}/>
 					</item>
 				{/if}
 
 				{#if item.type === 'text'}
 					<item class="text" on:click={e => onItemClick(e, item, i)}>
-						<div>{item.label}</div>
+						<div class="label">{item.label}</div>
 						<div><input type="text" bind:value={item.value} placeholder={item.placeholder || ''} autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/></div>
+					</item>
+				{/if}
+
+				{#if item.type === 'color'}
+					<item class="color" on:click={e => onItemClick(e, item, i)}>
+
+            <div class="label">{item.label}</div>
+
+            {#if !item.restrict}
+              <div class="color-picker">
+                <HsvPicker on:colorChange={rgba => onPicker(item, rgba.detail)} startColor={item.value ? (typeof item.value == 'string' ? item.value : '#' + rgbHex(item.value.r || 0, item.value.g || 0, item.value.b || 0)) : undefined}/>
+              </div>
+            {/if}
+
+            {#if item.restrict instanceof Array}
+              <div class="color-restrict-preview">
+                <div class="color-restrict-entry">
+                  <div class="color-restrict-preview" style="background-color: {item.value ? (typeof item.value == 'string' ? item.value : '#' + rgbHex(item.value.r, item.value.g, item.value.b, item.value.a)) : 'transparent'}"></div>
+                </div>
+              </div>
+              <div class="color-restrict">
+                {#each item.restrict as color}
+                  <div class="color-restrict-entry">
+                    <div class="color-restrict-entry-inner" on:click={e => onPicker(item, color)} style="background-color: {typeof color == 'string' ? color : '#' + rgbHex(color.r || 0, color.g || 0, color.b || 0)}"></div>
+                  </div>
+                {/each}
+              </div>
+            {/if}
+
 					</item>
 				{/if}
 
@@ -160,7 +228,7 @@
 		user-select: none;
 		flex-direction: column;
 		border-radius: 10px;
-    min-width: 280px;
+    width: 320px;
     max-width: calc(100vh - 50px);
     max-height: calc(100vh - 50px);
     overflow-y: auto;
@@ -215,11 +283,18 @@
 
 	item {
 		padding: 14px;
+	}
+
+  item > .label {
+    color: rgba(255, 255, 255, 0.6);
+  }
+
+  item:not(.color) {
 		border-radius: 10px;
 		cursor: pointer;
-		color: rgba(255, 255, 255, 0.6);
 		text-align: center;
-	}
+    color: rgba(255, 255, 255, 0.6);
+  }
 
 	item input:focus {
 		outline: none;
@@ -314,6 +389,41 @@
 
 	item.text > div:nth-child(1) {
 		text-align: center;
-	}
+  }
+
+  .color-picker {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    padding: 10px;
+  }
+
+  .color-restrict {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    max-width: calc((16px + 10px) * 10);
+  }
+
+  .color-restrict-entry {
+    margin: 5px;
+  }
+
+  .color-restrict-entry-inner {
+    width: 16px;
+    height: 16px;
+  }
+
+  .color-restrict-entry-inner:hover {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+  }
+
+  .color-restrict-preview {
+    width: 100%;
+    height: 16px;
+  }
 
 </style>

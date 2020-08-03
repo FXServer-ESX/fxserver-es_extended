@@ -16,6 +16,7 @@ local module = ESX.Modules['boot']
 M('events')
 local Menu = M('ui.menu')
 local HUD  = M('game.hud')
+local utils = M('utils')
 
 on('esx:ready', function()
   AddTextEntry('FE_THDR_GTAO', 'ESX')
@@ -195,7 +196,7 @@ onServer('esx:teleport', function(coords)
 	coords.y = coords.y + 0.0
 	coords.z = coords.z + 0.0
 
-	ESX.Game.Teleport(playerPed, coords)
+	utils.game.teleport(playerPed, coords)
 end)
 
 onServer('esx:setJob', function(job)
@@ -214,7 +215,7 @@ onServer('esx:spawnVehicle', function(vehicleName)
 		local playerPed = PlayerPedId()
 		local playerCoords, playerHeading = GetEntityCoords(playerPed), GetEntityHeading(playerPed)
 
-		ESX.Game.SpawnVehicle(model, playerCoords, playerHeading, function(vehicle)
+		utils.game.createVehicle(model, playerCoords, playerHeading, function(vehicle)
 			TaskWarpPedIntoVehicle(playerPed, vehicle, -1)
 		end)
 	else
@@ -266,7 +267,7 @@ onServer('esx:newPickup', function(pickupId, label, playerId, type, name, compon
 
 	else
 
-		ESX.Game.SpawnLocalObject('prop_money_bag_01', objectCoords, function(obj)
+		utils.game.createLocalObject('prop_money_bag_01', objectCoords, function(obj)
 			setupPickup(obj)
 		end)
 	end
@@ -287,7 +288,7 @@ onServer('esx:newMissingPickups', function(missingPickups)
 				GiveWeaponComponentToWeaponObject(pickupObject, component.hash)
 			end
 		else
-			ESX.Game.SpawnLocalObject('prop_money_bag_01', pickup.coords, function(obj)
+			utils.game.createLocalObject('prop_money_bag_01', pickup.coords, function(obj)
 				pickupObject = obj
 			end)
 
@@ -320,7 +321,7 @@ end)
 
 onServer('esx:removePickup', function(pickupId)
 	if ESX.Pickups[pickupId] and ESX.Pickups[pickupId].obj then
-		ESX.Game.DeleteObject(ESX.Pickups[pickupId].obj)
+		utils.game.deleteObject(ESX.Pickups[pickupId].obj)
 		ESX.Pickups[pickupId] = nil
 	end
 end)
@@ -330,7 +331,7 @@ onServer('esx:deleteVehicle', function(radius)
 
 	if radius and tonumber(radius) then
 		radius = tonumber(radius) + 0.01
-		local vehicles = ESX.Game.GetVehiclesInArea(GetEntityCoords(playerPed), radius)
+		local vehicles = utils.game.getVehiclesInArea(GetEntityCoords(playerPed), radius)
 
 		for k,entity in ipairs(vehicles) do
 			local attempt = 0
@@ -342,11 +343,11 @@ onServer('esx:deleteVehicle', function(radius)
 			end
 
 			if DoesEntityExist(entity) and NetworkHasControlOfEntity(entity) then
-				ESX.Game.DeleteVehicle(entity)
+				utils.game.deleteVehicle(entity)
 			end
 		end
 	else
-		local vehicle, attempt = ESX.Game.GetVehicleInDirection(), 0
+		local vehicle, attempt = utils.game.getVehicleInDirection, 0
 
 		if IsPedInAnyVehicle(playerPed, true) then
 			vehicle = GetVehiclePedIsIn(playerPed, false)
@@ -359,7 +360,7 @@ onServer('esx:deleteVehicle', function(radius)
 		end
 
 		if DoesEntityExist(vehicle) and NetworkHasControlOfEntity(vehicle) then
-			ESX.Game.DeleteVehicle(vehicle)
+			utils.game.deleteVehicle(entity)
 		end
 	end
 end)

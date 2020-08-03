@@ -17,10 +17,11 @@ M('table')
 
 local pass = function(x) return x end
 
-Persist = function(schema, pk)
+Persist = function(schema, pk, ...)
 
+  local mixins        = {...}
   local debugName     = debugName or 'PersistBase_' .. schema
-  local extDebugName = 'Persist_' .. schema
+  local extDebugName  = 'Persist_' .. schema
   local fields        = {}
   local dbfields      = {}
   local pType         = Extends(Serializable, debugName)
@@ -33,9 +34,29 @@ Persist = function(schema, pk)
     self.__PK     = pk
 
     for k,v in pairs(fields) do
-      self:field(k, data[k])
+
+      local dataValue = data[k]
+
+      if dataValue == nil then
+
+        if not db.IsExpression(v.data.default) then
+          -- authorize nil to be inserted as NULL even when using encoder
+          -- (bypass the encoder when nil is provided)
+          if v.decode ~= nil and v.data.default ~= nil then
+            dataValue = v.decode(v.data.default)
+          end
+        end
+
+      end
+
+      self:field(k, dataValue)
+
     end
 
+  end
+
+  if #mixins > 0 then
+    pType = Mixin(debugName, pType, ...)
   end
 
   local set = function(name, field, encode, decode)
@@ -94,6 +115,7 @@ Persist = function(schema, pk)
 
     local queryFields = {}
     local keys        = {}
+    local queryFlag   = false
 
     for k,v in pairs(fields) do
       keys[#keys + 1] = v.data.name
@@ -101,12 +123,26 @@ Persist = function(schema, pk)
 
     for k,v in pairs(query) do
       queryFields[fields[k].data.name] = v
+      queryFlag = true
     end
 
-    local keys      = table.map(fields, function(e) return e.data.name end)
-    local sql, data = db.DBQuery().select(keys).from(schema).where(queryFields).escape().build()
+    local baseQuery = db.DBQuery().select(keys).from(schema)
+
+    if queryFlag then
+      baseQuery = baseQuery.where(queryFields)
+    end
+
+    local sql, data = baseQuery.escape().build()
 
     MySQL.Async.fetchAll(sql, data, function(rows)
+
+      if not(rows) then
+        error("A MySQL error occured, this probably isn't on the ESX end.")
+      end
+
+      if (rows[1] == nil) then
+        return cb(nil)
+      end
 
       cb(table.map(rows, function(e)
 
@@ -219,7 +255,7 @@ Persist = function(schema, pk)
     initTable(schema, pk, dbfields)
   end)
 
-  return Extends(pType, extDebugName)
+  return Extends(pType, extDebugName), pType
 
 end
 

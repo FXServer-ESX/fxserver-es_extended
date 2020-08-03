@@ -56,9 +56,17 @@ function Serializable:serialize(encode)
   local data = {}
 
   for name, accessor in pairs(self.__ACCESSORS) do
-    data[name] = accessor.get(self)
+
+    local processedGetter = accessor.get(self)
+
+    -- avoid circular references errors
+    if (type(processedGetter) == "table" and type(processedGetter.serialize) == "function") then
+      processedGetter = processedGetter:serialize()
+    end
+
+    data[name] = processedGetter
   end
 
   return encode == nil and data or encode(data)
-
+  
 end

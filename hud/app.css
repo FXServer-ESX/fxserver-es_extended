@@ -26,8 +26,3 @@ html, body, #frames, #frames > div, #frames > div > iframe {
   left: 0;
   top: 0;
 }
-
-#pb {
-	display: none;
-	overflow: hidden;
-}

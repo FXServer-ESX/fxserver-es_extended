@@ -15,6 +15,19 @@ math.round = function(num, numDecimalPlaces)
   return math.floor(num * mult + 0.5) / mult
 end
 
+math.roundVec3 = function(vec, digits)
+
+  if not(digits) then
+    digits = 0
+  end
+
+  return vec3(
+    math.round(vec.x, digits),
+    math.round(vec.y, digits),
+    math.round(vec.z, digits)
+  )
+end
+
 -- credit http://richard.warburton.it
 math.groupDigits = function(value)
 	local left, num, right = string.match(value,'^([^%d]*%d)(%d*)(.-)$')

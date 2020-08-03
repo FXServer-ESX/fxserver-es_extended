@@ -24,7 +24,7 @@ function async.parallel(tasks, cb)
 
 	for i=1, #tasks, 1 do
 
-		CreateThread(function()
+		SetTimeout(0, function()
 
 			tasks[i](function(result)
 
@@ -87,7 +87,7 @@ function async.parallelLimit(tasks, limit, cb)
 
 		end
 
-		CreateThread(processQueue)
+		SetTimeout(0, processQueue)
 
 	end
 

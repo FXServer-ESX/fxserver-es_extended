@@ -12,7 +12,7 @@
 
 (() => {
 
-  class ESX {
+  class ESXRoot {
 
     constructor() {
 
@@ -20,19 +20,39 @@
       this.resName = GetParentResourceName();
 
       window.addEventListener('message', e => {
-
+        
+        // Find which frame sent message
         for(let name in this.frames) {
           if(this.frames[name].iframe.contentWindow === e.source) {
-            this.onFrameMessage(name, e.data);
+            this.postFrameMessage(name, e.data);
             return;
           }
         }
 
+        // Not a frame ? Coming from client script
         this.onMessage(e.data);
 
       });
 
-      $.post('http://' + this.resName + '/nui_ready', '{}');
+      this.NUICallback('nui_ready');
+
+    }
+
+    async NUICallback(name, data = {}, asJSON = false) {
+
+      const res = await fetch('http://' + this.resName + '/' + name, {
+        method: 'POST',
+        headers: {
+          'Accept'      : 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      });
+
+      if(asJSON)
+        return res.json();
+      else
+        return res.text();
 
     }
 
@@ -55,7 +75,7 @@
         this.hideFrame(name);
 
       this.frames[name].iframe.contentWindow.addEventListener('DOMContentLoaded', () => {
-        $.post('http://' + this.resName + '/frame_load', JSON.stringify({name}));
+        this.NUICallback('frame_load', {name});
       }, true);
 
       return this.frames[name];
@@ -118,6 +138,16 @@
             break;
           }
 
+          case 'show_frame' : {
+            this.showFrame(msg.name);
+            break;
+          }
+
+          case 'hide_frame' : {
+            this.hideFrame(msg.name);
+            break;
+          }
+
           default: break;
         }
 
@@ -126,12 +156,12 @@
 
     }
 
-    onFrameMessage(name, msg) {
-      $.post('http://' + this.resName + '/frame_message', JSON.stringify({name, msg}));
+    postFrameMessage(name, msg) {
+      this.NUICallback('frame_message', {name, msg})
     }
 
   }
 
-  const esx = new ESX();
+  window.__ESXROOT__ = window.__ESXROOT__ || new ESXRoot();
 
 })();

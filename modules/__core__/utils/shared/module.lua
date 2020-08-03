@@ -19,6 +19,8 @@ module.weapon  = module.weapon  or {}
 module.game    = module.game    or {}
 module.vehicle = module.vehicle or {}
 module.random  = module.random  or {}
+module.time    = module.time    or {}
+module.game    = module.game    or {}
 
 -- Locals
 local printableChars = {}
@@ -287,3 +289,50 @@ module.random.inRange = function(min, max)
   return math.random(min, max)
 
 end
+
+module.time.fromTimestamp = function(timestamp)
+  
+  local w = math.floor(timestamp / 86400 / 7)
+  local d = math.floor(timestamp / 86400 % 7)
+  local h = math.floor(timestamp / 3600  % 24)
+  local m = math.floor(timestamp / 60    % 60)
+  local s = math.floor(timestamp % 60)
+
+  return w, d, h, m, s
+
+end
+
+module.game.isFreemodeModel = function(nameOrHash)
+  local name = type(nameOrHash) == 'string' and nameOrHash or PED_MODELS_BY_HASH[nameOrHash]
+  return (name == 'mp_m_freemode_01') or (name == 'mp_f_freemode_01')
+end
+
+module.game.isHumanModel = function(nameOrHash)
+
+  local name = type(nameOrHash) == 'string' and nameOrHash or PED_MODELS_BY_HASH[nameOrHash]
+  name       = name or ''
+
+  return name:sub(1, 2) ~= 'a_'
+
+end
+
+module.game.isAnimalModel = function(nameOrHash)
+
+  local name = type(nameOrHash) == 'string' and nameOrHash or PED_MODELS_BY_HASH[nameOrHash]
+  name       = name or ''
+
+  return name:sub(1, 2) == 'a_'
+
+end
+
+module.printWarning = function(str)
+  print(('[^3WARNING^7] %s'):format(str))
+end
+
+module.try = function(f, catch_f)
+  local status, exception = pcall(f)
+  if not status then
+    catch_f(exception)
+  end
+end
+  

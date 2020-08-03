@@ -10,12 +10,12 @@
 --   If you redistribute this software, you must link to ORIGINAL repository at https://github.com/ESX-Org/es_extended
 --   This copyright should appear in every part of the project code
 
-local interval
+local playerConnectedDetectionInterval
 
-interval = ESX.SetInterval(100, function()
+playerConnectedDetectionInterval = ESX.SetInterval(100, function()
 
   if NetworkIsPlayerActive(PlayerId()) then
-    ESX.ClearInterval(interval)
+    ESX.ClearInterval(playerConnectedDetectionInterval)
     emitServer('esx:player:join')
   end
 

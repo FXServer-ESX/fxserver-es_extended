@@ -10,6 +10,8 @@
 --   If you redistribute this software, you must link to ORIGINAL repository at https://github.com/ESX-Org/es_extended
 --   This copyright should appear in every part of the project code
 
+local utils = M('utils')
+
 module.LOVE_PLAYER_GROUP = AddRelationshipGroup('LOVE_PLAYER')
 
 SetRelationshipBetweenGroups(0, module.LOVE_PLAYER_GROUP, 'PLAYER')
@@ -66,8 +68,7 @@ ESX.SetInterval(250, function()
 end)
 
 -- Markers
-Citizen.CreateThread(function()
-
+ESX.SetInterval(0, function()
   for i=1, #module.Cache.current, 1 do
 
     local curr = module.Cache.current[i]
@@ -85,11 +86,14 @@ Citizen.CreateThread(function()
       )
 
     end
-
   end
+end)
 
-  Citizen.Wait(0)
-
+-- Help Notification While In Marker
+ESX.SetInterval(0, function()
+  if module.active and module.msg then
+    utils.ui.showHelpNotification(module.msg, false, false, 1)
+  end
 end)
 
 -- NPCs
@@ -105,7 +109,7 @@ ESX.SetInterval(1000, function()
 
         local found = false
 
-        local closestPed, closestDistance = ESX.Game.GetClosestPed({
+        local closestPed, closestDistance = utils.game.getClosestPed({
           x = curr.pos.x + 0.0,
           y = curr.pos.y + 0.0,
           z = curr.pos.z + 0.0

@@ -10,3 +10,14 @@
 --   If you redistribute this software, you must link to ORIGINAL repository at https://github.com/ESX-Org/es_extended
 --   This copyright should appear in every part of the project code
 
+ESX.SetInterval(300, function()
+
+  if IsPauseMenuActive() and not module.IsPaused then
+    module.IsPaused = true
+    module.SetDisplay(0.0)
+  elseif not IsPauseMenuActive() and module.IsPaused then
+    module.IsPaused = false
+    module.SetDisplay(1.0)
+  end
+
+end)

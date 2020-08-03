@@ -26,7 +26,7 @@ local getEventId = function()
   else
     module.eventId = module.eventId + 1
   end
-
+  
   return module.eventId
 
 end
@@ -162,10 +162,8 @@ function EventEmitter:off(name, id)
 end
 
 function EventEmitter:emit(name, ...)
-
-  self.handlers[name] = self.handlers[name] or {}
-
-  for k,v in pairs(self.handlers[name]) do
+  
+  for k,v in pairs(self.handlers[name] or {}) do
     v(...)
   end
 
@@ -179,5 +177,7 @@ function EventEmitter:once(name, cb)
     off(id)
     cb(...)
   end)
+
+  return id
 
 end

@@ -219,7 +219,12 @@ table.by = function(t, k)
 
   for i=1, #t, 1 do
     local entry = t[i]
-    t2[k] = entry[i]
+    local val   = entry[k]
+
+    if val ~= nil then
+      t2[val] = entry
+    end
+
   end
 
   return t2

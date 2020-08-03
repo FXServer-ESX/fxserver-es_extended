@@ -36,9 +36,13 @@
 -- FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 -- OTHER DEALINGS IN THE SOFTWARE.
 
+M('constants')
+
 -- Namespaces
 module.game = module.game or {}
 module.ui   = module.ui   or {}
+module.math = module.math or {}
+module.time = module.time or {}
 
 -- Locals
 local entityEnumerator = {
@@ -84,30 +88,51 @@ local EnumerateEntities = function(initFunc, moveFunc, disposeFunc)
 	end)
 end
 
+module.game.enumerateEntitiesWithinDistance = function(entities, isPlayerEntities, coords, maxDistance)
+	local nearbyEntities = {}
+
+	if coords then
+		coords = vector3(coords.x, coords.y, coords.z)
+	else
+		local playerPed = PlayerPedId()
+		coords = GetEntityCoords(playerPed)
+	end
+
+	for k,entity in pairs(entities) do
+		local distance = #(coords - GetEntityCoords(entity))
+
+		if distance <= maxDistance then
+			table.insert(nearbyEntities, isPlayerEntities and k or entity)
+		end
+	end
+
+	return nearbyEntities
+end
+
 -- Game
 module.game.enumerateObjects = function()
 	return EnumerateEntities(FindFirstObject, FindNextObject, EndFindObject)
 end
 
-enumerateObjects = module.game.enumerateObjects -- Make it global for convenience
+EnumerateObjects = module.game.enumerateObjects -- Make it global for convenience
 
 module.game.enumeratePeds = function()
 	return EnumerateEntities(FindFirstPed, FindNextPed, EndFindPed)
 end
 
-enumeratePeds = module.game.enumeratePeds -- Make it global for convenience
+EnumeratePeds = module.game.enumeratePeds -- Make it global for convenience
 
 module.game.enumerateVehicles = function()
 	return EnumerateEntities(FindFirstVehicle, FindNextVehicle, EndFindVehicle)
 end
 
-enumerateVehicles = module.game.enumerateVehicles -- Make it global for convenience
+EnumerateVehicles = module.game.enumerateVehicles -- Make it global for convenience
 
 module.game.enumeratePickups = function()
 	return EnumerateEntities(FindFirstPickup, FindNextPickup, EndFindPickup)
 end
 
-enumeratePickups = module.game.enumeratePickups -- Make it global for convenience
+EnumeratePickups = module.game.enumeratePickups -- Make it global for convenience
 
 module.game.requestModel = function(model, cb)
 
@@ -116,21 +141,42 @@ module.game.requestModel = function(model, cb)
   end
 
   local interval
+  
+  RequestModel(model)
 
   interval = ESX.SetInterval(50, function()
-
+    
     if HasModelLoaded(model) then
 
       ESX.ClearInterval(interval)
-
+      
       if cb ~= nil then
-        cb(obj)
+        cb()
       end
 
     end
 
   end)
 
+end
+
+module.game.teleport = function(entity, coords)
+  if DoesEntityExist(entity) then
+		RequestCollisionAtCoord(coords.x, coords.y, coords.z)
+		local timeout = 0
+
+		-- we can get stuck here if any of the axies are "invalid"
+		while not HasCollisionLoadedAroundEntity(entity) and timeout < 2000 do
+			Citizen.Wait(0)
+			timeout = timeout + 1
+		end
+
+		SetEntityCoords(entity, coords.x, coords.y, coords.z, false, false, false, false)
+
+		if type(coords) == 'table' and coords.heading then
+			SetEntityHeading(entity, coords.heading)
+		end
+	end
 end
 
 module.game.createObject = function(model, coords, cb)
@@ -229,6 +275,22 @@ module.game.createLocalVehicle = function(model, coords, heading, cb)
 
 end
 
+module.game.deleteVehicle = function(vehicle)
+
+  SetEntityAsMissionEntity(vehicle, false, true)
+  Citizen.Wait(250)
+  DeleteVehicle(vehicle)
+  
+end
+
+module.game.deleteObject = function(obj)
+
+  SetEntityAsMissionEntity(object, false, true)
+  Citizen.Wait(250)
+  DeleteObject(object)
+  
+end
+
 module.game.isVehicleEmpty = function(vehicle)
 
 	local passengers     = GetVehicleNumberOfPassengers(vehicle)
@@ -236,6 +298,47 @@ module.game.isVehicleEmpty = function(vehicle)
 
   return (passengers == 0) and driverSeatFree
 
+end
+
+module.game.getVehicles = function()
+	local vehicles = {}
+
+	for vehicle in EnumerateVehicles() do
+		table.insert(vehicles, vehicle)
+	end
+
+	return vehicles
+end
+
+module.game.getPeds = function(onlyOtherPeds)
+	local peds, myPed = {}, PlayerPedId()
+
+	for ped in EnumeratePeds() do
+		if ((onlyOtherPeds and ped ~= myPed) or not onlyOtherPeds) then
+			table.insert(peds, ped)
+		end
+	end
+
+	return peds
+end
+
+module.game.getVehiclesInArea = function(coords, maxDistance) 
+  return module.enumerateEntitiesWithinDistance(module.game.getVehicles(), false, coords, maxDistance) 
+end
+
+module.game.getVehicleInDirection = function()
+  
+	local playerPed    = PlayerPedId()
+	local playerCoords = GetEntityCoords(playerPed)
+	local inDirection  = GetOffsetFromEntityInWorldCoords(playerPed, 0.0, 5.0, 0.0)
+	local rayHandle    = StartShapeTestRay(playerCoords, inDirection, 10, playerPed, 0)
+	local numRayHandle, hit, endCoords, surfaceNormal, entityHit = GetShapeTestResult(rayHandle)
+
+	if hit == 1 and GetEntityType(entityHit) == 2 then
+		return entityHit
+	end
+
+	return nil
 end
 
 module.game.getVehicleProperties = function(vehicle)
@@ -434,6 +537,93 @@ module.game.setVehicleProperties = function(vehicle, props)
 	end
 end
 
+module.game.getForcedComponents = function(ped, componentId, drawableId, textureId)
+
+  local components = {}
+  local compHash   = GetHashNameForComponent(ped, componentId, drawableId, textureId)
+  local count      = GetShopPedApparelForcedComponentCount(compHash)
+
+  for i=0, PV_COMP_MAX - 1, 1 do
+    components[i] = {}
+  end
+
+  for i=0, count - 1, 1 do
+
+    local nameHash, enumValue, componentType = GetForcedComponent(compHash, i)
+    local entry                              = components[componentType]
+
+    entry[#entry + 1] = {nameHash, enumValue}
+
+  end
+
+  return components
+
+end
+
+module.game.ensureForcedComponents = function(ped, componentId, drawableId, textureId)
+
+  local forcedComponents = module.game.getForcedComponents(ped, componentId, drawableId, textureId)
+
+  for k,v in pairs(forcedComponents) do
+    
+    local compId = tonumber(k)
+
+    for i=1, #v, 1 do
+      local forcedComponent = v[i]
+      SetPedComponentVariation(ped, compId, forcedComponent[2], 0, 0)
+    end
+
+  end
+
+  return forcedComponents
+
+end
+
+module.game.getClosestEntity = function(entities, isPlayerEntities, coords, modelFilter)
+	local closestEntity, closestEntityDistance, filteredEntities = -1, -1, nil
+
+	if coords then
+		coords = vector3(coords.x, coords.y, coords.z)
+	else
+		local playerPed = PlayerPedId()
+		coords = GetEntityCoords(playerPed)
+	end
+
+	if modelFilter then
+		filteredEntities = {}
+
+		for k,entity in pairs(entities) do
+			if modelFilter[GetEntityModel(entity)] then
+				table.insert(filteredEntities, entity)
+			end
+		end
+	end
+
+	for k,entity in pairs(filteredEntities or entities) do
+		local distance = #(coords - GetEntityCoords(entity))
+
+		if closestEntityDistance == -1 or distance < closestEntityDistance then
+			closestEntity, closestEntityDistance = isPlayerEntities and k or entity, distance
+		end
+	end
+
+	return closestEntity, closestEntityDistance
+end
+
+module.game.getClosestPed = function(coords, modelFilter) 
+  return module.game.getClosestEntity(module.game.getPeds(true), false, coords, modelFilter) 
+end
+
+module.game.setEnforcedPedComponentVariation = function(ped, componentId, drawableId, textureId, paletteId)
+  paletteId = paletteId or 0
+  SetPedComponentVariation(ped, componentId, drawableId, textureId, paletteId)
+  return module.game.ensureForcedComponents(ped, componentId, drawableId, textureId)
+end
+
+module.game.doSpawn = function(data, cb)
+  exports.spawnmanager:spawnPlayer(data, cb)
+end
+
 -- UI
 module.ui.showNotification = function(msg)
 	SetNotificationTextEntry('STRING')
@@ -495,4 +685,87 @@ module.ui.howFloatingHelpNotification = function(msg, coords, timeout)
 
   end)
 
+end
+
+module.math.polar3DToWorld3D = function(center, polar, azimuth, radius)
+
+  local polarRad   = polar   * DEG2RAD
+  local azimuthRad = azimuth * DEG2RAD
+
+  local sinPolar   = math.sin(polarRad)
+  local cosPolar   = math.cos(polarRad)
+  local sinAzimuth = math.sin(azimuthRad)
+  local cosAzimuth = math.cos(azimuthRad)
+
+  return vector3(
+    center.x + radius * (sinAzimuth * cosPolar),
+    center.y - radius * (sinAzimuth * sinPolar),
+    center.z - radius *  cosAzimuth
+  )
+
+end
+
+module.math.world3DtoPolar3D = function(center, position)
+  
+  local diff   = position - center
+  local radius = #(diff)
+  local p      = math.atan(diff.y / diff.x)
+  local o      = math.atan(math.sqrt(diff.x ^ 2 + diff.y ^ 2) / diff.z)
+
+  local polarDeg   = 180 - p * RAD2DEG % 180
+  local azimuthDeg = 180 - o * RAD2DEG % 180
+
+  return polarDeg, azimuthDeg, radius
+
+end
+
+module.math.screen2DToWorld3D = function(x, y, fov, near, far, right, forward, up, at)
+
+  local fovRatio = (360 - fov) / 360
+  local sX, sY   = GetActiveScreenResolution()
+  local sX2, sY2 = sX/2, sY/2
+  local aspect   = sX / sY
+
+  local transformMatrix = Matrix:new({
+    {right.x,   right.z,   right.y,   0},
+    {forward.x, forward.z, forward.y, 0},
+    {up.x,      up.z,      up.y,      0},
+    {at.x,      at.z,      at.y,      1},
+  })
+
+  local dx = math.tan(fovRatio * 0.5) * (x / sX2 - 1) * aspect
+  local dy = math.tan(fovRatio * 0.5) * (1 - y / sY2)
+
+  local p1 = Matrix:new({{dx * near, near, dy * near, 1}})
+  local p2 = Matrix:new({{dx * far,  far,  dy * far , 1}})
+
+  p1 = Matrix.mul(p1, transformMatrix)
+  p2 = Matrix.mul(p2, transformMatrix)
+
+  _near = vector3(p1[1][1], p1[1][3], p1[1][2])
+  _far  = vector3(p2[1][1], p2[1][3], p2[1][2])
+
+  return _near, _far
+
+end
+
+module.math.rotateAround = function(p1, p2, angle)
+
+  p1 = Matrix:new({{p1.x, p1.z, p1.y}})
+  p2 = Matrix:new({{p2.x, p2.z, p2.y}})
+
+  local rotationMatrix = Matrix:new({
+    {math.cos(angle), -p2[1][1] * math.cos(angle) + p2[1][1] + p2[1][2] * math.sin(angle), -math.sin(angle)},
+    {math.sin(angle), -p2[1][1] * math.sin(angle) - p2[1][2] * math.cos(angle) + p2[1][2], math.cos(angle)},
+    {              0,                                                                  1,               0}
+  })
+
+  local np = Matrix.add(p1, rotationMatrix)
+
+  return vector3(np[1][1], np[1][3], p1[1][2])
+
+end
+
+module.time.timestamp = function()
+  return Citizen.InvokeNative(0x9A73240B49945C76)
 end

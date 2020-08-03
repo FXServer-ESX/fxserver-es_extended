@@ -26,3 +26,7 @@ string.split = function(inputstr, sep)
   return t
 
 end
+
+string.onlyContainsDigit = function(str)
+	return tonumber(str) ~= nil
+end

@@ -1,1 +1,4 @@
 node_modules
+
+modules/__user__/*
+!modules/__user__/.gitkeep

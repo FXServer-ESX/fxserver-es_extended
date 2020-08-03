@@ -22,7 +22,15 @@ module.debug = {
   chain   = false
 }
 
-local chain = {}
+local chains = {}
+
+local pushchain = function()
+  chains[#chains + 1] = {}
+end
+
+local popchain = function()
+  chains[#chains] = nil
+end
 
 Extends = function(baseType, debugName)
 
@@ -32,7 +40,9 @@ Extends = function(baseType, debugName)
 
   local chainLength = 0
 
-  local pushchain = function(this)
+  local pushtype = function(this)
+    
+    local chain = chains[#chains]
 
     if #chain > 0 then
       this.__prev          = chain[#chain]
@@ -49,7 +59,9 @@ Extends = function(baseType, debugName)
 
   end
 
-  local popchain = function()
+  local poptype = function()
+
+    local chain = chains[#chains]
 
     chain[#chain] = nil
     chainLength   = chainLength - 1
@@ -60,7 +72,9 @@ Extends = function(baseType, debugName)
 
   end
 
-  local endchain = function()
+  local endtype = function()
+
+    local chain = chains[#chains]
 
     for i=1, chainLength, 1 do
       chain[#chain] = nil
@@ -74,6 +88,7 @@ Extends = function(baseType, debugName)
 
   function newType.new(...)
 
+    pushchain()
     chainLength = 0
 
     local self = newType.init(nil)
@@ -84,7 +99,8 @@ Extends = function(baseType, debugName)
 
     self:constructor(...)
 
-    endchain()
+    endtype()
+    popchain()
 
     return self
 
@@ -157,9 +173,10 @@ Extends = function(baseType, debugName)
       t:dtor()
     end
 
-    this = setmetatable(data, {__index = __index, __newindex = __newindex, __gc = __gc})
+    -- @TODO: make sure the pcall(__gc) does the trick
+    this = setmetatable(data, {__index = __index, __newindex = __newindex, __gc = pcall(__gc)})
 
-    pushchain(this)
+    pushtype(this)
 
     return this
 
@@ -173,7 +190,7 @@ Extends = function(baseType, debugName)
 
     newType.init(self):constructor(...)
 
-    popchain()
+    poptype()
 
   end
 
@@ -182,7 +199,7 @@ Extends = function(baseType, debugName)
     if module.debug.dtor then
       newType:tracemethod('dtor')
     end
-
+    
     self:destructor()
 
     for k,v in pairs(self) do
@@ -193,6 +210,7 @@ Extends = function(baseType, debugName)
 
   function newType:constructor(...)
     if self.super ~= nil then
+      -- @FIXME: prevent a weird bug not reproductive for now
       self.super:ctor(...)
     end
   end
@@ -314,70 +332,85 @@ Mixin = function(...)
   function newType.new(...)
 
     local self
-    local prev
+    local before
 
     for i=#types, 1, -1 do
 
       if i == #types then
-        local next = types[i].new()
-        prev = next
+        local after = types[i].new()
+        before = after
       elseif i == 1 then
 
-        local cprev = prev
-        local next  = types[i].new(...)
+        local cbefore = before
+        local after  = types[i].new(...)
 
         local wrap = setmetatable({}, {
           __index = function(t, k)
-            if next[k] ~= nil then
-              return next[k]
+
+            if after[k] ~= nil then
+              return after[k]
             end
-            if cprev[k] ~= nil then
-              return cprev[k]
+
+            if cbefore[k] ~= nil then
+              return cbefore[k]
             end
+
+            return newType[k]
+
+          end,
+
+          __newindex = function(t, k, v)
+            after[k] = v
           end
         })
 
-        prev = wrap
+        before = wrap
+        self   = before
 
       else
 
-        local cprev = prev
-        local next  = types[i].new()
+        local cbefore = before
+        local after  = types[i].new()
 
         local wrap = setmetatable({}, {
           __index = function(t, k)
-            if next[k] ~= nil then
-              return next[k]
+
+            if after[k] ~= nil then
+              return after[k]
             end
-            if cprev[k] ~= nil then
-              return cprev[k]
-            end
+
+            return cbefore[k]
+
+          end,
+
+          __newindex = function(t, k, v)
+            after[k] = v
           end
         })
 
-        prev = wrap
+        before = wrap
 
       end
 
     end
 
-    local this = prev
-
-    self = setmetatable({}, {
-
-      __index = function(t, k)
-
-        if newType[k] ~= nil then
-          return newType[k]
-        end
-
-        return this[k]
-
-      end
-
-    })
-
     return self
+
+  end
+
+  function newType:ctor(...)
+
+    if module.debug.ctor then
+      newType:tracemethod('ctor', ...)
+    end
+
+  end
+
+  function newType:dtor()
+
+    if module.debug.dtor then
+      newType:tracemethod('dtor')
+    end
 
   end
 
