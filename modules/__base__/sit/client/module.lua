@@ -24,7 +24,6 @@ end
 
 module.debugMode = function()
   ESX.SetInterval(1, function()
-  
     for i=1, #debugProps, 1 do
       local coords = GetEntityCoords(debugProps[i])
       local hash = GetEntityModel(debugProps[i])
@@ -52,16 +51,14 @@ module.debugMode = function()
 end
 
 module.wakeup = function()
-	local playerPed = GetPlayerPed(-1)
-	ClearPedTasks(playerPed)
-
+	local playerPed = GetPlayerPed(-1)  
+  ClearPedTasks(playerPed)
 	module.sitting = false
-
-	SetEntityCoords(playerPed, module.lastPos)
-	FreezeEntityPosition(playerPed, false)
-
+	--SetEntityCoords(playerPed, module.lastPos)
 	emitServer('esx_sit:leavePlace', module.currentSitCoords)
-	module.currentSitCoords, module.currentScenario = nil, nil
+  module.currentSitCoords, module.currentScenario = nil, nil
+	FreezeEntityPosition(playerPed, false)
+	ClearPedTasks(playerPed)
 end
 
 module.sit = function(object, modelName, data)
@@ -73,7 +70,7 @@ module.sit = function(object, modelName, data)
 			utils.ui.showNotification('Cette place est prise...')
 		else
 			local playerPed = GetPlayerPed(-1)
-			moduke.lastPos, module.currentSitCoords = GetEntityCoords(playerPed), objectCoords
+			module.lastPos, module.currentSitCoords = GetEntityCoords(playerPed), objectCoords
 
 			emitServer('esx_sit:takePlace', objectCoords)
 			FreezeEntityPosition(object, true)
