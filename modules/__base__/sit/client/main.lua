@@ -32,23 +32,18 @@ ESX.SetInterval(1, function()
 				object = GetClosestObjectOfType(coordss.x, coordss.y, coordss.z, module.Config.MaxDistance, GetHashKey(v), false, false, false)
 				distance = 1.4
 				if object > 0 then
+					local hash = GetEntityModel(object)
+					for k,v in pairs(module.Config.Sitable) do
+						if GetHashKey(k) == hash then
+							module.sit(object, k, v)
+							break
+						end
+					end
 					break
 				end 
 			end
-
 			if module.Config.Debug then
 				table.insert(module.debugProps, object)
-			end
-
-			if distance < 1.5 then
-				local hash = GetEntityModel(object) 
-
-				for k,v in pairs(module.Config.Sitable) do
-					if GetHashKey(k) == hash then
-						module.sit(object, k, v)
-						break
-					end
-				end
 			end
 		end
 	end 
