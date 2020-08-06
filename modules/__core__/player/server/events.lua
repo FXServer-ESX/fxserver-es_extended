@@ -83,7 +83,7 @@ on('esx:player:load:job', function(identifier, playerId, row, userData, addTask)
       print(('[^3WARNING^7] Ignoring invalid job for %s [job: %s, grade: %s]'):format(identifier, row.job, row.job_grade))
 
       job, grade = 'unemployed', '0'
-      jobObject, gradeObject = ESX.Jobs[row.job], ESX.Jobs[row.job].grades[tostring(row.job_grade)]
+      jobObject, gradeObject = ESX.Jobs[job], ESX.Jobs[job].grades[tostring(grade)]
 
     end
 
