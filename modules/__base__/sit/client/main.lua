@@ -29,7 +29,7 @@ ESX.SetInterval(1, function()
 			local coordss = GetEntityCoords(playerPed)
 			for i,v in ipairs(module.Config.Interactables) do
 				--object, distance = utils.game.getClosestObject(coordss,v)				
-				object = GetClosestObjectOfType(coordss.x, coordss.y, coordss.z, 1.4, GetHashKey(v), false, false, false)
+				object = GetClosestObjectOfType(coordss.x, coordss.y, coordss.z, module.Config.MaxDistance, GetHashKey(v), false, false, false)
 				distance = 1.4
 				if object > 0 then
 					break
