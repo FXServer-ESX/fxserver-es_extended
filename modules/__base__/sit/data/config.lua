@@ -16,6 +16,7 @@ Config.MaxDistance = 1.5
 Config.Debug = false
 
 Config.Interactables = {
+  'prop_bench_07',
 	'prop_bench_01a',
 	'prop_bench_01b',
 	'prop_bench_01c',
