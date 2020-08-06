@@ -12,34 +12,39 @@
 
 module.init()
 
+local utils    = M('utils')
+module.Config = run('data/config.lua', {vector3 = vector3})['Config']
+
 ESX.SetInterval(1, function()
-		local playerPed = GetPlayerPed(-1)
+	local playerPed = GetPlayerPed(-1)
+	local retval =	IsPedStill(playerPed)
+	if module.sitting and not IsPedUsingScenario(playerPed, currentScenario) then
+		--module.wakeup()
+	end
 
-		if module.sitting and not IsPedUsingScenario(playerPed, currentScenario) then
+	if IsControlJustPressed(0, 38) and IsControlPressed(0, 21) and IsInputDisabled(0) and IsPedOnFoot(playerPed) and retval then
+		if module.sitting then
 			module.wakeup()
-		end
-
-		if IsControlJustPressed(0, 38) and IsControlPressed(0, 21) and IsInputDisabled(0) and IsPedOnFoot(playerPed) then
-			if module.sitting then
-				module.wakeup()
-			else
-				local object, distance = utils.game.getClosestObject(Config.Interactables)
-
-				if Config.Debug then
-					table.insert(module.debugProps, object)
-				end
-
-				if distance < 1.5 then
+		else 
+			local coordss = GetEntityCoords(playerPed)
+			for i,v in ipairs(module.Config.Interactables) do
+				--object, distance = utils.game.getClosestObject(coordss,v)				
+				object = GetClosestObjectOfType(coordss.x, coordss.y, coordss.z, module.Config.MaxDistance, GetHashKey(v), false, false, false)
+				distance = 1.4
+				if object > 0 then
 					local hash = GetEntityModel(object)
-
-					for k,v in pairs(Config.Sitable) do
+					for k,v in pairs(module.Config.Sitable) do
 						if GetHashKey(k) == hash then
 							module.sit(object, k, v)
 							break
 						end
 					end
-				end
+					break
+				end 
+			end
+			if module.Config.Debug then
+				table.insert(module.debugProps, object)
 			end
 		end
-	end
+	end 
 end)
