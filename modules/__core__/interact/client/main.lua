@@ -113,7 +113,7 @@ ESX.SetInterval(1000, function()
           x = curr.pos.x + 0.0,
           y = curr.pos.y + 0.0,
           z = curr.pos.z + 0.0
-        }, {Cache.player.ped})
+        }, Cache.player.ped)
 
         if closestPed ~= -1 then
 
