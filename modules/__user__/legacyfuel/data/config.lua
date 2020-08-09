@@ -1,5 +1,6 @@
 Config = {}
 
+Config.Locale = 'en'
 Config.EnableBlips              = true
 Config.EnableJerryCans          = true
 Config.EnableBuyableJerryCans   = true -- Coming soon, currently useless
