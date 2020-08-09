@@ -25,6 +25,11 @@ local gas_stations = {
  	{ ['x'] = 2581.321, ['y'] = 362.039, ['z'] = 108.468}
 }
 
+module.Config = run('data/config.lua', {vector3 = vector3})['Config']
+local translations = run('data/locales/' .. module.Config.Locale .. '.lua')['Translations']
+LoadLocale('fuelmodule', module.Config.Locale, translations)
+
+
 module.init = function()
 	if module.Config.EnableBlips then
 		for k, v in ipairs(gas_stations) do
@@ -81,12 +86,12 @@ module.DisplayHud = function()
 		x = 0.01135
 		y = 0.002
 
-		--[[module.DrawAdvancedText(0.2195 - x, 0.77 - y, 0.005, 0.0028, 0.6, fuel, 255, 255, 255, 255, 6, 1)
+		module.DrawAdvancedText(0.2195 - x, 0.77 - y, 0.005, 0.0028, 0.6, fuel, 255, 255, 255, 255, 6, 1)
 
 		module.DrawAdvancedText(0.130 - x, 0.77 - y, 0.005, 0.0028, 0.6, mph, 255, 255, 255, 255, 6, 1)
 		module.DrawAdvancedText(0.174 - x, 0.77 - y, 0.005, 0.0028, 0.6, kmh, 255, 255, 255, 255, 6, 1)
 
-		module.DrawAdvancedText(0.148 - x, 0.7765 - y, 0.005, 0.0028, 0.4, "mp/h              km/h              Fuel", 255, 255, 255, 255, 6, 1)]]--
+		module.DrawAdvancedText(0.148 - x, 0.7765 - y, 0.005, 0.0028, 0.4, "mp/h              km/h              Fuel", 255, 255, 255, 255, 6, 1)
 	end
 end
 
