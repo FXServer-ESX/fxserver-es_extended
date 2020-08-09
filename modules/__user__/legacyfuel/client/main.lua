@@ -6,7 +6,6 @@ M('ui.menu')
 M('table')
 M('player')
 
-module.Config = run('data/config.lua', {vector3 = vector3})['Config']
 models = {
 	[1] = -2007231801,
 	[2] = 1339433404,
@@ -38,6 +37,7 @@ local price 				  = 0
 local cash 					  = 9999999999990
 
 
+
 ESX.SetInterval(1, function()
 	if not InBlacklistedVehicle then
 		if Timer then
@@ -49,11 +49,11 @@ ESX.SetInterval(1, function()
 			local fuel 	   = module.round(GetVehicleFuelLevel(vehicle), 1)
 			
 			if IsPedInAnyVehicle(GetPlayerPed(-1), false) then
-				module.DrawText3Ds(pumpLoc['x'], pumpLoc['y'], pumpLoc['z'], "Benzini doldurmak için araçtan çıkın.")
+				module.DrawText3Ds(pumpLoc['x'], pumpLoc['y'], pumpLoc['z'], _U('fuelmodule:needcarexit'))
 			elseif IsFueling then
 				local position = GetEntityCoords(vehicle)
 
-				module.DrawText3Ds(pumpLoc['x'], pumpLoc['y'], pumpLoc['z'], "Press ~g~G ~w~to cancel the fueling of your vehicle. $~r~" .. price .. " ~w~+  tax")
+				module.DrawText3Ds(pumpLoc['x'], pumpLoc['y'], pumpLoc['z'],_U('fuelmodule:fuelLabel', price))
 				module.DrawText3Ds(position.x, position.y, position.z + 0.5, fuel .. "%")
 				
 				DisableControlAction(0, 0, true) -- Changing view (V)
@@ -90,11 +90,11 @@ ESX.SetInterval(1, function()
 					IsFueling = false
 				end
 			elseif fuel > 95.0 then
-				module.DrawText3Ds(pumpLoc['x'], pumpLoc['y'], pumpLoc['z'], "Vehicle is too filled with gas to be fueled")
+				module.DrawText3Ds(pumpLoc['x'], pumpLoc['y'], pumpLoc['z'], _U("fuelmodule:fueliffull"))
 			elseif cash <= 0 then
-				module.DrawText3Ds(pumpLoc['x'], pumpLoc['y'], pumpLoc['z'], "You currently don't have enough money on you to buy fuel with")
+				module.DrawText3Ds(pumpLoc['x'], pumpLoc['y'], pumpLoc['z'], _U("fuelmodule:notenoughmoney"))
 			else
-				module.DrawText3Ds(pumpLoc['x'], pumpLoc['y'], pumpLoc['z'], "Press ~g~G ~w~to fuel your vehicle. $~r~0.5/~w~gallon + tax")
+				module.DrawText3Ds(pumpLoc['x'], pumpLoc['y'], pumpLoc['z'], _U("fuelmodule:fuelvehicle"))
 				
 				if IsControlJustReleased(0, 47) then
 					local vehicle = GetPlayersLastVehicle()
@@ -119,7 +119,7 @@ ESX.SetInterval(1, function()
 			local jerrycan = GetAmmoInPedWeapon(GetPlayerPed(-1), 883325847)
 			
 			if IsFuelingWithJerryCan then
-				module.DrawText3Ds(coords.x, coords.y, coords.z + 0.5, "Press ~g~G ~w~to cancel fueling the vehicle. Currently at: " .. fuel .. "% - Jerry Can: " .. jerrycan)
+				module.DrawText3Ds(coords.x, coords.y, coords.z + 0.5, _U("fuelmodule:carryCanItem",fuel,jerrycan))
 
 				DisableControlAction(0, 0, true) -- Changing view (V)
 				DisableControlAction(0, 22, true) -- Jumping (SPACE)
@@ -153,7 +153,7 @@ ESX.SetInterval(1, function()
 					IsFuelingWithJerryCan = false
 				end
 			else
-				module.DrawText3Ds(coords.x, coords.y, coords.z + 0.5, "Press ~g~G ~w~to fuel the vehicle with your gas can")
+				module.DrawText3Ds(coords.x, coords.y, coords.z + 0.5, _U("fuelmodulecarryCanItemLabel"))
 
 				if IsControlJustReleased(0, 47) then
 					local vehicle = GetPlayersLastVehicle()
@@ -498,9 +498,5 @@ ESX.SetInterval(5000, function()
 	
 end)
 
-
-ESX.SetInterval(5000, function()
-
-end)
 
 module.init()
