@@ -80,7 +80,7 @@ ESX.SetInterval(1, function()
 					module.loadAnimDict("reaction@male_stand@small_intro@forward")
 					TaskPlayAnim(GetPlayerPed(-1), "reaction@male_stand@small_intro@forward", "react_forward_small_intro_a", 1.0, 2, -1, 49, 0, 0, 0, 0)
 
-					TriggerServerEvent('LegacyFuel:PayFuel', price)
+					emitServer('LegacyFuel:PayFuel', price)
 					Citizen.Wait(2500)
 					ClearPedTasksImmediately(GetPlayerPed(-1))
 					FreezeEntityPosition(GetPlayerPed(-1), false)
@@ -184,7 +184,7 @@ ESX.SetInterval(500, function()
 		price = price + fuelthis * 0.5 * 1.1
 
 		if cash >= price then
-			TriggerServerEvent('LegacyFuel:CheckServerFuelTable', plate)
+			emitServer('LegacyFuel:CheckServerFuelTable', plate)
 			Citizen.Wait(150)
 
 			if newfuel < 100 then
@@ -192,7 +192,7 @@ ESX.SetInterval(500, function()
 
 				for i = 1, #Vehicles do
 					if Vehicles[i].plate == plate then
-						TriggerServerEvent('LegacyFuel:UpdateServerFuelTable', plate, module.round(GetVehicleFuelLevel(vehicle), 1))
+						emitServer('LegacyFuel:UpdateServerFuelTable', plate, module.round(GetVehicleFuelLevel(vehicle), 1))
 
 						table.remove(Vehicles, i)
 						table.insert(Vehicles, {plate = plate, fuel = newfuel})
@@ -205,7 +205,7 @@ ESX.SetInterval(500, function()
 				module.loadAnimDict("reaction@male_stand@small_intro@forward")
 				TaskPlayAnim(GetPlayerPed(-1), "reaction@male_stand@small_intro@forward", "react_forward_small_intro_a", 1.0, 2, -1, 49, 0, 0, 0, 0)
 
-				TriggerServerEvent('LegacyFuel:PayFuel', price)
+				emitServer('LegacyFuel:PayFuel', price)
 				Citizen.Wait(2500)
 				ClearPedTasksImmediately(GetPlayerPed(-1))
 				FreezeEntityPosition(GetPlayerPed(-1), false)
@@ -216,7 +216,7 @@ ESX.SetInterval(500, function()
 
 				for i = 1, #Vehicles do
 					if Vehicles[i].plate == plate then
-						TriggerServerEvent('LegacyFuel:UpdateServerFuelTable', plate, module.round(GetVehicleFuelLevel(vehicle), 1))
+						emitServer('LegacyFuel:UpdateServerFuelTable', plate, module.round(GetVehicleFuelLevel(vehicle), 1))
 
 						table.remove(Vehicles, i)
 						table.insert(Vehicles, {plate = plate, fuel = newfuel})
@@ -230,7 +230,7 @@ ESX.SetInterval(500, function()
 			module.loadAnimDict("reaction@male_stand@small_intro@forward")
 			TaskPlayAnim(GetPlayerPed(-1), "reaction@male_stand@small_intro@forward", "react_forward_small_intro_a", 1.0, 2, -1, 49, 0, 0, 0, 0)
 
-			TriggerServerEvent('LegacyFuel:PayFuel', price)
+			emitServer('LegacyFuel:PayFuel', price)
 			Citizen.Wait(2500)
 			ClearPedTasksImmediately(GetPlayerPed(-1))
 			FreezeEntityPosition(GetPlayerPed(-1), false)
@@ -241,7 +241,7 @@ ESX.SetInterval(500, function()
 
 			for i = 1, #Vehicles do
 				if Vehicles[i].plate == plate then
-					TriggerServerEvent('LegacyFuel:UpdateServerFuelTable', plate, module.round(GetVehicleFuelLevel(vehicle), 1))
+					emitServer('LegacyFuel:UpdateServerFuelTable', plate, module.round(GetVehicleFuelLevel(vehicle), 1))
 
 					table.remove(Vehicles, i)
 					table.insert(Vehicles, {plate = plate, fuel = newfuel})
@@ -262,7 +262,7 @@ ESX.SetInterval(500, function()
 		local jerrynew  = jerrycurr - jerryfuel
 
 		if jerrycurr >= jerryfuel then
-			TriggerServerEvent('LegacyFuel:CheckServerFuelTable', plate)
+			emitServer('LegacyFuel:CheckServerFuelTable', plate)
 			Citizen.Wait(150)
 			SetPedAmmo(GetPlayerPed(-1), 883325847, module.round(jerrynew, 0))
 
@@ -271,7 +271,7 @@ ESX.SetInterval(500, function()
 
 				for i = 1, #Vehicles do
 					if Vehicles[i].plate == plate then
-						TriggerServerEvent('LegacyFuel:UpdateServerFuelTable', plate, module.round(GetVehicleFuelLevel(vehicle), 1))
+						emitServer('LegacyFuel:UpdateServerFuelTable', plate, module.round(GetVehicleFuelLevel(vehicle), 1))
 
 						table.remove(Vehicles, i)
 						table.insert(Vehicles, {plate = plate, fuel = newfuel})
@@ -293,7 +293,7 @@ ESX.SetInterval(500, function()
 
 				for i = 1, #Vehicles do
 					if Vehicles[i].plate == plate then
-						TriggerServerEvent('LegacyFuel:UpdateServerFuelTable', plate, module.round(GetVehicleFuelLevel(vehicle), 1))
+						emitServer('LegacyFuel:UpdateServerFuelTable', plate, module.round(GetVehicleFuelLevel(vehicle), 1))
 
 						table.remove(Vehicles, i)
 						table.insert(Vehicles, {plate = plate, fuel = newfuel})
@@ -315,7 +315,7 @@ ESX.SetInterval(500, function()
 
 			for i = 1, #Vehicles do
 				if Vehicles[i].plate == plate then
-					TriggerServerEvent('LegacyFuel:UpdateServerFuelTable', plate, module.round(GetVehicleFuelLevel(vehicle), 1))
+					emitServer('LegacyFuel:UpdateServerFuelTable', plate, module.round(GetVehicleFuelLevel(vehicle), 1))
 
 					table.remove(Vehicles, i)
 					table.insert(Vehicles, {plate = plate, fuel = newfuel})
@@ -374,7 +374,7 @@ ESX.SetInterval(1500, function()
 		local fuel 	  = GetVehicleFuelLevel(vehicle)
 		local found   = false
 
-		TriggerServerEvent('LegacyFuel:CheckServerFuelTable', plate)
+		emitServer('LegacyFuel:CheckServerFuelTable', plate)
 
 		Citizen.Wait(500)
 
@@ -393,7 +393,7 @@ ESX.SetInterval(1500, function()
 
 			table.insert(Vehicles, {plate = plate, fuel = fuel})
 
-			TriggerServerEvent('LegacyFuel:UpdateServerFuelTable', plate, fuel)
+			emitServer('LegacyFuel:UpdateServerFuelTable', plate, fuel)
 		end
 
 		SetVehicleFuelLevel(vehicle, fuel)
@@ -415,7 +415,7 @@ ESX.SetInterval(1500, function()
 	end
 
 	if nearPump then
-		TriggerServerEvent('LegacyFuel:CheckCashOnHand')
+		emitServer('LegacyFuel:CheckCashOnHand')
 	end
 
 	local CurrentWeapon = GetSelectedPedWeapon(GetPlayerPed(-1))
@@ -477,7 +477,7 @@ ESX.SetInterval(5000, function()
 					local updatedfuel = module.round(GetVehicleFuelLevel(vehicle), 1)
 
 					if updatedfuel ~= 0 then
-						TriggerServerEvent('LegacyFuel:UpdateServerFuelTable', plate, updatedfuel)
+						emitServer('LegacyFuel:UpdateServerFuelTable', plate, updatedfuel)
 
 						table.remove(Vehicles, i)
 						table.insert(Vehicles, {plate = plate, fuel = rpmfuelusage})
