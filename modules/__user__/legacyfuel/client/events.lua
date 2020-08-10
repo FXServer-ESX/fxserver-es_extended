@@ -1,5 +1,9 @@
-RegisterNetEvent('LegacyFuel:ReturnFuelFromServerTable')
-AddEventHandler('LegacyFuel:ReturnFuelFromServerTable', function(vehInfo)
+local Input = M('input') 
+local Menu = M('ui.menu') 
+local utils = M('utils') 
+
+
+onServer("LegacyFuel:ReturnFuelFromServerTable", function(vehInfo)
 	local fuel   = module.round(vehInfo.fuel, 1)
 	for i = 1, #Vehicles do
 		if Vehicles[i].plate == vehInfo.plate then
@@ -12,9 +16,6 @@ AddEventHandler('LegacyFuel:ReturnFuelFromServerTable', function(vehInfo)
 	table.insert(Vehicles, {plate = vehInfo.plate, fuel = fuel})
 end)
 
-
-RegisterNetEvent('LegacyFuel:RecieveCashOnHand')
-AddEventHandler('LegacyFuel:RecieveCashOnHand', function(cb)
+onServer("LegacyFuel:RecieveCashOnHand", function(cb)
 	cash = cb
-	-- TO DO money remove / get
 end)
