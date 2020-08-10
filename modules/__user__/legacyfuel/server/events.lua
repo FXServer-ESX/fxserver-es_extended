@@ -1,8 +1,8 @@
 Vehicles = {}
 
-RegisterServerEvent('LegacyFuel:UpdateServerFuelTable')
-AddEventHandler('LegacyFuel:UpdateServerFuelTable', function(plate, fuel)
-	local found = false
+
+onClient("LegacyFuel:UpdateServerFuelTable", function(plate, fuel)
+    local found = false
 
 	for i = 1, #Vehicles do
 		if Vehicles[i].plate == plate then 
@@ -21,18 +21,18 @@ AddEventHandler('LegacyFuel:UpdateServerFuelTable', function(plate, fuel)
 	end
 end)
 
-RegisterServerEvent('LegacyFuel:CheckServerFuelTable')
-AddEventHandler('LegacyFuel:CheckServerFuelTable', function(plate)
+onClient("LegacyFuel:CheckServerFuelTable",function(plate)
 	for i = 1, #Vehicles do
 		if Vehicles[i].plate == plate then
 			local vehInfo = {plate = Vehicles[i].plate, fuel = Vehicles[i].fuel}
 
-			TriggerClientEvent('LegacyFuel:ReturnFuelFromServerTable', source, vehInfo)
+			emitClient('LegacyFuel:ReturnFuelFromServerTable', source, vehInfo)
 
 			break
 		end
 	end
 end)
+
 
 
 --ESX = nil
