@@ -119,8 +119,6 @@ end
 module.RegisterControls = function()
   Input.RegisterControl(Input.Groups.MOVE, Input.Controls.PICKUP)
   Input.RegisterControl(Input.Groups.MOVE, Input.Controls.REPLAY_SHOWHOTKEY)
-  Input.RegisterControl(Input.Groups.MOVE, Input.Controls.SPRINT)
-  Input.RegisterControl(Input.Groups.MOVE, Input.Controls.JUMP)
 end
 
 module.menuDrugs = function()
