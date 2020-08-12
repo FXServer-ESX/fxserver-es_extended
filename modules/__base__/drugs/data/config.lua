@@ -14,12 +14,17 @@ Config = {}
 
 Config.Locale = 'en'
 
+Config.LicensePrice = 15000 -- Dont work for now
+
 Config.DrugDealers = {
-    Test1 = {
+    Strawberry = {
         Pos = vector3(-1171.02, -1570.98, 3.66),
         Heading = 120.036,
-        Marihuana = 10,
-        Cocaine = 20,
-        LSD = 30
+        Drug = 'Marijuana',
+        Price = 24
     }
+}
+
+Config.DrugTraffic = {
+    vector3(78.3682, -1884.0230, 20.76347)
 }

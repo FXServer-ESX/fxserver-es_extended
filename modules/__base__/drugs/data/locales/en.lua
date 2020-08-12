@@ -11,6 +11,10 @@
 --   This copyright should appear in every part of the project code
 
 Translations = {
+  --- new ---
+  ['dealer_prompt'] = 'Press ~INPUT_CONTEXT~ to talk with the ~g~Drug Dealer~s~.',
+  ['blip_drugdealer'] = 'Drug Store',
+  --- new ---
   ['weed_pickupprompt'] = 'press ~INPUT_CONTEXT~ to harvest the ~g~Cannabis~s~ plant.',
   ['weed_quitprocess'] = 'press ~INPUT_CONTEXT~ to stop ~g~Process Cannabis~s~.',
   ['weed_inventoryfull'] = 'you do not have any more inventory space for ~g~Cannabis~s~.',
@@ -22,7 +26,6 @@ Translations = {
   ['weed_processingtoofar'] = 'the processing has been ~r~canceled~s~ due to you abandoning the area.',
   
     -- drug dealer
-  ['dealer_prompt'] = 'press ~INPUT_CONTEXT~ to talk with the ~r~Drug Dealer~s~.',
   ['dealer_title'] = 'drug Dealer',
   ['dealer_item'] = '$%s',
   ['dealer_notenough'] = 'you don\'t have enough of that to sell!',
@@ -38,6 +41,5 @@ Translations = {
     -- blips
   ['blip_weedfield'] = 'weed Field',
   ['blip_weedprocessing'] = 'weed Processing',
-  ['blip_drugdealer'] = 'Drug Dealer'
 }
   

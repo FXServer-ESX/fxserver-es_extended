@@ -9,3 +9,13 @@
 --   You shall not provide any facility to install this particular software in a commercial product / service
 --   If you redistribute this software, you must link to ORIGINAL repository at https://github.com/ESX-Org/es_extended
 --   This copyright should appear in every part of the project code
+
+M('command')
+
+local testCommand = Command("test", "admin", "A simple test")
+
+testCommand:setHandler(function(player, args, baseArgs)
+  emitClient('drugs:test', player.source)
+end)
+
+testCommand:register()
