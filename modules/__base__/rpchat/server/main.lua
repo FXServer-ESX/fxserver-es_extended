@@ -50,7 +50,45 @@ local meCommand = Command("me", "admin", "Send a message as a personal action")
     emitClient('rpchat:sendMe', -1, player.source, msg)
   end
 end)
+local tweetCommand = Command("twt", "player", "Send a message as a tweet")
+  tweetCommand:addArgument("message", "string", "The message you want to send", true)
 
+  tweetCommand:setHandler(function(player, args, baseArgs)
+
+  local msg
+  for k,v in pairs(baseArgs) do
+    if msg then
+      msg = msg .. ' ' .. v
+    else
+      msg = v
+    end
+  end
+
+  local name = player:getName()
+
+  emitClient('chat:addMessage', -1, {args = {'Twitter | @' .. name, msg}, color = {29,161,242}})
+end)
+tweetCommand:register()
+
+local darkCommand = Command("dark", "player", "Send a message as a DarkNet")
+  darkCommand:addArgument("message", "string", "The message you want to send", true)
+
+  darkCommand:setHandler(function(player, args, baseArgs)
+
+  local msg
+  for k,v in pairs(baseArgs) do
+    if msg then
+      msg = msg .. ' ' .. v
+    else
+      msg = v
+    end
+  end
+
+  local name = player:getName()
+
+  emitClient('chat:addMessage', -1, {args = {'DarkNet ', msg}, color = {34,139,34}})
+end)
+darkCommand:register()
 lifeCommand:register()
 
 meCommand:register()
