@@ -403,7 +403,7 @@ module.game.getPeds = function(onlyOtherPeds)
 end
 
 module.game.getVehiclesInArea = function(coords, maxDistance) 
-  return module.enumerateEntitiesWithinDistance(module.game.getVehicles(), false, coords, maxDistance) 
+  return module.game.enumerateEntitiesWithinDistance(module.game.getVehicles(), false, coords, maxDistance) 
 end
 
 module.game.getVehicleInDirection = function()
