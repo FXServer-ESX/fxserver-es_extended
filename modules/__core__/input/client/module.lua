@@ -469,11 +469,10 @@ module.InitESX = function()
 
   module.RegisterControl(module.Groups.MOVE, module.Controls[Config.InventoryKey])
   module.On('released', module.Groups.MOVE, module.Controls[Config.InventoryKey], function(lastPressed)
-
-    if (not ESX.IsDead) and (not Menu.IsOpen('default', 'es_extended', 'inventory')) then
-      ESX.ShowInventory()
-    end
-
+    if Menu.IsOpen ~= nil then
+			if (not ESX.IsDead) and (not Menu.IsOpen('default', 'es_extended', 'inventory')) then
+			  ESX.ShowInventory()
+			end	
+		end
   end)
-
 end
