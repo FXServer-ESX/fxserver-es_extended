@@ -26,16 +26,14 @@ onServer('esx:setMaxWeight', function(newMaxWeight) ESX.PlayerData.maxWeight = n
 
 on('esx:onPlayerSpawn', function() ESX.IsDead = false end)
 on('esx:onPlayerDeath', function() ESX.IsDead = true end)
-AddEventHandler('skinchanger:loadDefaultModel', function() ESX.IsLoadoutLoaded = false end)
 
-AddEventHandler('skinchanger:modelLoaded', function()
+on("esx:skin:loadSkin", function()
 
-  	while not ESX.PlayerLoaded do
+  while not ESX.PlayerLoaded do
 		Citizen.Wait(100)
 	end
 
   emit('esx:restoreLoadout')
-
 end)
 
 on('esx:restoreLoadout', function()
@@ -144,6 +142,7 @@ onServer('esx:addWeapon', function(weaponName, ammo)
   GiveWeaponToPed(playerPed, weaponHash, ammo, false, false)
 
   ESX.UI.ShowInventoryItemNotification(true, ESX.GetWeaponLabel(weaponName), 1)
+  -- TODO, SORT LOADOUT
 
 end)
 
@@ -152,21 +151,24 @@ onServer('esx:addWeaponComponent', function(weaponName, weaponComponent)
 	local weaponHash = GetHashKey(weaponName)
 	local componentHash = ESX.GetWeaponComponent(weaponName, weaponComponent).hash
 
-	GiveWeaponComponentToPed(playerPed, weaponHash, componentHash)
+  GiveWeaponComponentToPed(playerPed, weaponHash, componentHash)
+  -- TODO, SORT LOADOUT
 end)
 
 onServer('esx:setWeaponAmmo', function(weaponName, weaponAmmo)
 	local playerPed = PlayerPedId()
 	local weaponHash = GetHashKey(weaponName)
 
-	SetPedAmmo(playerPed, weaponHash, weaponAmmo)
+  SetPedAmmo(playerPed, weaponHash, weaponAmmo)
+  -- TODO, SORT LOADOUT
 end)
 
 onServer('esx:setWeaponTint', function(weaponName, weaponTintIndex)
 	local playerPed = PlayerPedId()
 	local weaponHash = GetHashKey(weaponName)
 
-	SetPedWeaponTintIndex(playerPed, weaponHash, weaponTintIndex)
+  SetPedWeaponTintIndex(playerPed, weaponHash, weaponTintIndex)
+  -- TODO, SORT LOADOUT
 end)
 
 onServer('esx:removeWeapon', function(weaponName)
@@ -177,7 +179,14 @@ onServer('esx:removeWeapon', function(weaponName)
   SetPedAmmo(playerPed, weaponHash, 0) -- remove leftover ammo
 
   ESX.UI.ShowInventoryItemNotification(false, ESX.GetWeaponLabel(weaponName), 1)
+  -- TODO, SORT LOADOUT
+end)
 
+onServer('esx:removeAllPedWeapons', function()
+  local playerPed = PlayerPedId()
+  
+  RemoveAllPedWeapons(playerPed)
+  -- TODO, CLEAR LOADOUT
 end)
 
 onServer('esx:removeWeaponComponent', function(weaponName, weaponComponent)

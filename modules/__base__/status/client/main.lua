@@ -10,14 +10,24 @@
 --   If you redistribute this software, you must link to ORIGINAL repository at https://github.com/ESX-Org/es_extended
 --   This copyright should appear in every part of the project code
 
-Config = {}
+Citizen.CreateThread(function()
+	while true do
+		Citizen.Wait(300)
 
-Config.Locale             = 'en'
-Config.DisableWantedLevel = true
-Config.EnablePvP          = true
-Config.DefaultSpawnPos    = {x = -269.4, y = -955.3, z = 31.2, heading = 205.8}
-Config.EnableHUD          = true
-Config.InventoryKey       = "REPLAY_START_STOP_RECORDING_SECONDARY" -- Key F2 by default
-Config.EnableLoadScreen   = true
+		if IsPauseMenuActive() and not isPaused then
+			isPaused = true
+			emit('esx_status:setDisplay', 0.0)
+		elseif not IsPauseMenuActive() and isPaused then
+			isPaused = false 
+			emit('esx_status:setDisplay', 0.5)
+		end
+	end
+end)
 
-Config.Modules = {}
+Citizen.CreateThread(function()
+	while true do
+		Citizen.Wait(Config.UpdateInterval)
+
+		emitServer('esx_status:update', module.getStatusData(true))
+	end
+end)

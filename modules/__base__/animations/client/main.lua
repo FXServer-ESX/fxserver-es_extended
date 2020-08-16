@@ -10,14 +10,17 @@
 --   If you redistribute this software, you must link to ORIGINAL repository at https://github.com/ESX-Org/es_extended
 --   This copyright should appear in every part of the project code
 
-Config = {}
+Citizen.CreateThread(function()
+	while true do
+		Citizen.Wait(0)
 
-Config.Locale             = 'en'
-Config.DisableWantedLevel = true
-Config.EnablePvP          = true
-Config.DefaultSpawnPos    = {x = -269.4, y = -955.3, z = 31.2, heading = 205.8}
-Config.EnableHUD          = true
-Config.InventoryKey       = "REPLAY_START_STOP_RECORDING_SECONDARY" -- Key F2 by default
-Config.EnableLoadScreen   = true
+		if IsControlJustReleased(0, 170) and IsInputDisabled(0) then
+			module.openAnimationsMenu()
+		end
 
-Config.Modules = {}
+		if IsControlJustReleased(0, 73) and IsInputDisabled(0) then
+			ClearPedTasks(PlayerPedId())
+		end
+
+	end
+end)

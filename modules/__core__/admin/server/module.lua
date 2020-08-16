@@ -16,6 +16,9 @@ module.init = function()
   module.registerTPTMCommand()
   module.registerSpawnVehicleCommand()
   module.registerDeleteVehicleCommand()
+  module.registerGiveWeaponCommand()
+  module.registerRemoveWeaponsCommand()
+  module.registerSetJobCommand()
 end
 
 module.registerTPTMCommand = function()
@@ -44,4 +47,39 @@ module.registerDeleteVehicleCommand = function()
     emitClient("esx:deleteVehicle", player.source, 5)
   end)
   DeleteVehicleCommand:register()
+end
+
+module.registerGiveWeaponCommand = function()
+  local GiveWeaponCommand = Command("giveweapon", "admin", "Give a weapon to player")
+  GiveWeaponCommand:addArgument("targetPlayer", "number", "Target player's id")
+  GiveWeaponCommand:addArgument("weaponName", "string", "Weapon name")
+  GiveWeaponCommand:addArgument("weaponAmmo", "number", "Weapon ammo")
+
+  GiveWeaponCommand:setHandler(function(args)
+    emitClient('esx:addWeapon', args.targetPlayer.source, args.weaponName, args.weaponAmmo)
+  end)
+  GiveWeaponCommand:register()
+end
+
+module.registerRemoveWeaponsCommand = function()
+  local RemoveWeaponsCommand = Command("clearloadout", "admin", "Clear a player's loadout")
+  RemoveWeaponsCommand:addArgument('targetPlayer', "number", "Target player's id")
+
+  RemoveWeaponsCommand:setHandler(function(args)
+    emitClient("esx:removeAllPedWeapons", args.targetPlayer.source)
+    -- TODO, CLEAR LOADOUT
+  end)
+  RemoveWeaponsCommand:register()
+end
+
+module.registerSetJobCommand = function()
+  local SetJobCommand = Command("setjob", "admin", "Set player's job")
+  SetJobCommand:addArgument('targetPlayer', "number", "Target player's id")
+  SetJobCommand:addArgument('job', "string", "Job name")
+  SetJobCommand:addArgument('rank', "number", "Job rank")
+
+  SetJobCommand:setHandler(function(args)
+    -- TODO, SET JOB
+  end)
+  SetJobCommand:register()
 end
