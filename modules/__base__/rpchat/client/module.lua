@@ -14,6 +14,8 @@
 
 local utils = M("utils")
 
+module.Config = run('data/config.lua', {vector3 = vector3})['Config']
+
 module.Draw3DTextOverheadWithTimeout = function(ped,text,scale,font,radius)
 
   module.timeoutState = true
