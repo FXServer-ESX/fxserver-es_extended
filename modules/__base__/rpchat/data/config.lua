@@ -10,16 +10,9 @@
 --   If you redistribute this software, you must link to ORIGINAL repository at https://github.com/ESX-Org/es_extended
 --   This copyright should appear in every part of the project code
 
-module.Config = run('data/config.lua', {vector3 = vector3})['Config']
+Config = {}
 
-module.toString = function(arg)
-    local msg
-    for k,v in pairs(arg) do
-        if msg then
-            msg = msg .. ' ' .. v
-        else
-            msg = v
-        end
-    end
-    return msg
-end
+Config.Locale = 'en'   -- <--- never used here.
+Config.proximity = 25.001
+Config.proximityMode = true
+Config.overHeadMode = false

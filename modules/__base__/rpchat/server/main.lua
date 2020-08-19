@@ -17,14 +17,7 @@ local lifeCommand = Command("life", "admin", "Send a message as a tweet")
 
   lifeCommand:setHandler(function(player, args, baseArgs)
 
-  local msg
-  for k,v in pairs(baseArgs) do
-    if msg then
-      msg = msg .. ' ' .. v
-    else
-      msg = v
-    end
-  end
+  local msg = module.toString(baseArgs)
 
   local name = player:getName()
 
@@ -32,25 +25,52 @@ local lifeCommand = Command("life", "admin", "Send a message as a tweet")
 
 end)
 
-local meCommand = Command("me", "admin", "Send a message as a personal action")
+local meCommand = Command("me", "user", "Send a message as a personal action")
   meCommand:addArgument("message", "string", "The message you want to send", true)
 
   meCommand:setHandler(function(player, args, baseArgs)
   
-  local msg
-  for k,v in pairs(baseArgs) do
-    if msg then
-      msg = msg .. ' ' .. v
-    else
-      msg = v
-    end
-  end
+  local msg = module.toString(baseArgs)
+
+  local identity = Player.fromId(player.source):getIdentity()
+  local firstname = identity:getFirstName()
+  local lastname = identity:getLastName()
 
   if msg and player.source then
-    emitClient('rpchat:sendMe', -1, player.source, msg)
+
+    if module.Config.overHeadMode then
+      emitClient('rpchat:3DTextOverhead', -1, player.source, '~p~*~w~'..msg..'~p~*')
+    else
+      emitClient('rpchat:proximitySendNUIMessage', -1, player.source, {args = {'ME ['..player.source..'] '.. firstname .. ' ' .. lastname, msg}, color = {170, 102, 204}})
+    end
+
+  end
+end)
+
+local doCommand = Command("do", "user", "Send facts or acction response")
+  doCommand:addArgument("message", "string", "The message you want to send", true)
+
+  doCommand:setHandler(function(player, args, baseArgs)
+  
+  local msg = module.toString(baseArgs)
+
+  local identity = Player.fromId(player.source):getIdentity()
+  local firstname = identity:getFirstName()
+  local lastname = identity:getLastName()
+
+  if msg and player.source then
+
+    if module.Config.overHeadMode then
+      emitClient('rpchat:3DTextOverhead', -1, player.source, '~o~*~w~'..msg..'~o~*')
+    else
+      emitClient('rpchat:proximitySendNUIMessage', -1, player.source, {args = {'DO ['..player.source..'] ' .. firstname .. ' ' .. lastname, msg}, color = {220, 120, 0}})
+    end
+
   end
 end)
 
 lifeCommand:register()
 
 meCommand:register()
+
+doCommand:register()
