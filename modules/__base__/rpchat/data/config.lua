@@ -15,4 +15,4 @@ Config = {}
 Config.Locale = 'en'   -- <--- never used here.
 Config.proximity = 25.001
 Config.proximityMode = true
-Config.overHeadMode = false
+Config.overHeadMode = true
