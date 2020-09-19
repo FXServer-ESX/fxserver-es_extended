@@ -12,14 +12,8 @@
 
 M('ui.menu')
 
-on('esx:onPlayerSpawn', function()
-
-	Citizen.CreateThread(function()
-
-    while not ESX.PlayerLoaded do
-			Citizen.Wait(100)
-		end
-
+onServer('esx:playerLoaded', function()
+	on('esx:onPlayerSpawn', function()
 		if self.firstSpawn then
 			request('esx_skin:getPlayerSkin', function(skin, jobSkin)
 				if skin == nil then
@@ -28,12 +22,9 @@ on('esx:onPlayerSpawn', function()
 					TriggerEvent('skinchanger:loadSkin', skin)
 				end
 			end)
-
-      self.firstSpawn = false
-
+      	self.firstSpawn = false
 		end
   end)
-
 end)
 
 on('esx_skin:getLastSkin', function(cb)
