@@ -148,9 +148,7 @@ function Inventory:set(name, count)
     error('item [' .. name .. '] is not defined in config')
   end
 
-  if data == nil then
-    self.items = name
-  elseif count == 0 then
+  if count == 0 then
     self.items[name] = nil
   else
     self.items[name] = count
