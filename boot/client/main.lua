@@ -38,7 +38,7 @@ end
 --RichPresence
 if Config.EnableRichPresence then
   local playerId = PlayerId()
-   SetDiscordAppId(tonumber(GetConvar("RichAppId", "757218164345012224")))
+    SetDiscordAppId(tonumber(GetConvar("RichAppId", "757218164345012224")))
     SetDiscordRichPresenceAsset(GetConvar("RichAssetId", "esx_test"))
     SetDiscordRichPresenceAssetText("Playing on a ESX Server!")
     SetDiscordRichPresenceAssetSmall(GetConvar("RichAssetId", "esx_test"))
