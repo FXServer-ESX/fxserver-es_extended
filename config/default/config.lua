@@ -18,5 +18,7 @@ Config.EnablePvP          = true
 Config.EnableHUD          = true
 Config.InventoryKey       = "REPLAY_START_STOP_RECORDING_SECONDARY" -- Key F2 by default
 Config.EnableLoadScreen   = true
+Config.EnableRichPresence = true
+
 
 Config.Modules = {}
