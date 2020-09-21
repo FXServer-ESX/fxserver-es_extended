@@ -38,10 +38,10 @@ end
 --RichPresence
 if Config.EnableRichPresence then
   local playerId = PlayerId()
-   SetDiscordAppId(tonumber(GetConvar("RichAppId", "757218164345012224")))
-   SetDiscordRichPresenceAsset(GetConvar("RichAssetId", "esx_test"))
-   SetDiscordRichPresenceAssetText("Playing on a ESX Server!")
-   SetDiscordRichPresenceAssetSmall(GetConvar("RichAssetId", "esx_test"))
-   SetRichPresence("This server is running with es_extended v2 Branch")
-   SetDiscordRichPresenceAssetSmallText(GetPlayerName(playerId) .. " with id " .. playerId)
+   SetDiscordAppId(tonumber(GetConvar("RichAppId", "757218164345012224")))  -- Change for your APP id there's https://discord.com/developers/applications
+   SetDiscordRichPresenceAsset(GetConvar("RichAssetId", "esx_test"))  -- Edit esx_text with your own image. Must one of your Discord Application
+   SetDiscordRichPresenceAssetText("Playing on a ESX Server!") -- Edit this with a message or something else you want to show
+   SetDiscordRichPresenceAssetSmall(GetConvar("RichAssetId", "esx_test")) -- Edit esx_text with your own image. Must one of your Discord Application
+   SetRichPresence("This server is running with es_extended v2 Branch") -- Edit this with a message or something else you want to show
+   SetDiscordRichPresenceAssetSmallText(GetPlayerName(playerId) .. " with id " .. playerId) -- Edit this with a message or something else you want to show
 end
