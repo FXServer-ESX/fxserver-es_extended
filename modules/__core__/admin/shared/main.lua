@@ -10,20 +10,4 @@
 --   If you redistribute this software, you must link to ORIGINAL repository at https://github.com/ESX-Org/es_extended
 --   This copyright should appear in every part of the project code
 
-M('events')
-local Input = M('input')
-
-Input.On('released', Input.Groups.LOOK, Input.Controls.SCRIPTED_FLY_ZUP, function()
-  module.OpenMenu()
-end)
-
-Input.On('released', Input.Groups.CELLPHONE_NAVIGATE, Input.Controls.FRONTEND_CANCEL, function()
-  if module.CancelCurrentAction then
-    module.CancelCurrentAction()
-    module.CancelCurrentAction = nil
-  end
-end)
-
-onServer('esx:admin:inPlayerCommand', function(...)
-  module.OnSelfCommand(...)
-end)
+module.Init()

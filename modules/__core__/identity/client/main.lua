@@ -36,6 +36,10 @@ function initPlayerDeadCheckInterval()
 					player:killed(deathCause)
 				end
       end
+
+      if not IsPedFatallyInjured(playerPed) and isPlayerDead and not IsEntityDead(playerPed) then
+        isPlayerDead = false
+      end
     end
   end)
 end
