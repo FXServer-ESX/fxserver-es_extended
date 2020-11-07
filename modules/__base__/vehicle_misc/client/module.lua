@@ -60,7 +60,7 @@ module.fuelSystem = function(isNearPump, ped) -- Didn't added the Jerrican Yet.
                             module.ChooseFuel(vehicle)
                         end
                     else
-                        Interact.ShowHelpNotification("Gas Station: Your car is fully fuelled. Byeee!")
+                        Interact.ShowHelpNotification("Gas Station: Your tank is full. No need to refuel!")
                     end
                 end
             end
@@ -123,7 +123,7 @@ module.ReFuel = function(menu)
         else
             if actualfuel > (currentFuel + LiterstoADD) then
                 actualfuel = (currentFuel + LiterstoADD)   
-                print("HEELO")
+                SetVehicleFuelLevel(vehicle, actualfuel)
                 isFueling = false
                 local menu = Menu('fuel.refuel', {
                     float = 'top|left',
@@ -136,9 +136,10 @@ module.ReFuel = function(menu)
                   menu:on('item.click', function(item)
                     request('fuel:payme', function(result)
                         if result then
-                            SetVehicleFuelLevel(vehicle, actualfuel)
+                            Interact.ShowHelpNotification("Gas Station: Your car is refuelled. Have a nice travel!")
                         else
                             Interact.ShowHelpNotification("Gas Station: You does not have enough money to pay.")
+                            SetVehicleFuelLevel(vehicle, currentFuel)
                         end
                     end)
                     menu:destroy()
