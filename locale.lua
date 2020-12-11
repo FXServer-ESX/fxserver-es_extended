@@ -1,7 +1,7 @@
 -- Copyright (c) Jérémie N'gadi
 --
 -- All rights reserved.
---
+--x
 -- Even if 'All rights reserved' is very clear :
 --
 --   You shall not use any piece of this software in a commercial product / service
