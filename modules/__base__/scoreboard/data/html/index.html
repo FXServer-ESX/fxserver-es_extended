@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>Table</title>
+  <meta name="generator" content="Google Web Designer 10.0.2.0105">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+  <style type="text/css" id="gwd-text-style">
+    p {
+      margin: 0px;
+    }
+
+    h1 {
+      margin: 0px;
+    }
+
+    h2 {
+      margin: 0px;
+    }
+
+    h3 {
+      margin: 0px;
+    }
+  </style>
+  <style type="text/css">
+    html,
+    body {
+      width: 1920px;
+      height: 1080px;
+      margin: 0px;
+      overflow: hidden;
+    }
+
+    body {
+      background-color: transparent;
+      transform: perspective(1400px) matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+      transform-style: preserve-3d;
+    }
+
+    h1 {
+      color: rgb(255, 255, 255);
+      text-transform: uppercase;
+      font-weight: 300;
+      text-align: center;
+      margin-bottom: 15px;
+      font-family: "Trebuchet MS";
+      left: 0px;
+      top: 0px;
+      font-size: 50px;
+    }
+
+    table {
+      width: 100%;
+      table-layout: fixed;
+    }
+
+    .tbl-header {
+      background-color: rgba(0, 0, 0, 0.6);
+      width: 100%;
+    }
+
+    .tbl-content {
+      height: 100%;
+      overflow-x: auto;
+      margin-top: 0px;
+      border: 10px;
+    }
+
+    th {
+      padding: 20px 15px;
+      text-align: left;
+      font-weight: 500;
+      font-size: 18px;
+      color: rgb(255, 255, 255);
+      text-transform: uppercase;
+      font-family: "Courier New";
+    }
+
+    td {
+      padding: 15px;
+      text-align: left;
+      vertical-align: middle;
+      font-weight: 300;
+      font-size: 20px;
+      color: rgb(255, 255, 255);
+      border-bottom: 1px solid rgba(255, 255, 255, 0);
+    }
+
+    section {
+      margin: 50px;
+    }
+
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    ::-webkit-scrollbar-track {
+      box-shadow: rgba(0, 0, 0, 0.3) 0px 0px 6px inset;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      box-shadow: rgba(0, 0, 0, 0.3) 0px 0px 6px inset;
+    }
+
+    .gwd-div-14az {
+      background-color: rgba(32, 32, 32, 0.95);
+      position: absolute;
+      border-radius: 20px;
+      margin: 25.175px;
+      height: 1054px;
+      transform-style: preserve-3d;
+      top: 50%;
+      left: 0%;
+      transform: translate3d(-8px, -552px, 0px);
+    }
+
+    .gwd-span-9y5b {
+      font-size: 50px;
+      font-weight: bold;
+      font-family: "Courier New";
+    }
+
+    .gwd-span-k2lq {
+      font-family: "Courier New";
+      font-size: 50px;
+    }
+
+    .gwd-span-g27d {
+      font-size: 50px;
+    }
+
+    .gwd-span-9672 {
+      font-weight: bold;
+      font-family: "Courier New";
+      color: rgb(250, 250, 250);
+    }
+
+    .gwd-span-9673 {
+      font-weight: bold;
+      font-family: "Courier New";
+      color: rgb(79, 180, 228);
+    }
+
+    .gwd-p-155y {
+      position: absolute;
+      width: 350px;
+      height: 54.825px;
+      font-size: 20px;
+      color: rgb(255, 255, 255);
+      font-family: "Courier New";
+      font-style: italic;
+      font-weight: normal;
+      left: 56px;
+      top: 13px;
+    }
+  </style>
+</head>
+
+<body class="htmlNoPages">
+  <!--for demo wrap-->
+  <div class="gwd-div-14az">
+    <h1 class=""><span class="gwd-span-9672">ESX</span><span class="gwd-span-9673">2</span> <span
+        class="gwd-span-k2lq">SCOREBOARD</span></h1>
+    <p class="gwd-p-155y">UPTIME:</p>
+    <div class="tbl-header">
+      <table cellpadding="0" cellspacing="0" border="0">
+        <thead>
+        </thead>
+      </table>
+    </div>
+    <div class="tbl-content">
+      <table cellpadding="0" cellspacing="0" border="0">
+        <tbody>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <!-- follow me template -->
+  <script>
+    $('.gwd-div-14az').hide()
+    window.addEventListener('message', function (event) {
+      let msg = event.data;
+      if (msg.action == "SHOW:SCOREBOARD") {
+        var table = $('.tbl-content');
+        var header = $('.tbl-header');
+        header.find('thead').empty();
+        table.find('tbody').empty();
+        header.find('thead').append(msg.header);
+        $('.gwd-div-14az').show()
+
+      } else if (msg.action == "ADD:PLAYER") {
+        var table = $('.tbl-content');
+        var header = $('.tbl-header');
+        table.find('tbody').append(msg.data);
+      } else if (msg.action == "ADD:UPTIME") {
+        $("p").html(msg.data);
+
+      }
+    });
+
+    document.onkeyup = function (data) {
+      if (data.which == 8 || data.which == 27) {
+        var table = $('.tbl-content');
+        var header = $('.tbl-header');
+        header.find('thead').empty();
+        table.find('tbody').empty();
+        window.parent.postMessage({ action: 'CLOSE:SCOREBOARD', data: 0 }, '*');
+        $('.gwd-div-14az').hide()
+      }
+    };
+  </script>
+
+</body>
+
+</html>
