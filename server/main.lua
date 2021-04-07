@@ -13,10 +13,19 @@ end)
 function onPlayerJoined(playerId)
 	local identifier
 
-	for k,v in ipairs(GetPlayerIdentifiers(playerId)) do
-		if string.match(v, 'license:') then
-			identifier = string.sub(v, 9)
-			break
+	if Config.UseSteamIdentifier then
+		for _, v in pairs(GetPlayerIdentifiers(playerId)) do
+			if string.find(v, 'steam') then
+				identifier = v
+				break
+			end
+		end
+	else
+		for k,v in ipairs(GetPlayerIdentifiers(playerId)) do
+			if string.match(v, 'license:') then
+				identifier = string.sub(v, 9)
+				break
+			end
 		end
 	end
 
@@ -55,10 +64,19 @@ AddEventHandler('playerConnecting', function(name, setCallback, deferrals)
 	local playerId, identifier = source
 	Citizen.Wait(100)
 
-	for k,v in ipairs(GetPlayerIdentifiers(playerId)) do
-		if string.match(v, 'license:') then
-			identifier = string.sub(v, 9)
-			break
+	if Config.UseSteamIdentifier then
+		for _, v in pairs(GetPlayerIdentifiers(playerId)) do
+			if string.find(v, 'steam') then
+				identifier = v
+				break
+			end
+		end
+	else
+		for k,v in ipairs(GetPlayerIdentifiers(playerId)) do
+			if string.match(v, 'license:') then
+				identifier = string.sub(v, 9)
+				break
+			end
 		end
 	end
 

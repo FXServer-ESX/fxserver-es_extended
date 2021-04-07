@@ -15,7 +15,11 @@ function CreateExtendedPlayer(playerId, identifier, group, accounts, inventory, 
 	self.weight = weight
 	self.maxWeight = Config.MaxWeight
 
-	ExecuteCommand(('add_principal identifier.license:%s group.%s'):format(self.identifier, self.group))
+	if Config.UseSteamIdentifier then
+		ExecuteCommand(('add_principal identifier.steam:%s group.%s'):format(self.identifier, self.group))
+	else
+		ExecuteCommand(('add_principal identifier.license:%s group.%s'):format(self.identifier, self.group))
+	end
 
 	self.triggerEvent = function(eventName, ...)
 		TriggerClientEvent(eventName, self.source, ...)
@@ -66,9 +70,15 @@ function CreateExtendedPlayer(playerId, identifier, group, accounts, inventory, 
 	end
 
 	self.setGroup = function(newGroup)
-		ExecuteCommand(('remove_principal identifier.license:%s group.%s'):format(self.identifier, self.group))
-		self.group = newGroup
-		ExecuteCommand(('add_principal identifier.license:%s group.%s'):format(self.identifier, self.group))
+		if Config.UseSteamIdentifier then
+			ExecuteCommand(('remove_principal identifier.steam:%s group.%s'):format(self.identifier, self.group))
+			self.group = newGroup
+			ExecuteCommand(('add_principal identifier.steam:%s group.%s'):format(self.identifier, self.group))
+		else
+			ExecuteCommand(('remove_principal identifier.license:%s group.%s'):format(self.identifier, self.group))
+			self.group = newGroup
+			ExecuteCommand(('add_principal identifier.license:%s group.%s'):format(self.identifier, self.group))
+		end
 	end
 
 	self.getGroup = function()

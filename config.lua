@@ -1,5 +1,6 @@
 Config = {}
 Config.Locale = 'en'
+Config.UseSteamIdentifier = false -- if set to false, the script uses the rockstar identifier instead of the steam one
 
 Config.Accounts = {
 	bank = _U('account_bank'),
