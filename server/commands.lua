@@ -195,19 +195,19 @@ end, true, {help = _U('bring'), validate = true, arguments = {
 
 ESX.RegisterCommand('kill', 'admin', function(xPlayer, args, showError)
 	args.playerId.triggerEvent('esx:killPlayer')
-end, true, {help = _U('kill'), validate = true, arguments = {
+end, true, {help = _U('command_kill'), validate = true, arguments = {
 {name = 'playerId', help = _U('commandgeneric_playerid'), type = 'player'}
 }})
 
 ESX.RegisterCommand('freeze', 'admin', function(xPlayer, args, showError)
 	args.playerId.triggerEvent('esx:freezePlayer', true)
-end, true, {help = _U('kill'), validate = true, arguments = {
+end, true, {help = _U('command_freeze'), validate = true, arguments = {
 {name = 'playerId', help = _U('commandgeneric_playerid'), type = 'player'}
 }})
 
 ESX.RegisterCommand('unfreeze', 'admin', function(xPlayer, args, showError)
 	args.playerId.triggerEvent('esx:freezePlayer', false)
-end, true, {help = _U('kill'), validate = true, arguments = {
+end, true, {help = _U('command_unfreeze'), validate = true, arguments = {
 {name = 'playerId', help = _U('commandgeneric_playerid'), type = 'player'}
 }})
 
