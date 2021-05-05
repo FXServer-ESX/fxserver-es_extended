@@ -15,7 +15,7 @@ function onPlayerJoined(playerId)
 
 	for k,v in ipairs(GetPlayerIdentifiers(playerId)) do
 		if string.match(v, 'license:') then
-			identifier = v
+			identifier = string.sub(v, 9)
 			break
 		end
 	end
@@ -66,7 +66,7 @@ AddEventHandler('playerConnecting', function(name, setCallback, deferrals)
 
 		for k,v in ipairs(GetPlayerIdentifiers(playerId)) do
 			if string.match(v, 'license:') then
-				identifier = v
+				identifier = string.sub(v, 9)
 				break
 			end
 		end
