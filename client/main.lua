@@ -64,7 +64,6 @@ AddEventHandler('esx:playerLoaded', function(playerData, isNew)
 		ShutdownLoadingScreen()
 		ShutdownLoadingScreenNui()
 		FreezeEntityPosition(PlayerPedId(), false)
-		DoScreenFadeIn(10000)
 		StartServerSyncLoops()
 		if isNew then
 			-- Put your code for if you want to do something with new players.
