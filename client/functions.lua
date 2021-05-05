@@ -1026,6 +1026,7 @@ Citizen.CreateThread(function()
 		local currTime = GetGameTimer()
 
 		if #ESX.TimeoutCallbacks > 0 then
+			letSleep = false
 			for i=1, #ESX.TimeoutCallbacks, 1 do
 				if ESX.TimeoutCallbacks[i] then
 					if currTime >= ESX.TimeoutCallbacks[i].time then
