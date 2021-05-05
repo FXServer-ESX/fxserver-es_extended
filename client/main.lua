@@ -396,14 +396,13 @@ function StartServerSyncLoops()
 end
 
 if Config.EnableDefaultInventory then
-	RegisterCommand('+inv', function()
+	RegisterCommand('showinv', function()
 		if not isDead and not ESX.UI.Menu.IsOpen('default', 'es_extended', 'inventory') then
 			ESX.ShowInventory()
 		end
 	end)
 
-	RegisterCommand('-inv', function() end)
-	RegisterKeyMapping('+inv', _U('keymap_showinventory'), 'keyboard', 'F2')
+	RegisterKeyMapping('showinv', _U('keymap_showinventory'), 'keyboard', 'F2')
 end
 
 -- Disable wanted level
@@ -562,16 +561,10 @@ AddEventHandler("esx:killPlayer", function()
 end)
 
 RegisterNetEvent("esx:freezePlayer")
-AddEventHandler("esx:freezePlayer", function(input)
-    local player = PlayerId()
-	local ped = PlayerPedId()
-    if input == 'freeze' then
-        SetEntityCollision(ped, false)
-        FreezeEntityPosition(ped, true)
-        SetPlayerInvincible(player, true)
-    elseif input == 'unfreeze' then
-        SetEntityCollision(ped, true)
-	    FreezeEntityPosition(ped, false)
-        SetPlayerInvincible(player, false)
-    end
+AddEventHandler("esx:freezePlayer", function(freeze)
+	local freezePlayer = freeze
+
+	SetEntityCollision(PlayerPedId(), not freezePlayer)
+	FreezeEntityPosition(PlayerPedId(), freezePlayer)
+	SetPlayerInvincible(PlayerId(), freezePlayer)
 end)
