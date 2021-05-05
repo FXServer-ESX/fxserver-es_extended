@@ -22,12 +22,6 @@ AddEventHandler('esx:playerLoaded', function(playerData, isNew)
 		SetCanAttackFriendly(PlayerPedId(), true, false)
 		NetworkSetFriendlyFireOption(true)
 	end
-	
-	-- disable wanted level
-	if not Config.EnableWantedLevel then
-		ClearPlayerWantedLevel(PlayerId())
-		SetMaxWantedLevel(0)
-	end
 
 	if Config.EnableHud then
 		for k,v in ipairs(playerData.accounts) do
@@ -411,6 +405,14 @@ if Config.EnableDefaultInventory then
 
 	RegisterCommand('-inv', function() end)
 	RegisterKeyMapping('+inv', _U('keymap_showinventory'), 'keyboard', 'F2')
+end
+
+-- Disable wanted level
+if not Config.EnableWantedLevel then
+	-- Previous they were creating a contstantly running loop to check if the wanted level
+	-- changed and then setting back to 0. This is all thats needed to disable a wanted level.
+	ClearPlayerWantedLevel(PlayerId())
+	SetMaxWantedLevel(0)
 end
 
 Citizen.CreateThread(function()
