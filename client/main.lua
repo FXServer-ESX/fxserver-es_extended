@@ -14,8 +14,8 @@ AddEventHandler('esx:playerLoaded', function(playerData, isNew)
 	ESX.PlayerLoaded = true
 	ESX.PlayerData = playerData
 
-
-	FreezeEntityPosition(PlayerPedId(), true)
+	-- Removed some unnecessary statement here checking if you were Michael, it did nothing really.
+	-- Was also kind of broken because anyone who has a SP save no using Michael wouldn't even get it.
 	
 	-- enable PVP
 	if Config.EnablePVP then
@@ -57,7 +57,6 @@ AddEventHandler('esx:playerLoaded', function(playerData, isNew)
 		Citizen.Wait(4000)
 		ShutdownLoadingScreen()
 		ShutdownLoadingScreenNui()
-		FreezeEntityPosition(PlayerPedId(), false)
 		StartServerSyncLoops()
 		if isNew then
 			-- Put your code for if you want to do something with new players.
