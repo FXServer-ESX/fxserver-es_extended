@@ -24,6 +24,9 @@ function Ready(cb)
 			while GetResourceState('mysql-async') ~= 'started' do
 				Citizen.Wait(0)
 			end
+			while not exports['mysql-async']:is_ready() do
+				Citizen.Wait(0)
+			end
 		else
 			while GetResourceState('ghmattimysql') ~= 'started' do
 				Citizen.Wait(0)
