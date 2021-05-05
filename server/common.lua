@@ -18,7 +18,22 @@ function getSharedObject()
 	return ESX
 end
 
-ESX.Ready(function()
+function Ready(cb)
+	Citizen.CreateThread(function()
+		if Config.UseMySQLAsync then
+			while GetResourceState('mysql-async') ~= 'started' do
+				Citizen.Wait(0)
+			end
+		else
+			while GetResourceState('ghmattimysql') ~= 'started' do
+				Citizen.Wait(0)
+			end
+		end
+		cb()
+	end)
+end
+
+Ready(function()
 	if Config.UseMySQLAsync then
 		MySQL.Async.fetchAll('SELECT * FROM items', {}, function(result)
 			for k,v in ipairs(result) do
@@ -83,6 +98,9 @@ ESX.Ready(function()
 			print(('[^5es_extended^0] [^3WARNING^7] Ignoring job ^5"%s"^0due to no job grades found'):format(v2.name))
 		end
 	end
+
+	ESX.StartDBSync()
+	ESX.StartPayCheck()
 
 	print('[^5es_extended^0] [^2INFO^7] ESX ^5Legacy^0 initialized')
 end)
