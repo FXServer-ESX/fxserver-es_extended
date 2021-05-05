@@ -640,7 +640,7 @@ ESX.Game.SetVehicleProperties = function(vehicle, props)
 
 		if props.neonColor then SetVehicleNeonLightsColour(vehicle, props.neonColor[1], props.neonColor[2], props.neonColor[3]) end
 		if props.xenonColor then SetVehicleXenonLightsColour(vehicle, props.xenonColor) end
-		if props.modSmokeEnabled then ToggleVehicleMod(vehicle, 20, true) end
+		if props.modSmokeEnabled then ToggleVehicleMod(vehicle, 20, true) elseif props.modSmokeEnabled == false then ToggleVehicleMod(vehicle, 20, false) end
 		if props.tyreSmokeColor then SetVehicleTyreSmokeColor(vehicle, props.tyreSmokeColor[1], props.tyreSmokeColor[2], props.tyreSmokeColor[3]) end
 		if props.modSpoilers then SetVehicleMod(vehicle, 0, props.modSpoilers, false) end
 		if props.modFrontBumper then SetVehicleMod(vehicle, 1, props.modFrontBumper, false) end
@@ -659,8 +659,8 @@ ESX.Game.SetVehicleProperties = function(vehicle, props)
 		if props.modHorns then SetVehicleMod(vehicle, 14, props.modHorns, false) end
 		if props.modSuspension then SetVehicleMod(vehicle, 15, props.modSuspension, false) end
 		if props.modArmor then SetVehicleMod(vehicle, 16, props.modArmor, false) end
-		if props.modTurbo then ToggleVehicleMod(vehicle,  18, props.modTurbo) end
-		if props.modXenon then ToggleVehicleMod(vehicle,  22, props.modXenon) end
+		if props.modTurbo then ToggleVehicleMod(vehicle,  18, props.modTurbo) elseif props.modTurbo == false then ToggleVehicleMod(vehicle, 18, false) end
+		if props.modXenon then ToggleVehicleMod(vehicle,  22, props.modXenon) elseif props.modXenon == false then ToggleVehicleMod(vehicle, 22, false) end
 		if props.modFrontWheels then SetVehicleMod(vehicle, 23, props.modFrontWheels, false) end
 		if props.modBackWheels then SetVehicleMod(vehicle, 24, props.modBackWheels, false) end
 		if props.modPlateHolder then SetVehicleMod(vehicle, 25, props.modPlateHolder, false) end
