@@ -30,7 +30,7 @@ ESX.RegisterCommand = function(name, group, cb, allowConsole, suggestion)
 	end
 
 	if ESX.RegisteredCommands[name] then
-		print(('[^5es_extended^0] [^3WARNING^7] Command ^5"%s" already registered, overriding command'):format(name))
+		print(('[^5es_extended^0] [^3WARNING^7] Command ^5"%s"^0 already registered, overriding command'):format(name))
 
 		if ESX.RegisteredCommands[name].suggestion then
 			TriggerClientEvent('chat:removeSuggestion', -1, ('/%s'):format(name))
@@ -187,6 +187,7 @@ ESX.SavePlayer = function(xPlayer, cb)
 			['@inventory'] = json.encode(xPlayer.getInventory(true))
 		}, cb)
 	end
+	print(('[^5es_extended^0] [^2INFO^7] Saved player ^5"%s^7"'):format(xPlayer.getName()))
 end
 
 ESX.SavePlayers = function(cb)
@@ -203,6 +204,7 @@ ESX.SavePlayers = function(cb)
 		while true do
 			Citizen.Wait(500)
 			if playersToSave == savedPlayers then
+				print(('[^5es_extended^0] [^2INFO^7] Saved ^5%s^0 player(s)'):format(#savedPlayers))
 				cb(true)
 				break
 			elseif currentTimeout >= maxTimeout then
