@@ -9,7 +9,8 @@ Config.Accounts = {
 
 Config.StartingAccountMoney 	= {bank = 50000}
 
-Config.UseMySQLAsync = false -- If you want to use mysql-async leave this true if you want to use ghmattimysql set this to false (DO NOT TOUCH IF YOU DO NOT KNOW WHAT YOU ARE DOING)
+-- IF YOU DISABLE THIS YOU MUST REMOVE THE LINE ``'@mysql-async/lib/MySQL.lua',`` FROM THE fxmanifest.lua
+Config.UseMySQLAsync = true -- If you want to use mysql-async leave this true if you want to use ghmattimysql set this to false (DO NOT TOUCH IF YOU DO NOT KNOW WHAT YOU ARE DOING)
 
 Config.EnableSocietyPayouts 	= false -- pay from the society account that the player is employed at? Requirement: esx_society
 Config.EnableHud            	= true -- enable the default hud? Display current job and accounts (black, bank & cash)

@@ -4,26 +4,7 @@ games { 'gta5' }
 description 'ES Extended'
 version 'legacy'
 
-server_scripts {
-	'@mysql-async/lib/MySQL.lua',
-
-	'locale.lua',
-	'locales/*.lua',
-
-	'config.lua',
-	'config.weapons.lua',
-
-	'server/common.lua',
-	'server/classes/player.lua',
-	'server/functions.lua',
-	'server/paycheck.lua',
-	'server/main.lua',
-	'server/commands.lua',
-
-	'common/modules/math.lua',
-	'common/modules/table.lua',
-	'common/functions.lua'
-}
+ui_page 'html/ui.html'
 
 client_scripts {
 	'locale.lua',
@@ -47,8 +28,25 @@ client_scripts {
 	'common/functions.lua'
 }
 
-ui_page {
-	'html/ui.html'
+server_scripts {
+	'@mysql-async/lib/MySQL.lua',
+
+	'locale.lua',
+	'locales/*.lua',
+
+	'config.lua',
+	'config.weapons.lua',
+
+	'server/common.lua',
+	'server/classes/player.lua',
+	'server/functions.lua',
+	'server/paycheck.lua',
+	'server/main.lua',
+	'server/commands.lua',
+
+	'common/modules/math.lua',
+	'common/modules/table.lua',
+	'common/functions.lua'
 }
 
 files {
