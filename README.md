@@ -1,6 +1,6 @@
-# es_extended LEGACY / BROKEN / WONTFIX
+# es_extended LEGACY
 
-### Things hapenning here now https://github.com/ESX-Org/es_extended/tree/develop (WIP)
+### ESX Version 2 development happening here https://github.com/ESX-Org/es_extended/tree/develop (WIP)
 
 es_extended is a roleplay framework for FiveM. The to-go framework for creating an economy based roleplay server on FiveM and most popular on the platform, too!
 
@@ -32,8 +32,11 @@ ESX was initially developed by Gizz back in 2017 for his friend as the were crea
 
 ## Requirements
 
+mysql-async & ghmattimysql are interchangeable with eachother, although ghmattimysql is recommended for advanced users, as it takes a little bit of setup in your other scripts if you wich to switch to it completely.
+If you do not know what you're doing leave Config.UseMySQLAsync true. 
+
 - [mysql-async](https://github.com/brouznouf/fivem-mysql-async)
-- [async](https://github.com/ESX-Org/async)
+- [ghmattimysql](https://github.com/GHMatti/ghmattimysql/releases/latest)
 
 
 ## Download & Installation
@@ -77,7 +80,7 @@ add_ace resource.es_extended command.add_principal allow
 add_ace resource.es_extended command.remove_principal allow
 add_ace resource.es_extended command.stop allow
 
-start mysql-async
+start mysql-async <-> start ghmattimysql
 start es_extended
 
 start esx_menu_default
