@@ -9,6 +9,8 @@ Config.Accounts = {
 
 Config.StartingAccountMoney 	= {bank = 50000}
 
+Config.UseMySQLAsync = true -- If you want to use mysql-async leave this true if you want to use ghmattimysql set this to false (DO NOT TOUCH IF YOU DO NOT KNOW WHAT YOU ARE DOING)
+
 Config.EnableSocietyPayouts 	= false -- pay from the society account that the player is employed at? Requirement: esx_society
 Config.EnableHud            	= true -- enable the default hud? Display current job and accounts (black, bank & cash)
 Config.MaxWeight            	= 24   -- the max inventory weight without backpack

@@ -284,3 +284,18 @@ ESX.DoesJobExist = function(job, grade)
 
 	return false
 end
+
+ESX.Ready = function(cb)
+	Citizen.CreateThread(function()
+		if not Config.UseMySQLAsync then
+			while GetResourceState('ghmattimysql') ~= 'started' do
+				Citizen.Wait(0)
+			end
+		else
+			while GetResourceState('mysql-async') ~= 'started' do
+				Citizen.Wait(0)
+			end
+		end
+		cb()
+	end)
+end
