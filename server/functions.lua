@@ -287,12 +287,12 @@ end
 
 ESX.Ready = function(cb)
 	Citizen.CreateThread(function()
-		if Config.UseMySQLAsync then
-			while GetResourceState('mysql-async') ~= 'started' do
+		if not Config.UseMySQLAsync then
+			while GetResourceState('ghmattimysql') ~= 'started' do
 				Citizen.Wait(0)
 			end
 		else
-			while GetResourceState('ghmattimysql') ~= 'started' do
+			while GetResourceState('mysql-async') ~= 'started' do
 				Citizen.Wait(0)
 			end
 		end
