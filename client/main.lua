@@ -59,6 +59,7 @@ AddEventHandler('esx:playerLoaded', function(playerData, isNew)
 		ShutdownLoadingScreenNui()
 		StartServerSyncLoops()
 		if isNew then
+			TriggerEvent('esx_identity:showRegisterIdentity')
 			-- Put your code for if you want to do something with new players.
 		else
 			-- If they aren't new put that code here.
