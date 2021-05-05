@@ -1,13 +1,10 @@
-fx_version 'adamant'
-
-game 'gta5'
+fx_version 'cerulean'
+games { 'gta5' }
 
 description 'ES Extended'
-
 version 'legacy'
 
 server_scripts {
-	'@async/async.lua',
 	'@mysql-async/lib/MySQL.lua',
 
 	'locale.lua',
@@ -90,15 +87,5 @@ files {
 	'html/img/accounts/money.png'
 }
 
-exports {
-	'getSharedObject'
-}
-
-server_exports {
-	'getSharedObject'
-}
-
-dependencies {
-	'mysql-async',
-	'async'
-}
+export 'getSharedObject'
+server_export 'getSharedObject'
