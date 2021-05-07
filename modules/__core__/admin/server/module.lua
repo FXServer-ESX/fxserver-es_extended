@@ -29,11 +29,13 @@ end
 module.KickPlayer = function(playerId, reason)
 	reason = reason or "You were kicked by a staff member."
 
+  local playerName = GetPlayerName(playerId)
+
 	DropPlayer(tostring(playerId), reason)
 
 	-- Display a message in chat when a player in kicked
 	if module.Config.enableChatMessageOnKick then
-		utils.server.systemMessage("Someone was kicked from the server.")
+		utils.server.systemMessage(playerName .. " was kicked from the server.")
 	end
 end
 
@@ -46,12 +48,14 @@ module.BanPlayer = function(playerId, reason)
     identifier = player:getIdentifier(),
     reason = reason
   }, function()
+    local playerName = GetPlayerName(playerId)
+
     DropPlayer(tostring(playerId), reason)
-    
+
     -- Display a message in chat when a player in banned
     if module.Config.enableChatMessageOnBan then
-      utils.server.systemMessage("Someone was banned from the server.")
+      utils.server.systemMessage(playerName .. " was banned from the server.")
     end
-    
+
 	end)
 end

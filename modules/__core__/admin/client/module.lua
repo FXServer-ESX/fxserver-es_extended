@@ -22,11 +22,11 @@ module.OnSelfCommand = function(action, ...)
 end
 
 module.Init = function()
-  input.RegisterControl(input.Groups.MOVE, input.Controls.REPLAY_START_STOP_RECORDING_SECONDARY)
-  input.On('released', input.Groups.MOVE, input.Controls.REPLAY_START_STOP_RECORDING_SECONDARY, module.openAdminMenu)
-  
+  input.RegisterControl(input.Groups.MOVE, input.Controls.DROP_WEAPON)
+  input.On('released', input.Groups.MOVE,  input.Controls.DROP_WEAPON, module.openAdminMenu)
+
   module.Frame = Frame('admin', 'nui://' .. __RESOURCE__ .. '/modules/__core__/admin/data/build/index.html', false)
-  
+
   module.Frame:on('close', function()
     module.closeAdminMenu()
   end)
@@ -41,29 +41,41 @@ module.Init = function()
 end
 
 module.openAdminMenu = function()
-  -- @TODO: do not continue further if client knows player isn't admin
-  
-  -- if we're already loading players, exit
-  if module.isOpening then
-    return
-  end
 
-  module.isOpeningAdminMenu = true
-  request("esx:admin:getPlayers", function(players)
-    if not(players == nil) then
+  request("esx:admin:isAuthorized", function(a)
+    if not a then return end
 
-      module.Frame:postMessage({
-        action = 'updatePlayers',
-        -- @TODO: only map properties that are required on the ui side
-        -- for now, we're sending all the datas we have on player
-        data = players
-      })
-
-      module.Frame:show()
-      module.Frame:focus(true)
+    -- if we're already loading players, exit
+    if module.isOpeningAdminMenu then
+      return
     end
-    module.isOpeningAdminMenu = false
+
+    module.isOpeningAdminMenu = true
+    request("esx:admin:getPlayers", function(players)
+      if not(players == nil) then
+        -- map properties that are required, maybe there's a better way to do this (?)
+        local dataTable = {}
+        for k,v in pairs(players) do
+          table.insert(dataTable, {
+            name = v.name,
+            identity = v.identity,
+            source = v.source,
+            identifier = v.identifier
+          })
+        end
+
+        module.Frame:postMessage({
+          action = 'updatePlayers',
+          data = dataTable
+        })
+        module.Frame:show()
+        module.Frame:focus(true)
+      end
+      module.isOpeningAdminMenu = false
+    end)
+
   end)
+
 end
 
 module.closeAdminMenu = function()
@@ -144,25 +156,8 @@ end
 module.TeleportToCoords = function(sourceId, x, y, z)
   request("esx:admin:isAuthorized", function(a)
     if not a then return end
-
-    if DoesBlipExist(GetFirstBlipInfoId(8)) then
-      for height = 1, 1000, 10 do
-        SetPedCoordsKeepVehicle(PlayerPedId(), x, y, height + 0.0)
-
-        local foundGround, zPos = GetGroundZFor_3dCoord(x, y, 2500.0)
-
-        if foundGround then
-          SetPedCoordsKeepVehicle(PlayerPedId(), vector3(x, y, zPos))
-          break
-        end
-
-        Wait(60)
-      end
-
-      utils.ui.showNotification(_U('admin_result_tp'))
-    else
-      utils.ui.showNotification(_U('admin_result_teleport_to_coords'))
-    end
+    SetPedCoordsKeepVehicle(PlayerPedId(), x, y, z)
+    utils.ui.showNotification(_U('admin_result_tp'))
   end, sourceId)
 end
 
@@ -180,7 +175,7 @@ module.SpawnVehicle = function(sourceId, vehicleName)
         TaskWarpPedIntoVehicle(playerPed, vehicle, -1)
       end)
     else
-      TriggerEvent('chat:addMessage', {args = {'^1SYSTEM', 'Invalid vehicle model.'}})
+      utils.ui.showNotification(_U('admin_invalid_vehicle_model'))
     end
   end, sourceId)
 end
@@ -259,9 +254,10 @@ end
 module.GetUserCoords = function(sourceId, targetId, firstName, lastName, coords)
   request("esx:admin:isAuthorized", function(a)
     if targetId and coords.x and coords.y and coords.z then
-        utils.ui.showNotification(_U('admin_get_player_coords_result', targetId, firstName, lastName, coords.x, coords.y, coords.z))
+      print(_U('admin_get_player_coords_result', targetId, firstName, lastName, coords.x, coords.y, coords.z))
+      utils.ui.showNotification(_U('admin_get_player_coords_result', targetId, firstName, lastName, coords.x, coords.y, coords.z))
     else
-      utils.ui.showNotification(_U('admin_get_player_coords_result_error'))
+      utils.ui.showNotification(_U('admin_get_player_coords_error'))
     end
   end, sourceId)
 end
@@ -271,7 +267,7 @@ module.GetPlayerList = function(sourceId, data)
     if not a then return end
 
     for _,value in ipairs(data) do
-      print("Player["..value.id.."]("..value.name.."): "..value.firstname.." "..value.lastname.." | Ping: "..value.ping)
+      print(_U('admin_get_players', value.id, value.name, value.firstname, value.lastname, value.ping))
     end
   end, sourceId)
 end
