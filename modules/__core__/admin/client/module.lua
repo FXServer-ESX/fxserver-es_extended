@@ -23,7 +23,7 @@ end
 
 module.Init = function()
   input.RegisterControl(input.Groups.MOVE, input.Controls.DROP_WEAPON)
-  input.On('released', input.Groups.MOVE,  input.Controls.DROP_WEAPON, module.openAdminMenu)
+  input.On('released', input.Groups.MOVE, input.Controls.DROP_WEAPON, module.openAdminMenu)
 
   module.Frame = Frame('admin', 'nui://' .. __RESOURCE__ .. '/modules/__core__/admin/data/build/index.html', false)
 
