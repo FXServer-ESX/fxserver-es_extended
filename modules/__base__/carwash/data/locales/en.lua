@@ -18,3 +18,5 @@ Translations = {
     ['not_enough_money'] = 'You don\'t have enough money',
     ['must_be_in_vehicle'] = '~r~You must be in a vehicle to use this.'
 }
+
+

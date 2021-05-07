@@ -23,9 +23,10 @@ local utils = M("utils")
 module.Init()
 
 ESX.SetInterval(0, function()
-    if module.inMarker then
-      if IsControlJustReleased(0, 38) then
-        module.CurrentAction()
-      end
+  if module.inMarker then
+    if IsControlJustReleased(0, 38) then
+      module.CurrentAction()
     end
-  end)
+  end
+end)
+

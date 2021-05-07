@@ -17,3 +17,5 @@ Translations = {
     ['not_enough_money'] = '',
     ['must_be_in_vehicle'] = ''
 }
+
+

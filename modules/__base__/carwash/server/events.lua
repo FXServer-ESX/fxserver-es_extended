@@ -14,21 +14,22 @@ module.Config = run('data/config.lua', {vector3 = vector3})['Config']
 
 onRequest("carwash:washCar", function(source, cb)
 
-    local player = Player.fromId(source)
+  local player = Player.fromId(source)
 
-    if player then
+  if player then
 
-        local playerData = player:getIdentity()
-        local accounts = playerData:getAccounts()
+    local playerData = player:getIdentity()
+    local accounts = playerData:getAccounts()
 
-        if accounts.wallet >= module.Config.Price then
-            -- remove money
-            cb(true)
-        else
-            cb(false)
-        end
-
+    if accounts.wallet >= module.Config.Price then
+      -- remove money
+      cb(true)
+    else
+      cb(false)
     end
-  
+
+  end
     
-  end)
+end)
+
+

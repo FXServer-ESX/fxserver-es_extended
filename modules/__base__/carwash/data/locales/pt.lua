@@ -17,3 +17,5 @@ Translations = {
     ['not_enough_money'] = 'Não tens dinheiro suficiente',
     ['must_be_in_vehicle'] = '~r~Tens que estar dentro de um veículo para lavar.'
 }
+
+

@@ -27,74 +27,75 @@ module.inMarker                       = false
 -----------------------------------------------------------------------------------
 
 module.Init = function()
-    local translations = run('data/locales/' .. Config.Locale .. '.lua')['Translations']
-    LoadLocale('carwash', Config.Locale, translations)
+  local translations = run('data/locales/' .. Config.Locale .. '.lua')['Translations']
+  LoadLocale('carwash', Config.Locale, translations)
+
+  Citizen.CreateThread(function()
+    for k,v in pairs(module.Config.CarWashZones) do
+      local blip = AddBlipForCoord(v.Pos.x, v.Pos.y, v.Pos.z)
+
+      SetBlipSprite (blip, 100)
+      SetBlipDisplay(blip, 4)
+      SetBlipScale  (blip, 0.75)
+      SetBlipColour (blip, 3)
+      SetBlipAsShortRange(blip, true)
+
+      BeginTextCommandSetBlipName("STRING")
+      AddTextComponentString("Car Wash")
+      EndTextCommandSetBlipName(blip)
+
+      local key = 'carwash:' .. tostring(k)
+
+      Interact.Register({
+        name         = key,
+        type         = 'marker',
+        distance     = module.Config.DrawDistance,
+        radius       = 2.0,
+        pos          = v.Pos,
+        size         = v.Size,
+        mtype        = v.Type,
+        color        = v.Color,
+        rotate       = true,
+        bobUpAndDown = false,
+        faceCamera   = true,
+        groundMarker = true
+      })
   
-    Citizen.CreateThread(function()
-        for k,v in pairs(module.Config.CarWashZones) do
-            local blip = AddBlipForCoord(v.Pos.x, v.Pos.y, v.Pos.z)
-    
-            SetBlipSprite (blip, 100)
-            SetBlipDisplay(blip, 4)
-            SetBlipScale  (blip, 0.75)
-            SetBlipColour (blip, 3)
-            SetBlipAsShortRange(blip, true)
-    
-            BeginTextCommandSetBlipName("STRING")
-            AddTextComponentString("Car Wash")
-            EndTextCommandSetBlipName(blip)
 
-            local key = 'carwash:' .. tostring(k)
+      on('esx:interact:enter:' .. key, function(data)
+        if data.name == key then
 
-            Interact.Register({
-                name         = key,
-                type         = 'marker',
-                distance     = module.Config.DrawDistance,
-                radius       = 2.0,
-                pos          = v.Pos,
-                size         = v.Size,
-                mtype        = v.Type,
-                color        = v.Color,
-                rotate       = true,
-                bobUpAndDown = false,
-                faceCamera   = true,
-                groundMarker = true
-            })
-        
+          local ped = PlayerPedId()
 
-            on('esx:interact:enter:' .. key, function(data)
-                if data.name == key then
+          if IsPedSittingInAnyVehicle(ped) then
+            local vehicle = GetVehiclePedIsIn(ped, false)
 
-                    local ped = PlayerPedId()
+            if GetPedInVehicleSeat(vehicle, -1) == ped then
 
-                    if IsPedSittingInAnyVehicle(ped) then
-                        local vehicle = GetVehiclePedIsIn(ped, false)
+              Interact.ShowHelpNotification(_U('carwash:press_to_wash'))
 
-                        if GetPedInVehicleSeat(vehicle, -1) == ped then
+              module.CurrentAction = function()
+                module.WashCar()
+              end
 
-                            Interact.ShowHelpNotification(_U('carwash:press_to_wash'))
+              if not module.inMarker then
+                module.inMarker = true
+              end
+            end
 
-                            module.CurrentAction = function()
-                                module.WashCar()
-                            end
-
-                            if not module.inMarker then
-                                module.inMarker = true
-                            end
-                        end
-                    else
-                        Interact.ShowHelpNotification(_U('carwash:must_be_in_vehicle'))
-                    end
-
-                end
-            end)
-
-            on('esx:interact:exit:' .. key, function(data) 
-                module.Exit()
-            end)
+          else
+            Interact.ShowHelpNotification(_U('carwash:must_be_in_vehicle'))
+          end
 
         end
-    end)
+      end)
+
+      on('esx:interact:exit:' .. key, function(data) 
+        module.Exit()
+      end)
+
+    end
+  end)
 
 end
 
@@ -103,10 +104,10 @@ end
 -----------------------------------------------------------------------------------
 
 module.Exit = function()
-    module.CurrentAction = nil
-    module.inMarker      = false
+  module.CurrentAction = nil
+  module.inMarker      = false
   
-    Interact.StopHelpNotification()
+  Interact.StopHelpNotification()
 end
 
 -----------------------------------------------------------------------------------
@@ -115,34 +116,32 @@ end
 
 module.WashCar = function()
 
-    module.Exit()
+  module.Exit()
 
-    local ped = PlayerPedId()
+  local ped = PlayerPedId()
 
-    if IsPedSittingInAnyVehicle(ped) then
+  if IsPedSittingInAnyVehicle(ped) then
 
-        local vehicle = GetVehiclePedIsIn(ped, false)
+    local vehicle = GetVehiclePedIsIn(ped, false)
 
-        if GetPedInVehicleSeat(vehicle, -1) == ped then
+    if GetPedInVehicleSeat(vehicle, -1) == ped then
 
-            request('carwash:washCar', function(result)
-                if result then
-                    WashDecalsFromVehicle(vehicle, 1.0)
-	                SetVehicleDirtLevel(vehicle, 0.0)
-                    utils.ui.showNotification(_U('carwash:car_washed'))
-                else
-                    utils.ui.showNotification(_U('carwash:not_enough_money'))
-                end
-            end)
-
-            
-            
-            
+      request('carwash:washCar', function(result)
+        if result then
+          WashDecalsFromVehicle(vehicle, 1.0)
+          SetVehicleDirtLevel(vehicle, 0.0)
+          utils.ui.showNotification(_U('carwash:car_washed'))
+        else
+          utils.ui.showNotification(_U('carwash:not_enough_money'))
         end
+      end)
 
     end
+
+  end
 
 
 end
 
-  
+
+

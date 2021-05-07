@@ -18,47 +18,48 @@ Config.Price = 1
 
 Config.CarWashZones = {
 
-    Strawberry = {
-        Pos   = vector3(26.5906,  -1392.0261,  28.3634),
-        Size  = {x = 3.0, y = 3.0, z = 1.5},
-        Type  = 27,
-        Color = {r = 0, g = 255, b = 0, a = 225}
-    },
+  Strawberry = {
+    Pos   = vector3(26.5906,  -1392.0261,  28.3634),
+    Size  = {x = 3.0, y = 3.0, z = 1.5},
+    Type  = 27,
+    Color = {r = 0, g = 255, b = 0, a = 225}
+  },
 
 
-    Davis1 = {
-        Pos   = vector3(170.77,  -1718.44,  28.3316),
-        Size  = {x = 3.0, y = 3.0, z = 1.5},
-        Type  = 27,
-        Color = {r = 0, g = 255, b = 0, a = 225}
-    },
+  Davis1 = {
+    Pos   = vector3(170.77,  -1718.44,  28.3316),
+    Size  = {x = 3.0, y = 3.0, z = 1.5},
+    Type  = 27,
+    Color = {r = 0, g = 255, b = 0, a = 225}
+  },
 
-    Davis2 = {
-        Pos   = vector3(167.93,  -1715.48,  28.3316),
-        Size  = {x = 3.0, y = 3.0, z = 1.5},
-        Type  = 27,
-        Color = {r = 0, g = 255, b = 0, a = 225}
-    },
+  Davis2 = {
+    Pos   = vector3(167.93,  -1715.48,  28.3316),
+    Size  = {x = 3.0, y = 3.0, z = 1.5},
+    Type  = 27,
+    Color = {r = 0, g = 255, b = 0, a = 225}
+  },
 
-    Paleto = {
-        Pos   = vector3(-74.5693,  6427.8715,  30.4400),
-        Size  = {x = 3.0, y = 3.0, z = 1.5},
-        Type  = 27,
-        Color = {r = 0, g = 255, b = 0, a = 225}
-    },
+  Paleto = {
+    Pos   = vector3(-74.5693,  6427.8715,  30.4400),
+    Size  = {x = 3.0, y = 3.0, z = 1.5},
+    Type  = 27,
+    Color = {r = 0, g = 255, b = 0, a = 225}
+  },
 
-    LittlSeoul = {
-        Pos   = vector3(-699.6325,  -932.7043,  18.0139),
-        Size  = {x = 3.0, y = 3.0, z = 1.5},
-        Type  = 27,
-        Color = {r = 0, g = 255, b = 0, a = 225}
-    },
+  LittlSeoul = {
+    Pos   = vector3(-699.6325,  -932.7043,  18.0139),
+    Size  = {x = 3.0, y = 3.0, z = 1.5},
+    Type  = 27,
+    Color = {r = 0, g = 255, b = 0, a = 225}
+  },
 
-    SandyShores = {
-        Pos   = vector3(1362.5385, 3592.1274, 33.95),
-        Size  = {x = 3.0, y = 3.0, z = 1.5},
-        Type  = 27,
-        Color = {r = 0, g = 255, b = 0, a = 225}
-    },
+  SandyShores = {
+    Pos   = vector3(1362.5385, 3592.1274, 33.95),
+    Size  = {x = 3.0, y = 3.0, z = 1.5},
+    Type  = 27,
+    Color = {r = 0, g = 255, b = 0, a = 225}
+  },
 
 }
+
