@@ -25,7 +25,7 @@ dependencies {
   'yarn',
   'spawnmanager',
   'baseevents',
-  'mysql-async',
+  'ghmattimysql',
 }
 
 files {
@@ -43,8 +43,6 @@ files {
 
 server_scripts {
 
-  '@mysql-async/lib/MySQL.lua',
-
   'locale.lua',
   'locales/*.lua',
 
@@ -56,7 +54,7 @@ server_scripts {
   'boot/shared/events.lua',
   'boot/server/events.lua',
   'boot/shared/main.lua',
-  'boot/server/main.lua',
+  'boot/server/main.lua'
 
 }
 
@@ -75,7 +73,7 @@ client_scripts {
   'boot/shared/events.lua',
   'boot/client/events.lua',
   'boot/shared/main.lua',
-  'boot/client/main.lua',
+  'boot/client/main.lua'
 
 }
 
