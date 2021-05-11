@@ -1,4 +1,4 @@
--- Copyright (c) Jérémie N'gadi
+-- Copyright (c) JÃ©rÃ©mie N'gadi
 -- Translated by konijntje-x#4389
 --
 -- All rights reserved.
@@ -95,10 +95,12 @@ Locales['nl'] = {
   ['command_saveall'] = 'sla alle spelers op in de database',
   ['command_setaccountmoney'] = 'zet accountgeld voor een speler',
   ['command_setaccountmoney_amount'] = 'hoeveelheid om het geld op te zetten',
-  ['command_setcoords'] = 'teleporteer naar coördinaten',
+  ['command_setcoords'] = 'teleporteer naar coÃ¶rdinaten',
   ['command_setcoords_x'] = 'x as',
   ['command_setcoords_y'] = 'y as',
   ['command_setcoords_z'] = 'z as',
+  ['command_teleport'] = 'teleporteer naar speler',
+  ['command_teleport_player'] = 'speler',
   ['command_setjob'] = 'zet een job voor een speler',
   ['command_setjob_job'] = 'job naam',
   ['command_setjob_grade'] = 'job rang',

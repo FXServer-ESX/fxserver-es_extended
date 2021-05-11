@@ -386,6 +386,18 @@ xPlayer = Extends(nil)
     self:emit('esx:teleport', coords)
   end
 
+  --- @function xPlayer:teleport
+  --- Teleports admin to player
+  --- @param [coords of player]
+  --- @return nil
+  function xPlayer:teleport(player)
+    local ped = GetPlayerPed(player)
+    local coords = GetEntityCoords(ped)
+    self:updateCoords(coords)
+    self:emit('esx:teleport', coords)
+  end
+
+
   --- @function xPlayer:updateCoords
   --- Update player coords on server
   --- @param coords vector3 Coords
@@ -839,6 +851,7 @@ xPlayer = Extends(nil)
       print(('[^3WARNING^7] Ignoring invalid .setJob() usage for "%s"'):format(self.identifier))
     end
   end
+
 
   --- @function xPlayer:addWeapon
   --- Add weapon to player
