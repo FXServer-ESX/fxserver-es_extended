@@ -60,7 +60,7 @@ AddEventHandler('esx:playerLoaded', function(playerData, isNew)
 		StartServerSyncLoops()
 	end)
 	if isNew then
-		TriggerEvent('esx_identity:showRegisterIdentity')
+		-- Do stuff here
 	else
 		ESX.TriggerServerCallback('esx_skin:getPlayerSkin', function(skin, jobSkin)
 			TriggerEvent('skinchanger:loadSkin', skin)
