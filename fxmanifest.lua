@@ -20,6 +20,7 @@ description     'ESX'
 version         '2.0.1'
 ui_page         'hud/index.html'
 ui_page_preload 'yes'
+lua54           'yes'
 
 dependencies {
   'spawnmanager',
