@@ -62,7 +62,7 @@ onRequest('garages:getOwnedVehicles', function(source, cb)
 end)
 
 onRequest("garages:storeAllVehicles", function(source, cb, plate)
-  exports.ghmattimysql:execute('UPDATE owned_vehicles SET stored = @stored WHERE sold = @sold', {
+  MySQL.Async.execute('UPDATE owned_vehicles SET stored = @stored WHERE sold = @sold', {
     ['@stored'] = 1,
     ['@sold'] = 0
   }, function()

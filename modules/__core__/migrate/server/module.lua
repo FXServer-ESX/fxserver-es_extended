@@ -24,7 +24,7 @@ module.Ensure = function(module, group)
     dir = 'modules/__' .. group .. '__/'.. module .. '/migrations'
   end
 
-  local result      = exports.ghmattimysql:executeSync('SELECT * FROM `migrations` WHERE `module` = @module', {['@module'] = module})
+  local result      = MySQL.Sync.fetchAll('SELECT * FROM `migrations` WHERE `module` = @module', {['@module'] = module})
   local initial     = true
   local i           = 0
   local hasmigrated = false
@@ -44,12 +44,12 @@ module.Ensure = function(module, group)
 
       print('running migration for ^3' .. module .. '^7 #' .. i)
 
-      exports.ghmattimysql:executeSync(sql)
+      MySQL.Sync.execute(sql)
 
       if initial then
-        exports.ghmattimysql:executeSync( 'INSERT INTO `migrations` (module, last) VALUES (@module, @last)', {['@module'] = module, ['@last'] = 0})
+        MySQL.Sync.execute( 'INSERT INTO `migrations` (module, last) VALUES (@module, @last)', {['@module'] = module, ['@last'] = 0})
       else
-        exports.ghmattimysql:executeSync( 'UPDATE `migrations` SET `last` = @last WHERE `module` = @module', {['@module'] = module, ['@last'] = i})
+        MySQL.Sync.execute( 'UPDATE `migrations` SET `last` = @last WHERE `module` = @module', {['@module'] = module, ['@last'] = i})
       end
 
       hasmigrated = true

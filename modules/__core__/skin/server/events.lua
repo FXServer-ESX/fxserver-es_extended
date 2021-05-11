@@ -18,7 +18,7 @@ end)
 onRequest("esx:skin:save", function(source, cb, gender, skin)
   local player = Player.fromId(source)
 
-  exports.ghmattimysql:execute('UPDATE identities SET skin = @skin, gender = @gender WHERE id = @id AND owner = @owner', {
+  MySQL.Async.execute('UPDATE identities SET skin = @skin, gender = @gender WHERE id = @id AND owner = @owner', {
     ['@id']     = player:getIdentityId(),
     ['@owner']  = player.identifier,
     ['@skin']   = json.encode(skin),
@@ -31,7 +31,7 @@ end)
 onRequest('esx:skin:getSkin', function(source, cb)
   local player = Player.fromId(source)
 
-  exports.ghmattimysql:scalar('SELECT skin FROM identities WHERE id = @identityId',
+  MySQL.Async.fetchScalar('SELECT skin FROM identities WHERE id = @identityId',
   {
     ['@identityId'] = player:getIdentityId()
   }, function(skin)

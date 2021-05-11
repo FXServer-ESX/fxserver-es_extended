@@ -12,7 +12,7 @@
 
 module.findSkin = function(player, cb, id)
   -- TODO: use ORM to prepare de query
-  exports.ghmattimysql:scalar('SELECT skin FROM identities WHERE id = @identityId',
+  MySQL.Async.fetchScalar('SELECT skin FROM identities WHERE id = @identityId',
     {
       ['@identityId'] = id
     }, function(skin)
@@ -20,7 +20,7 @@ module.findSkin = function(player, cb, id)
       if (skin) then
         return cb(json.decode(skin))
       end
-
+    
       return cb(nil)
     end
   )

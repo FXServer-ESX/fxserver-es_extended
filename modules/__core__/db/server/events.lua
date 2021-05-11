@@ -10,13 +10,17 @@
 --   If you redistribute this software, you must link to ORIGINAL repository at https://github.com/ESX-Org/es_extended
 --   This copyright should appear in every part of the project code
 
-Citizen.CreateThread(function()
+MySQL.ready(function()
 
-  while not ESX.Loaded do
-    Citizen.Wait(0)
-  end
+  Citizen.CreateThread(function()
 
-  emit('esx:db:internal:ready')
+    while not ESX.Loaded do
+      Citizen.Wait(0)
+    end
+
+    emit('esx:db:internal:ready')
+
+  end)
 
 end)
 
@@ -51,7 +55,7 @@ END;
 
 on('esx:db:internal:ready', function()
 
-  exports.ghmattimysql:executeSync(ADD_COLUMN_IN_NOT_EXISTS_PROCEDURE)
+  MySQL.Sync.execute(ADD_COLUMN_IN_NOT_EXISTS_PROCEDURE)
 
   -- Init minimum required schemas here
   module.InitTable('migrations', 'id', {

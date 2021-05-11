@@ -44,7 +44,7 @@ module.isPlayerBoss = function(playerId, job)
 end
 
 module.WashMoneyCRON = function(d, h, m)
-	exports.ghmattimysql:execute('SELECT * FROM society_moneywash', {}, function(result)
+	MySQL.Async.fetchAll('SELECT * FROM society_moneywash', {}, function(result)
 		for i=1, #result, 1 do
 			local society = module.GetSociety(result[i].society)
 			local xPlayer = xPlayer.fromIdentifier(result[i].identifier)
@@ -59,7 +59,7 @@ module.WashMoneyCRON = function(d, h, m)
 				xPlayer.showNotification(_U('society:you_have_laundered', ESX.Math.GroupDigits(result[i].amount)))
 			end
 
-			exports.ghmattimysql:execute('DELETE FROM society_moneywash WHERE id = @id', {
+			MySQL.Async.execute('DELETE FROM society_moneywash WHERE id = @id', {
 				['@id'] = result[i].id
 			})
 		end

@@ -31,7 +31,7 @@ end)
 onRequest("esx:character:getSkin", function(source, cb, id)
   local player = Player.fromId(source)
 
-  exports.ghmattimysql:scalar('SELECT skin FROM identities WHERE id = @identityId AND owner = @owner',
+  MySQL.Async.fetchScalar('SELECT skin FROM identities WHERE id = @identityId AND owner = @owner',
   {
     ['@identityId'] = id,
     ['@owner'] = player.identifier
@@ -40,7 +40,7 @@ onRequest("esx:character:getSkin", function(source, cb, id)
     if (skin) then
       return cb(json.decode(skin))
     end
-
+    
     return cb(nil)
   end)
 end)

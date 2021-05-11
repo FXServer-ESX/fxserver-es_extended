@@ -12,7 +12,7 @@
 
 module.SaveSkin = function(player, skin, cb)
   -- TODO: use ORM to prepare de query
-  exports.ghmattimysql:execute('UPDATE identities SET skin = @skin WHERE id = @identityId',
+  MySQL.Async.execute('UPDATE identities SET skin = @skin WHERE id = @identityId',
   {
     ['@skin'] = json.encode(skin),
     ['@identityId'] = player:getIdentityId()
@@ -25,7 +25,7 @@ end
 
 module.GetSkin = function(player, cb)
   -- TODO: use ORM to prepare de query
-  exports.ghmattimysql:scalar('SELECT skin FROM identities WHERE id = @identityId',
+  MySQL.Async.fetchScalar('SELECT skin FROM identities WHERE id = @identityId',
   {
     ['@identityId'] = player:getIdentityId()
   }, function(skin)
@@ -37,4 +37,3 @@ module.GetSkin = function(player, cb)
     return cb(nil)
   end)
 end
-

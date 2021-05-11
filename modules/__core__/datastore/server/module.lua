@@ -60,7 +60,7 @@ end
 
 function DataStore:ensure(cb)
 
-  exports.ghmattimysql:execute('SELECT * FROM datastores WHERE name = @name',{['@name'] = self.name}, function(rows)
+  MySQL.Async.fetchAll('SELECT * FROM datastores WHERE name = @name',{['@name'] = self.name}, function(rows)
 
     if rows[1] then
 
@@ -90,7 +90,7 @@ function DataStore:ensure(cb)
         encoded = '{}'
       end
 
-      exports.ghmattimysql:execute('INSERT INTO `datastores` (name, owner, data) VALUES (@name, @owner, @data)', {
+      MySQL.Async.execute('INSERT INTO `datastores` (name, owner, data) VALUES (@name, @owner, @data)', {
         ['@name']   = self.name,
         ['@owner']  = owner,
         ['@data']   = encoded
@@ -124,7 +124,7 @@ function DataStore:save(cb)
       encoded = '{}'
     end
 
-    exports.ghmattimysql:execute('UPDATE `datastores` SET data = @data WHERE name = @name', {
+    MySQL.Async.execute('UPDATE `datastores` SET data = @data WHERE name = @name', {
       ['@name'] = self.name,
       ['@data'] = encoded
     }, function()

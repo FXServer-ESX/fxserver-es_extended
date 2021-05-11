@@ -58,7 +58,7 @@ end
 
 function Inventory:ensure(cb)
 
-  exports.ghmattimysql:execute('SELECT * FROM inventories WHERE name = @name',{['@name'] = self.name}, function(rows)
+  MySQL.Async.fetchAll('SELECT * FROM inventories WHERE name = @name',{['@name'] = self.name}, function(rows)
 
     if rows[1] then
 
@@ -82,7 +82,7 @@ function Inventory:ensure(cb)
         shared = 1
       end
 
-      exports.ghmattimysql:execute('INSERT INTO `inventories` (name, owner, items) VALUES (@name, @owner, @items)', {
+      MySQL.Async.execute('INSERT INTO `inventories` (name, owner, items) VALUES (@name, @owner, @items)', {
         ['@name']  = self.name,
         ['@owner'] = owner,
         ['@items'] = json.encode(self.items)
@@ -110,7 +110,7 @@ function Inventory:save(cb)
       Citizen.Wait(0)
     end
 
-    exports.ghmattimysql:execute('UPDATE `inventories` SET items = @items WHERE name = @name', {
+    MySQL.Async.execute('UPDATE `inventories` SET items = @items WHERE name = @name', {
       ['@name']  = self.name,
       ['@items'] = json.encode(self.items)
     }, function()

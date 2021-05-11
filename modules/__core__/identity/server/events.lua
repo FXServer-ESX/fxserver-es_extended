@@ -55,7 +55,7 @@ end)
 onRequest('esx:identity:getSavedPosition', function(source, cb, id)
   local player = Player.fromId(source)
 
-  exports.ghmattimysql:execute('SELECT position FROM identities WHERE id = @identityId AND owner = @owner', {
+  MySQL.Async.fetchAll('SELECT position FROM identities WHERE id = @identityId AND owner = @owner', {
     ['@identityId'] = player:getIdentityId(),
     ['@owner']      = player.identifier
   }, function(result)
@@ -75,7 +75,7 @@ end)
 onClient('esx:identity:updatePosition', function(position)
   local player = Player.fromId(source)
 
-  exports.ghmattimysql:execute('UPDATE identities SET position = @position WHERE id = @id AND owner = @owner', {
+  MySQL.Async.execute('UPDATE identities SET position = @position WHERE id = @id AND owner = @owner', {
     ['@position'] = json.encode(position),
     ['@id']       = player:getIdentityId(),
     ['@owner']    = player.identifier

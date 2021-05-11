@@ -90,7 +90,7 @@ Persist = function(schema, pk, ...)
 
     local sql, data = db.DBQuery().select(keys).from(schema).where(queryFields).escape().build()
 
-    exports.ghmattimysql:execute(sql, data, function(rows)
+    MySQL.Async.fetchAll(sql, data, function(rows)
 
       if rows[1] == nil then
         cb(nil)
@@ -134,7 +134,7 @@ Persist = function(schema, pk, ...)
 
     local sql, data = baseQuery.escape().build()
 
-    exports.ghmattimysql:execute(sql, data, function(rows)
+    MySQL.Async.fetchAll(sql, data, function(rows)
       if not(rows) then
         error("A MySQL error occured, this probably isn't on the ESX end.")
       end
@@ -238,7 +238,7 @@ Persist = function(schema, pk, ...)
 
     local sql = 'INSERT INTO `' .. schema .. '` (' .. keys .. ') VALUES (' .. values .. ') ON DUPLICATE KEY UPDATE ' .. update .. '; SELECT LAST_INSERT_ID();'
 
-    exports.ghmattimysql:execute(sql, data, function(rows)
+    MySQL.Async.fetchAll(sql, data, function(rows)
 
       local id = rows[2][1]['LAST_INSERT_ID()']
 
