@@ -1,7 +1,7 @@
 local isPaused, isDead, pickups = false, false, {}
 
 Citizen.CreateThread(function()
-	while NetworkIsPlayerActive(PlayerId()) do
+	while NetworkIsPlayerActive(PlayerId()) and not Config.Kashacters do
 		Citizen.Wait(5)
 		TriggerServerEvent('esx:onPlayerJoined')
 		break
@@ -13,7 +13,6 @@ RegisterNetEvent('esx:playerLoaded')
 AddEventHandler('esx:playerLoaded', function(playerData, isNew)
 	ESX.PlayerLoaded = true
 	ESX.PlayerData = playerData
-
 
 	FreezeEntityPosition(PlayerPedId(), true)
 	
@@ -41,36 +40,47 @@ AddEventHandler('esx:playerLoaded', function(playerData, isNew)
 		})
 	end
 
-	exports.spawnmanager:spawnPlayer({
-		x = playerData.coords.x,
-		y = playerData.coords.y,
-		z = playerData.coords.z + 0.25,
-		heading = playerData.coords.heading,
-		model = `mp_m_freemode_01`,
-		skipFade = false
-	}, function()
-		TriggerEvent('esx:onPlayerSpawn')
-		TriggerEvent('playerSpawned') -- compatibility with old scripts, will be removed soon.
-		TriggerEvent('esx:restoreLoadout')
-
+	if Config.Kashacters then
+		TriggerEvent('kashactersC:SpawnCharacter', playerData.coords, isNew, playerData.skin)
 		Citizen.Wait(4000)
-		ShutdownLoadingScreen()
-		ShutdownLoadingScreenNui()
 		FreezeEntityPosition(PlayerPedId(), false)
 		StartServerSyncLoops()
-	end)
-	if isNew then
-		-- Do stuff here
 	else
-		ESX.TriggerServerCallback('esx_skin:getPlayerSkin', function(skin, jobSkin)
-			TriggerEvent('skinchanger:loadSkin', skin)
+		exports.spawnmanager:spawnPlayer({
+			x = playerData.coords.x,
+			y = playerData.coords.y,
+			z = playerData.coords.z + 0.25,
+			heading = playerData.coords.heading,
+			model = `mp_m_freemode_01`,
+			skipFade = false
+		}, function()
+			TriggerServerEvent('esx:onPlayerSpawn')
+			TriggerEvent('esx:onPlayerSpawn')
+			TriggerEvent('playerSpawned') -- compatibility with old scripts, will be removed soon.
+			if isNew then
+
+			end
+			DoScreenFadeIn(500)
+			Citizen.Wait(4000)
+			ShutdownLoadingScreen()
+			ShutdownLoadingScreenNui()
+			FreezeEntityPosition(PlayerPedId(), false)
+			StartServerSyncLoops()
+			if Config.EnableHud then
+				ESX.UI.HUD.SetDisplay(1.0)
+			end
 		end)
 	end
-	if Config.EnableHud then
-		ESX.UI.HUD.SetDisplay(1.0)
-	end
-
 	TriggerEvent('esx:loadingScreenOff') -- compatibility with old scripts, will be removed soon.
+end)
+
+RegisterNetEvent('esx:onPlayerLogout')
+AddEventHandler('esx:onPlayerLogout', function()
+	ESX.PlayerLoaded = false
+	ESX.PlayerData = {}
+	TriggerServerEvent("kashactersS:SetupCharacters")
+	TriggerEvent("kashactersC:SetupCharacters")
+	TriggerEvent('esx_skin:resetFirstSpawn')
 end)
 
 RegisterNetEvent('esx:setMaxWeight')
