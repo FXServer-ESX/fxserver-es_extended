@@ -28,6 +28,10 @@ module.Init = function()
   keyAdminMenu:onPress(function()
     module.openAdminMenu()
   end)
+  
+  RegisterCommand("adminmenu", function()
+    module.openAdminMenu()
+  end, false)
 
   module.Frame = Frame('admin', 'https://cfx-nui-' .. __RESOURCE__ .. '/modules/__core__/admin/data/build/index.html', false)
 
