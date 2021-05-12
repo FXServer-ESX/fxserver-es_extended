@@ -229,3 +229,7 @@ ESX.RegisterCommand('players', "admin", function(xPlayer, args, showError)
 		print("^1[ ^2ID : ^5"..xPlayer.source.." ^0| ^2Name : ^5"..xPlayer.getName().." ^0 | ^2Group : ^5"..xPlayer.getGroup().." ^0 | ^2Identifier : ^5".. xPlayer.identifier .."^1]^0\n")
 	end
 end, true)
+
+RegisterCommand('refreshjobs', function(source, args, rawCommand)
+	if source == 0 then RefreshJobs() end
+end, true)
