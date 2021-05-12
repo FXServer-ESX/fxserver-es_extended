@@ -177,6 +177,7 @@ ESX.SavePlayer = function(xPlayer, cb)
 			['@identifier'] = xPlayer.getIdentifier(),
 			['@inventory'] = json.encode(xPlayer.getInventory(true))
 		}, function(rowsChanged)
+			if not Config.UseMySQLAsync then rowsChanged = rowsChanged.affectedRows end
 			cb2()
 		end)
 	end)
