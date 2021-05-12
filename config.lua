@@ -18,4 +18,7 @@ Config.EnableDefaultInventory   = true		-- Display the default Inventory ( F2 )
 Config.EnableWantedLevel    	= false		-- Use Normal GTA wanted Level?
 Config.EnablePVP                = true		-- Allow Player to player combat
 
-Config.Kashacters				= false		-- Enables support for esx_kashacters (requires esx_identity)
+
+-- ESX Legacy features
+Config.Multichar				= false		-- todo
+Config.UseMySQLAsync 			= true		-- If set to false, remove `@mysql-async/lib/MySQL.lua` from the fxmanifest
