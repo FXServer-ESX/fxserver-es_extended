@@ -5,7 +5,7 @@ end)
 
 local awaitingRegistration = {}
 RegisterNetEvent('esx:onPlayerJoined')
-if Config.Kashacters then
+if Config.Multichar then
 	AddEventHandler('esx_identity:completedRegistration', function(playerId, data)
 		awaitingRegistration[playerId] = data
 	end)
@@ -57,7 +57,7 @@ function createESXPlayer(identifier, playerId)
 		defaultGroup = "user"
 	end
 
-	if Config.Kashacters then
+	if Config.Multichar then
 		local data
 		awaitingRegistration[playerId] = true
 		while true do
@@ -265,7 +265,7 @@ function loadESXPlayer(identifier, playerId, isNew)
 		local xPlayer = CreateExtendedPlayer(playerId, identifier, userData.group, userData.accounts, userData.inventory, userData.weight, userData.job, userData.loadout, userData.playerName, userData.coords)
 		ESX.Players[playerId] = xPlayer
 
-		if Config.Kashacters and userData.firstname then 
+		if Config.Multichar and userData.firstname then 
 			xPlayer.set('firstName', userData.firstname)
 			xPlayer.set('lastName', userData.lastname)
 			if userData.dateofbirth then xPlayer.set('dateofbirth', userData.dateofbirth) end
@@ -315,7 +315,7 @@ AddEventHandler('playerDropped', function(reason)
 	end
 end)
 
-if Config.Kashacters then -- Still experimental
+if Config.Multichar then -- Still experimental
 	RegisterCommand('relog', function(source, args, rawCommand)
 		TriggerEvent('esx:playerLogout', source)
 	end, true)
