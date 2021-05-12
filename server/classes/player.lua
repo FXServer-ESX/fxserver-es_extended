@@ -14,7 +14,7 @@ function CreateExtendedPlayer(playerId, identifier, group, accounts, inventory, 
 	self.variables = {}
 	self.weight = weight
 	self.maxWeight = Config.MaxWeight
-	if Config.Kashacters then self.license = 'license'..string.sub(identifier, 7) else self.license = 'license'..identifier end
+	if Config.Kashacters then self.license = 'license'..string.sub(identifier, 6) else self.license = 'license:'..identifier end
 
 	ExecuteCommand(('add_principal identifier.%s group.%s'):format(self.license, self.group))
 
