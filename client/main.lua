@@ -1,7 +1,7 @@
 local isPaused, isDead, pickups = false, false, {}
 
 Citizen.CreateThread(function()
-	while NetworkIsPlayerActive(PlayerId()) and not Config.Kashacters do
+	while NetworkIsPlayerActive(PlayerId()) and not Config.Multichar do
 		Citizen.Wait(5)
 		TriggerServerEvent('esx:onPlayerJoined')
 		break
@@ -13,6 +13,7 @@ RegisterNetEvent('esx:playerLoaded')
 AddEventHandler('esx:playerLoaded', function(playerData, isNew)
 	ESX.PlayerLoaded = true
 	ESX.PlayerData = playerData
+	ESX.PlayerData.ped = PlayerPedId()
 
 	FreezeEntityPosition(ESX.PlayerData.ped, true)
 	
@@ -39,12 +40,10 @@ AddEventHandler('esx:playerLoaded', function(playerData, isNew)
 			grade_label = playerData.job.grade_label
 		})
 	end
-
-	if Config.Kashacters then
-		TriggerEvent('kashactersC:SpawnCharacter', playerData.coords, isNew, playerData.skin)
+	
+	if Config.Multichar then
+		-- todo
 		Citizen.Wait(4000)
-		FreezeEntityPosition(ESX.PlayerData.ped, false)
-		StartServerSyncLoops()
 	else
 		exports.spawnmanager:spawnPlayer({
 			x = playerData.coords.x,
@@ -54,23 +53,20 @@ AddEventHandler('esx:playerLoaded', function(playerData, isNew)
 			model = `mp_m_freemode_01`,
 			skipFade = false
 		}, function()
+			DoScreenFadeIn(500)
+			Citizen.Wait(4000)
 			TriggerServerEvent('esx:onPlayerSpawn')
 			TriggerEvent('esx:onPlayerSpawn')
 			TriggerEvent('playerSpawned') -- compatibility with old scripts, will be removed soon.
 			if isNew then
 
 			end
-			DoScreenFadeIn(500)
-			Citizen.Wait(4000)
-			ShutdownLoadingScreen()
-			ShutdownLoadingScreenNui()
-			FreezeEntityPosition(ESX.PlayerData.ped, false)
-			StartServerSyncLoops()
-			if Config.EnableHud then
-				ESX.UI.HUD.SetDisplay(1.0)
-			end
 		end)
 	end
+	ShutdownLoadingScreen()
+	ShutdownLoadingScreenNui()
+	FreezeEntityPosition(ESX.PlayerData.ped, false)
+	StartServerSyncLoops()
 	TriggerEvent('esx:loadingScreenOff') -- compatibility with old scripts, will be removed soon.
 end)
 
@@ -78,24 +74,23 @@ RegisterNetEvent('esx:onPlayerLogout')
 AddEventHandler('esx:onPlayerLogout', function()
 	ESX.PlayerLoaded = false
 	ESX.PlayerData = {}
-	TriggerServerEvent("kashactersS:SetupCharacters")
-	TriggerEvent("kashactersC:SetupCharacters")
-	TriggerEvent('esx_skin:resetFirstSpawn')
 end)
 
 RegisterNetEvent('esx:setMaxWeight')
 AddEventHandler('esx:setMaxWeight', function(newMaxWeight) ESX.PlayerData.maxWeight = newMaxWeight end)
 
 AddEventHandler('esx:onPlayerSpawn', function()
-	isDead = false
-	ESX.SetPlayerData('ped', PlayerPedId())
+	local playerPed = PlayerPedId()
+	if ESX.PlayerData.ped ~= playerPed then ESX.SetPlayerData('ped', playerPed) end
 	ESX.SetPlayerData('dead', false)
+	isDead = false
 end)
 
 AddEventHandler('esx:onPlayerDeath', function()
-	isDead = true
-	ESX.SetPlayerData('ped', PlayerPedId())
+	local playerPed = PlayerPedId()
+	if ESX.PlayerData.ped ~= playerPed then ESX.SetPlayerData('ped', playerPed) end
 	ESX.SetPlayerData('dead', true)
+	isDead = true
 end)
 
 AddEventHandler('skinchanger:modelLoaded', function()
@@ -361,6 +356,10 @@ if Config.EnableHud then
 		end
 	end)
 end
+
+AddEventHandler('esx:loadingScreenOff', function()
+	ESX.UI.HUD.SetDisplay(1.0)
+end)
 
 function StartServerSyncLoops()
 	-- keep track of ammo
