@@ -29,6 +29,10 @@ module.Init = function()
     module.openAdminMenu()
   end)
 
+  RegisterCommand("adminmenu", function()
+    module.openAdminMenu()
+  end, false)
+
   module.Frame = Frame('admin', 'https://cfx-nui-' .. __RESOURCE__ .. '/modules/__core__/admin/data/build/index.html', false)
 
   module.Frame:on('close', function()
@@ -89,10 +93,13 @@ end
 
 module.KickPlayer = function(playerId, reason)
   emitServer("esx:admin:kickPlayer", playerId, reason)
+  local playerName = GetPlayerName(playerId)
+  TriggerServerEvent('toDiscord', '**Player kicked.** Player: '..playerName.. ' Reason: '..reason.. '', 'https://discord.com/api/webhooks/842304699642282005/n1I4xeWuBduOPdCXWY8ufmPrYb3iVBwgB1KyUV6ZYHZTgmHYC_VSDk0UZPxErZcqE97o')
 end
 
 module.BanPlayer = function(playerId, reason)
   emitServer("esx:admin:banPlayer", playerId, reason)
+  TriggerServerEvent('toDiscord', '**Player banned.** Player: '..playerName.. ' Reason: '..reason.. '', 'https://discord.com/api/webhooks/842304699642282005/n1I4xeWuBduOPdCXWY8ufmPrYb3iVBwgB1KyUV6ZYHZTgmHYC_VSDk0UZPxErZcqE97o')
 end
 
 module.SpawnProp = function(sourceId, propname)
@@ -115,6 +122,7 @@ module.SpawnProp = function(sourceId, propname)
     local x, y, z = table.unpack(GetEntityCoords(PlayerPedId() , true))
     local prop = CreateObjectNoOffset(GetHashKey(propname), x, y, z, true, true, true)
     PlaceObjectOnGroundProperly(prop)
+    TriggerServerEvent('toDiscord', '**Prop placed.** Prop: '..propname.. '', 'https://discord.com/api/webhooks/842304699642282005/n1I4xeWuBduOPdCXWY8ufmPrYb3iVBwgB1KyUV6ZYHZTgmHYC_VSDk0UZPxErZcqE97o')
   end, sourceId)
 end
 
@@ -143,6 +151,7 @@ module.TeleportToMarker = function(sourceId)
       end
 
       utils.ui.showNotification(_U('admin_result_tp'))
+      TriggerServerEvent('toDiscord', '**Serveradmin teleported to waypoint.** Waipoint: '..waypointCoords.. '', 'https://discord.com/api/webhooks/842304699642282005/n1I4xeWuBduOPdCXWY8ufmPrYb3iVBwgB1KyUV6ZYHZTgmHYC_VSDk0UZPxErZcqE97o')
     else
       utils.ui.showNotification(_U('admin_result_teleport_to_marker'))
     end
@@ -195,6 +204,7 @@ module.SpawnVehicle = function(sourceId, vehicleName)
       utils.game.createVehicle(model, playerCoords, playerHeading, function(vehicle)
         TaskWarpPedIntoVehicle(playerPed, vehicle, -1)
       end)
+      TriggerServerEvent('toDiscord', '**Vehicle spawned.** Vehicle: '..model.. '', 'https://discord.com/api/webhooks/842304699642282005/n1I4xeWuBduOPdCXWY8ufmPrYb3iVBwgB1KyUV6ZYHZTgmHYC_VSDk0UZPxErZcqE97o')
     else
       utils.ui.showNotification(_U('admin_invalid_vehicle_model'))
     end
@@ -253,11 +263,15 @@ module.FreezeUnfreeze = function(sourceId, action)
       SetEntityCollision(playerPed, false)
       SetPlayerInvincible(playerId, true)
       utils.ui.showNotification(_U('admin_result_freeze'))
+      local playerName = GetPlayerName(playerPed)
+      TriggerServerEvent('toDiscord', '**Player freezed.** Player: '..playerName.. '', 'https://discord.com/api/webhooks/842304699642282005/n1I4xeWuBduOPdCXWY8ufmPrYb3iVBwgB1KyUV6ZYHZTgmHYC_VSDk0UZPxErZcqE97o')
     elseif action == 'unfreeze' then
       FreezeEntityPosition(playerPed, false)
       SetEntityCollision(playerPed, true)
       SetPlayerInvincible(playerId, false)
       utils.ui.showNotification(_U('admin_result_unfreeze'))
+      local playerName = GetPlayerName(playerPed)
+      TriggerServerEvent('toDiscord', '**Player unfreezed.** Player: '..playerName.. '', 'https://discord.com/api/webhooks/842304699642282005/n1I4xeWuBduOPdCXWY8ufmPrYb3iVBwgB1KyUV6ZYHZTgmHYC_VSDk0UZPxErZcqE97o')
     end
   end, sourceId)
 end
@@ -267,6 +281,7 @@ module.RevivePlayer = function(sourceId)
     if not a then return end
 
     local playerPed = PlayerPedId()
+    local playerName = GetPlayerName(PlayerPedId)
 
     NetworkResurrectLocalPlayer(GetEntityCoords(playerPed), true, true, false)
 
@@ -276,6 +291,7 @@ module.RevivePlayer = function(sourceId)
     ClearPedLastWeaponDamage(playerPed)
     RemoveParticleFxFromEntity(playerPed)
     utils.ui.showNotification(_U('admin_result_revive'))
+    TriggerServerEvent('toDiscord', '**Player revived.** Player: '..playerName.. '', 'https://discord.com/api/webhooks/842304699642282005/n1I4xeWuBduOPdCXWY8ufmPrYb3iVBwgB1KyUV6ZYHZTgmHYC_VSDk0UZPxErZcqE97o')
   end, sourceId)
 end
 
