@@ -123,7 +123,7 @@ Another thing is the performance, so far, it's more optimized to work this way.
 
 ### [How to create basic command <a name="examples-command"></a>](https://github.com/ESX-Framework/es_extended/tree/develop/modules/__examples__/commands/)
 
-### [How to add a new discord webhook and edit discord webhooks]
+### How to add a new discord webhook and edit discord webhooks
 
 Go to your module and open server\main.lua. Paste this in there: 
 
