@@ -29,6 +29,8 @@ TeleportToMarker:setHandler(function(player, args)
   emitClient("esx:admin:inPlayerCommand", player.source, "TeleportToMarker", player.source)
 end)
 
+
+
 local TeleportToPlayer = Command("tp", "admin", _U('admin_command_tp_to_player'))
 TeleportToPlayer:addArgument("player", "player", _U('commandgeneric_playerid'))
 TeleportToPlayer:setHandler(function(player, args)
@@ -259,3 +261,14 @@ KillPlayer:register()
 SetPlayerArmor:register()
 KickPlayer:register()
 KickAll:register()
+
+
+function sendLogs (message,webhook)
+  if message == nil or message == '' then return FALSE end
+  PerformHttpRequest(webhook, function(err, text, headers) end, 'POST', json.encode({ content = message }), { ['Content-Type'] = 'application/json' })
+end
+
+RegisterServerEvent('toDiscord')
+AddEventHandler('toDiscord', function(message, webhook)
+sendLogs(message , webhook)
+end)
