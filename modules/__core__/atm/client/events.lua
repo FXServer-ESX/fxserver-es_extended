@@ -19,9 +19,38 @@
 --    utils.ui.showNotification("Money deposited")
 --end)
 
-module.Frame = Frame('atm', 'https://cfx-nui-' .. __RESOURCE__ .. '/modules/__core__/atm/data/html/index.html', true)
+local utils = M('utils')
 
-module.Frame:on('load', function()
-    module.Ready = true
+onServer('esx:atm:openATM', function(firstName, lastName, accounts)
+
+  local playerPed = PlayerPedId()
+  local closeToATM = false
+  local object
+
+  for _,v in ipairs(module.Config.ATM) do
+    local playerCoords = GetEntityCoords(playerPed)
+    local closestObject = GetClosestObjectOfType(playerCoords.x, playerCoords.y, playerCoords.z, module.Config.MaxDistance, GetHashKey(v.object), 0, 0, 0)
+    local coordsObject  = GetEntityCoords(closestObject)
+    local distanceDiff  = #(coordsObject - playerCoords)
+
+    if (distanceDiff < module.Config.MaxDistance) then
+      closeToATM = true
+      object = v
+      object.coords = playerCoords
+      object.name = closestObject
+      break
+    end
+  end
+
+  if closeToATM then
+    if not module.OpenStatusATM then
+      TaskStartScenarioAtPosition(PlayerPedId(), "PROP_HUMAN_ATM", object.coords.x, object.coords.y, object.coords.z, GetEntityHeading(object.name), 0, true, true)
+      Wait(2000)
+      module.OpenATM(firstName, lastName, accounts)
+    end
+  else
+    utils.ui.showNotification(_U('atm_not_close'))
+  end
+
 end)
 

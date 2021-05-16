@@ -10,50 +10,109 @@
 --   If you redistribute this software, you must link to ORIGINAL repository at https://github.com/ESX-Org/es_extended
 --   This copyright should appear in every part of the project code
 
-M('events')
-module.Ready = false
-module.Frame = nil
+local utils = M('utils')
 
-local atmOpen = false
+module.Ready, module.Frame, module.OpenStatusATM = false, nil, false
 
-onServer('esx:atm:visibility', function()
-  if not atmOpen then
-    atmOpen = true
-    module.Frame:postMessage({
-      method = 'setVisibility',
-      data = atmOpen
-    })
-    module.Frame:focus()
-    SetNuiFocus(true, true)
-  else
-    atmOpen = false;
-    module.Frame:postMessage({
-      method = 'setVisibility',
-      data = atmOpen
-    })
-    SetNuiFocus(false, false)
+module.Config = run('data/config.lua', {vector3 = vector3})['Config']
+
+module.Frame = Frame('atm', 'https://cfx-nui-' .. __RESOURCE__ .. '/modules/__core__/atm/data/html/index.html', true)
+
+module.Frame:on('load', function()
+    module.Ready = true
+    emit('esx:atm:ready')
+end)
+
+
+
+module.OpenATM = function(firstName, lastName, accounts)
+
+
+  module.OpenStatusATM = true
+
+  local name = firstName .. ' ' .. lastName
+
+  module.Frame:postMessage({ method = 'open', playerName = name, balance = accounts.fleeca })
+
+  module.Frame:focus(true, true)
+
+end
+
+
+module.CloseATM = function ()
+
+  module.OpenStatusATM = false
+
+  module.Frame:postMessage({ method = 'close' })
+
+  module.Frame:unfocus()
+
+  ClearPedTasks(PlayerPedId())
+
+end
+
+
+
+module.Frame:on('message', function (msg)
+
+  if msg.action == 'atm.close' then
+    module.CloseATM()
+  elseif msg.action == 'atm.deposit' then
+    local targetAccount = tostring(msg.data.targetAccount)
+    local amount = tonumber(msg.data.amount)
+    print(targetAccount)
+    module.Deposit(targetAccount, amount)
+  elseif msg.action == 'atm.withdraw' then
+    local sourceAccount = tostring(msg.data.sourceAccount)
+    local amount = tonumber(msg.data.amount)
+    module.Withdraw(sourceAccount, amount)
+  elseif msg.action == 'atm.transfer' then
+    local sourceAccount = tostring(msg.data.sourceAccount)
+    local targetAccount = tostring(msg.data.targetAccount)
+    local targetId = tonumber(msg.data.targetId)
+    local amount = tonumber(msg.data.amount)
+    module.Transfer(sourceAccount, targetAccount, targetId, amount)
   end
-end)
--- Callbacks for each function
 
-RegisterNUICallback('esx:atm:deposit', function(data)
-  emitServer('esx:atm:depositMoney', data.amount)
 end)
 
-RegisterNUICallback('esx:atm:withdraw', function(data)
-  emitServer('esx:atm:withdrawMoney', data.amount)
-  --print('amount: ', data.amount)
-end)
 
-RegisterNUICallback('esx:atm:transfer', function(data)
-    emitServer('esx:atm:transferMoney', data.amount, data.playerId)
-end)
+module.Deposit = function(targetAccount, amount)
 
-RegisterNUICallback('esx:atm:close', function ()
-  atmOpen = false;
-  module.Frame:postMessage({
-    method = 'setVisibility',
-    data = false
-  })
-  SetNuiFocus(false, false)
-end)
+  request('esx:atm:deposit', function(result, newBalance)
+    if result then
+      module.Frame:postMessage({ method = 'setMessage', type = 'deposit', variant = 'success', newBalance = newBalance})
+    else
+      module.Frame:postMessage({ method = 'setMessage', type = 'deposit', variant = 'error' })
+    end
+  end, targetAccount, amount)
+
+end
+
+
+module.Withdraw = function(sourceAccount, amount)
+
+  request('esx:atm:withdraw', function(result, newBalance)
+    if result then
+      module.Frame:postMessage({ method = 'setMessage', type = 'withdraw', variant = 'success', newBalance = newBalance})
+    else
+      module.Frame:postMessage({ method = 'setMessage', type = 'withdraw', variant = 'error' })
+    end
+  end, sourceAccount, amount)
+
+end
+
+
+module.Transfer = function(sourceAccount, targetAccount, targetId, amount)
+
+  request('esx:atm:transfer', function(result, newBalance)
+    if result then
+      module.Frame:postMessage({ method = 'setMessage', type = 'transfer', variant = 'success', newBalance = newBalance})
+    else
+      module.Frame:postMessage({ method = 'setMessage', type = 'transfer', variant = 'error' })
+    end
+  end, sourceAccount, targetAccount, targetId, amount)
+
+end
+
+
