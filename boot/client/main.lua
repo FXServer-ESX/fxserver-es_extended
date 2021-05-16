@@ -101,4 +101,6 @@ if Config.EnableRichPresence then
   SetDiscordRichPresenceAssetSmall(GetConvar("RichAssetId", "esx_test")) -- Edit esx_text with your own image. Must one of your Discord Application
   SetRichPresence("This server is running ESX2!") -- Edit this with a message or something else you want to show
   SetDiscordRichPresenceAssetSmallText(GetPlayerName(playerId) .. " with id " .. GetPlayerServerId(playerId)) -- Edit this with a message or something else you want to show
+  SetDiscordRichPresenceAction(0, "Join our Discord server!", "https://discord.com/invite/BBPbB29E")
+  SetDiscordRichPresenceAction(1, "Want to help us ?", "https://github.com/esx-framework/esx-reborn")
 end
