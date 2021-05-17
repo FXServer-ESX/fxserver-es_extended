@@ -1,4 +1,4 @@
-Locales['en'] = {
+Locales['gr'] = {
   -- Inventory
   ['inventory'] = 'inventory %s / %s',
   ['use'] = 'xrhsh',
@@ -38,7 +38,7 @@ Locales['en'] = {
   ['threw_pickup_prompt'] = 'pata ~y~E~s~ gia na mazepseis',
 
   -- Key mapping
-  ['keymap_showinventory'] = 'show Inventory',
+  ['keymap_showinventory'] = 'des Inventory',
 
   -- Salary related
   ['received_salary'] = 'elaves ton mistho sou: ~g~$%s~s~',
