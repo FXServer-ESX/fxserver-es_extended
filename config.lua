@@ -18,11 +18,3 @@ Config.EnableDefaultInventory   = true -- Display the default Inventory ( F2 )
 Config.EnableWantedLevel    	= false -- Use Normal GTA wanted Level?
 Config.EnablePVP                = true -- Allow Player to player combat
 
-Config.DropItemList = {
-	default = 'prop_cs_cardbox_01',
-	money = 'prop_money_bag_01',
-	{name = 'bread', 	props = 'prop_cs_burger_01'},
-	{name = 'water', 	props = 'prop_ld_flow_bottle'},
-	{name = 'beer', 	props = 'prop_cs_beer_bot_01'}
-}
-
