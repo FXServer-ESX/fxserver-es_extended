@@ -265,8 +265,10 @@ AddEventHandler('esx:createPickup', function(pickupId, label, coords, type, name
 		end
 
 		setObjectProperties(pickupObject)
+
 	else
-		ESX.Game.SpawnLocalObject('prop_money_bag_01', coords, setObjectProperties)
+		local prop = Config.DropItemList[name] or Config.DropItemList.default 
+		ESX.Game.SpawnLocalObject(prop, coords, setObjectProperties)
 	end
 end)
 
