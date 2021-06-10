@@ -403,9 +403,21 @@ AddEventHandler('esx:giveInventoryItem', function(target, type, itemName, itemCo
 				local _, weapon = sourceXPlayer.getWeapon(itemName)
 				local _, weaponObject = ESX.GetWeapon(itemName)
 				itemCount = weapon.ammo
+				weaponComponents = ESX.Table.Clone(weapon.components)
+				weaponTint = weapon.tintIndex
 
 				sourceXPlayer.removeWeapon(itemName)
 				targetXPlayer.addWeapon(itemName, itemCount)
+
+				if weaponTint then
+					targetXPlayer.setWeaponTint(itemName, weaponTint)
+				end
+
+				if weaponComponents then
+					for k, v in ipairs(weaponComponents) do
+						targetXPlayer.addWeaponComponent(itemName, v)
+					end
+				end
 
 				if weaponObject.ammo and itemCount > 0 then
 					local ammoLabel = weaponObject.ammo.label
