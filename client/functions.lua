@@ -42,7 +42,9 @@ end
 
 ESX.SetPlayerData = function(key, val)
 	ESX.PlayerData[key] = val
-	TriggerEvent('esx:setPlayerData', key, val)
+	if key ~= 'inventory' and key ~= 'loadout' then
+		TriggerEvent('esx:setPlayerData', key, val)
+	end
 end
 
 ESX.ShowNotification = function(msg)
@@ -139,6 +141,13 @@ ESX.UI.HUD.RemoveElement = function(name)
 		action    = 'deleteHUDElement',
 		name      = name
 	})
+end
+
+ESX.UI.HUD.Reset = function()
+	SendNUIMessage({
+		action    = 'resetHUDElements'
+	})
+	ESX.UI.HUD.RegisteredElements = {}
 end
 
 ESX.UI.HUD.UpdateElement = function(name, data)
@@ -310,11 +319,11 @@ end
 
 ESX.Game.Teleport = function(entity, coords, cb)
 	local vector = type(coords) == "vector4" and coords or type(coords) == "vector3" and vector4(coords, 0.0) or vec(coords.x, coords.y, coords.z, coords.heading or 0.0)
-	
+
 	if DoesEntityExist(entity) then
 		RequestCollisionAtCoord(vector.xyz)
 		while not HasCollisionLoadedAroundEntity(entity) do
-			Wait(0)
+			Citizen.Wait(0)
 		end
 
 		SetEntityCoords(entity, vector.xyz, false, false, false, false)
@@ -326,14 +335,15 @@ ESX.Game.Teleport = function(entity, coords, cb)
 	end
 end
 
-ESX.Game.SpawnObject = function(model, coords, cb, networked, dynamic)
+ESX.Game.SpawnObject = function(object, coords, cb, networked, dynamic)
+	local model = (type(object) == 'number' and model or GetHashKey(object))
 	local vector = type(coords) == "vector3" and coords or vec(coords.x, coords.y, coords.z)
 	networked = networked == nil and true or false
 	dynamic = dynamic ~= nil and true or false
-	
-	CreateThread(function()
+
+	Citizen.CreateThread(function()
 		ESX.Streaming.RequestModel(model)
-		
+
 		-- The below has to be done just for CreateObject since for some reason CreateObjects model argument is set
 		-- as an Object instead of a hash so it doesn't automatically hash the item
 		model = type(model) == 'number' and model or GetHashKey(model)
@@ -344,9 +354,9 @@ ESX.Game.SpawnObject = function(model, coords, cb, networked, dynamic)
 	end)
 end
 
-ESX.Game.SpawnLocalObject = function(model, coords, cb)
+ESX.Game.SpawnLocalObject = function(object, coords, cb)
 	-- Why have 2 separate functions for this? Just call the other one with an extra param
-	ESX.Game.SpawnObject(model, coords, cb, false)
+	ESX.Game.SpawnObject(object, coords, cb, false)
 end
 
 ESX.Game.DeleteVehicle = function(vehicle)
@@ -359,10 +369,11 @@ ESX.Game.DeleteObject = function(object)
 	DeleteObject(object)
 end
 
-ESX.Game.SpawnVehicle = function(model, coords, heading, cb, networked)
+ESX.Game.SpawnVehicle = function(vehicle, coords, heading, cb, networked)
+	local model = (type(vehicle) == 'number' and vehicle or GetHashKey(vehicle))
 	local vector = type(coords) == "vector3" and coords or vec(coords.x, coords.y, coords.z)
 	networked = networked == nil and true or false
-	CreateThread(function()
+	Citizen.CreateThread(function()
 		ESX.Streaming.RequestModel(model)
 
 		local vehicle = CreateVehicle(model, vector.xyz, heading, networked, false)
@@ -379,7 +390,7 @@ ESX.Game.SpawnVehicle = function(model, coords, heading, cb, networked)
 
 		RequestCollisionAtCoord(vector.xyz)
 		while not HasCollisionLoadedAroundEntity(vehicle) do
-			Wait(0)
+			Citizen.Wait(0)
 		end
 
 		if cb then
@@ -388,9 +399,9 @@ ESX.Game.SpawnVehicle = function(model, coords, heading, cb, networked)
 	end)
 end
 
-ESX.Game.SpawnLocalVehicle = function(model, coords, heading, cb)
+ESX.Game.SpawnLocalVehicle = function(vehicle, coords, heading, cb)
 	-- Why have 2 separate functions for this? Just call the other one with an extra param
-	ESX.Game.SpawnVehicle(model, coords, heading, cb, false)
+	ESX.Game.SpawnVehicle(vehicle, coords, heading, cb, false)
 end
 
 ESX.Game.IsVehicleEmpty = function(vehicle)
@@ -697,13 +708,20 @@ ESX.Game.SetVehicleProperties = function(vehicle, props)
 	end
 end
 
-ESX.Game.Utils.DrawText3D = function(coords, text, scale, font)
+ESX.Game.Utils.DrawText3D = function(coords, text, size, font)
 	local vector = type(coords) == "vector3" and coords or vec(coords.x, coords.y, coords.z)
 
-	if not scale then scale = 0.35 end
-	if not font then font = 4 end
+	local camCoords = GetGameplayCamCoords()
+	local distance = #(vector - camCoords)
 
-	SetTextScale(scale, scale)
+	if not size then size = 1 end
+	if not font then font = 0 end
+
+	local scale = (size / distance) * 2
+	local fov = (1 / GetGameplayCamFov()) * 100
+	scale = scale * fov
+
+	SetTextScale(0.0 * scale, 0.55 * scale)
 	SetTextFont(font)
 	SetTextProportional(1)
 	SetTextColour(255, 255, 255, 215)
@@ -712,8 +730,6 @@ ESX.Game.Utils.DrawText3D = function(coords, text, scale, font)
 	AddTextComponentString(text)
 	SetDrawOrigin(vector.xyz, 0)
 	DrawText(0.0, 0.0)
-	local factor = string.len(text) / 370
-	DrawRect(0.0, 0.0 + 0.0125, 0.017 + factor, 0.03, 0, 0, 0, 75)
 	ClearDrawOrigin()
 end
 
@@ -736,7 +752,7 @@ ESX.ShowInventory = function()
 				canRemove = canDrop
 			})
 		end
-	end 
+	end
 
 	for k,v in ipairs(ESX.PlayerData.inventory) do
 		if v.count > 0 then

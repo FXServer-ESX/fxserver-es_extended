@@ -1,6 +1,6 @@
 ESX.Trace = function(msg)
 	if Config.EnableDebug then
-		print(('[^5es_extended^0] [^2TRACE^7] %s^7'):format(msg))
+		print(('[^2TRACE^7] %s^7'):format(msg))
 	end
 end
 
@@ -30,7 +30,7 @@ ESX.RegisterCommand = function(name, group, cb, allowConsole, suggestion)
 	end
 
 	if ESX.RegisteredCommands[name] then
-		print(('[^5es_extended^0] [^3WARNING^7] Command ^5"%s" already registered, overriding command'):format(name))
+		print(('[^3WARNING^7] Command ^5"%s" already registered, overriding command'):format(name))
 
 		if ESX.RegisteredCommands[name].suggestion then
 			TriggerClientEvent('chat:removeSuggestion', -1, ('/%s'):format(name))
@@ -50,7 +50,7 @@ ESX.RegisterCommand = function(name, group, cb, allowConsole, suggestion)
 		local command = ESX.RegisteredCommands[name]
 
 		if not command.allowConsole and playerId == 0 then
-			print(('[^5es_extended^0] [^3WARNING^7] ^5%s'):format(_U('commanderror_console')))
+			print(('[^3WARNING^7] ^5%s'):format(_U('commanderror_console')))
 		else
 			local xPlayer, error = ESX.GetPlayerFromId(playerId), nil
 
@@ -122,14 +122,14 @@ ESX.RegisterCommand = function(name, group, cb, allowConsole, suggestion)
 
 			if error then
 				if playerId == 0 then
-					print(('[^5es_extended^0] [^3WARNING^7] %s^7'):format(error))
+					print(('[^3WARNING^7] %s^7'):format(error))
 				else
 					xPlayer.triggerEvent('chat:addMessage', {args = {'^1SYSTEM', error}})
 				end
 			else
 				cb(xPlayer or false, args, function(msg)
 					if playerId == 0 then
-						print(('[^5es_extended^0] [^3WARNING^7] %s^7'):format(msg))
+						print(('[^3WARNING^7] %s^7'):format(msg))
 					else
 						xPlayer.triggerEvent('chat:addMessage', {args = {'^1SYSTEM', msg}})
 					end
@@ -159,30 +159,36 @@ ESX.TriggerServerCallback = function(name, requestId, source, cb, ...)
 	if ESX.ServerCallbacks[name] then
 		ESX.ServerCallbacks[name](source, cb, ...)
 	else
-		print(('[^5es_extended^0] [^3WARNING^7] Server callback ^5"%s"^0 does not exist. ^1Please Check The Server File for Errors!'):format(name))
+		print(('[^3WARNING^7] Server callback ^5"%s"^0 does not exist. ^1Please Check The Server File for Errors!'):format(name))
 	end
 end
+
+local savePlayers = -1
+Citizen.CreateThread(function()
+	savePlayers = MySQL.Sync.store("UPDATE users SET ? WHERE ?")
+end)
 
 ESX.SavePlayer = function(xPlayer, cb)
 	local asyncTasks = {}
 
 	table.insert(asyncTasks, function(cb2)
-		MySQL.Async.execute('UPDATE users SET accounts = @accounts, job = @job, job_grade = @job_grade, `group` = @group, loadout = @loadout, position = @position, inventory = @inventory WHERE identifier = @identifier', {
-			['@accounts'] = json.encode(xPlayer.getAccounts(true)),
-			['@job'] = xPlayer.job.name,
-			['@job_grade'] = xPlayer.job.grade,
-			['@group'] = xPlayer.getGroup(),
-			['@loadout'] = json.encode(xPlayer.getLoadout(true)),
-			['@position'] = json.encode(xPlayer.getCoords()),
-			['@identifier'] = xPlayer.getIdentifier(),
-			['@inventory'] = json.encode(xPlayer.getInventory(true))
+		MySQL.Async.execute(savePlayers, {
+			{
+				['accounts'] = json.encode(xPlayer.getAccounts(true)),
+				['job'] = xPlayer.job.name,
+				['job_grade'] = xPlayer.job.grade,
+				['group'] = xPlayer.getGroup(),
+				['loadout'] = json.encode(xPlayer.getLoadout(true)),
+				['position'] = json.encode(xPlayer.getCoords()),
+				['inventory'] = json.encode(xPlayer.getInventory(true))
+			}, {['identifier'] = xPlayer.getIdentifier()}
 		}, function(rowsChanged)
 			cb2()
 		end)
 	end)
 
 	Async.parallel(asyncTasks, function(results)
-		print(('[^5es_extended^0] [^2INFO^7] Saved player ^5"%s^7"'):format(xPlayer.getName()))
+		print(('[^2INFO^7] Saved player ^5"%s^7"'):format(xPlayer.getName()))
 
 		if cb then
 			cb()
@@ -201,7 +207,7 @@ ESX.SavePlayers = function(cb)
 	end
 
 	Async.parallelLimit(asyncTasks, 8, function(results)
-		print(('[^5es_extended^0] [^2INFO^7] Saved ^5%s^0 player(s)'):format(#xPlayers))
+		print(('[^2INFO^7] Saved ^5%s^0 player(s)'):format(#xPlayers))
 		if cb then
 			cb()
 		end
@@ -227,6 +233,10 @@ ESX.GetPlayers = function()
 	return sources
 end
 
+ESX.GetExtendedPlayers = function()
+	return ESX.Players
+end
+
 ESX.GetPlayerFromId = function(source)
 	return ESX.Players[tonumber(source)]
 end
@@ -235,6 +245,15 @@ ESX.GetPlayerFromIdentifier = function(identifier)
 	for k,v in pairs(ESX.Players) do
 		if v.identifier == identifier then
 			return v
+		end
+	end
+end
+
+ESX.GetIdentifier = function(playerId)
+	for k,v in ipairs(GetPlayerIdentifiers(playerId)) do
+		if string.match(v, 'license') then
+			local identifier = string.gsub(v, 'license:', '')
+			return identifier
 		end
 	end
 end

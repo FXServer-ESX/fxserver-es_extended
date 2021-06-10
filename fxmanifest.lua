@@ -103,5 +103,6 @@ server_exports {
 
 dependencies {
 	'mysql-async',
-	'async'
+	'async',
+	'spawnmanager',
 }

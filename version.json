@@ -1,5 +1,5 @@
 {
 	"version": "legacy",
-	"commit" : "1.1.9",
-	"changelog": "Fix esx_identity"
+	"commit" : "1.3.2",
+	"changelog": "Corrected a mistake resulting in loadouts not being loaded with players"
 }
