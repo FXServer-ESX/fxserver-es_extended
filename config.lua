@@ -20,3 +20,6 @@ Config.EnablePVP                = true -- Allow Player to player combat
 
 Config.Multichar                = false -- Enable support for esx_multicharacter
 Config.Identity                 = true -- Select a characters identity data before they have loaded in (this happens by default with multichar)
+
+Config.PickupProp               = 'prop_cs_heist_bag_02'
+Config.DefaultModel             = 'mp_m_freemode_01'
