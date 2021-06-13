@@ -84,13 +84,13 @@ AddEventHandler('esx:setMaxWeight', function(newMaxWeight) ESX.PlayerData.maxWei
 AddEventHandler('esx:onPlayerSpawn', function()
 	local playerPed = PlayerPedId()
 	if ESX.PlayerData.ped ~= playerPed then ESX.SetPlayerData('ped', playerPed) end
-	ESX.SetPlayerData('dead', false)
+	if ESX.PlayerData.dead ~= false then ESX.SetPlayerData('dead', false) end
 end)
 
 AddEventHandler('esx:onPlayerDeath', function()
 	local playerPed = PlayerPedId()
 	if ESX.PlayerData.ped ~= playerPed then ESX.SetPlayerData('ped', playerPed) end
-	ESX.SetPlayerData('dead', true)
+	if ESX.PlayerData.dead ~= true then ESX.SetPlayerData('dead', true) end
 end)
 
 AddEventHandler('skinchanger:modelLoaded', function()
