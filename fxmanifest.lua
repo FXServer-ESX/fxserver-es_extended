@@ -103,4 +103,9 @@ dependencies {
 	'mysql-async',
 	'async',
 	'spawnmanager',
+	'esx_menu_default',
+	'esx_menu_dialog',
+	'esx_menu_list',
+	'esx_skin',
+	'skinchanger',
 }
