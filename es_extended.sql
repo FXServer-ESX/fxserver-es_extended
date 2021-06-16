@@ -10,7 +10,6 @@ CREATE TABLE `users` (
 	`job_grade` INT NULL DEFAULT 0,
 	`loadout` LONGTEXT NULL DEFAULT NULL,
 	`position` VARCHAR(255) NULL DEFAULT '{"x":-269.4,"y":-955.3,"z":31.2,"heading":205.8}',
-	`skin` LONGTEXT NULL DEFAULT NULL,
 	PRIMARY KEY (`identifier`)
 );
 
