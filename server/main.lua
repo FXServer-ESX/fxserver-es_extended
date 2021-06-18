@@ -4,9 +4,11 @@ Citizen.CreateThread(function()
 	SetGameType('ESX Legacy')
 	
 	local query = '`accounts`, `job`, `job_grade`, `group`, `position`, `inventory`, `skin`, `loadout`' -- Select these fields from the database
+	if Config.Multichar or Config.Identity then	-- append these fields to the select query
+		query = query..', `firstname`, `lastname`, `dateofbirth`, `sex`, `height`'
+	end
 
-	if Config.Multichar or Config.Identity then
-		query = query..', `firstname`, `lastname`, `dateofbirth`, `sex`, `height`' -- append these fields to the select query
+	if Config.Multichar then -- insert identity data with creation
 		MySQL.Async.store("INSERT INTO `users` SET `accounts` = ?, `identifier` = ?, `group` = ?, `firstname` = ?, `lastname` = ?, `dateofbirth` = ?, `sex` = ?, `height` = ?", function(storeId)
 			NewPlayer = storeId
 		end)
@@ -76,7 +78,7 @@ function createESXPlayer(identifier, playerId, data)
 		defaultGroup = "user"
 	end
 
-	if not Config.Multichar and not Config.Identity then
+	if not Config.Multichar then
 		MySQL.Async.execute(NewPlayer, {
 				json.encode(accounts),
 				identifier,
