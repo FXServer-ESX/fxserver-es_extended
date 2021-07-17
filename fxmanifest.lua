@@ -21,6 +21,7 @@ server_scripts {
 	'locales/cs.lua',
 	'locales/sc.lua',
 	'locales/tc.lua',
+	'locales/it.lua',
 
 	'config.lua',
 	'config.weapons.lua',
@@ -49,6 +50,7 @@ client_scripts {
 	'locales/cs.lua',
 	'locales/sc.lua',
 	'locales/tc.lua',
+	'locales/it.lua',
 
 	'config.lua',
 	'config.weapons.lua',
